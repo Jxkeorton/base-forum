@@ -6,11 +6,10 @@ import axios from 'axios'
 const SignUp = () => {
   const [signUpData, setSignUpData] = useState({
     username: "",
-    email: "",
     password1: "",
     password2: "",
   });
-  const { username, email, password1, password2 } = signUpData;
+  const { username, password1, password2 } = signUpData;
 
   const [errors, setErrors] = useState({})
 
@@ -44,23 +43,6 @@ const SignUp = () => {
           />
         </Form.Group>
         {errors.username?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
-        )}
-
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            name = "email"
-            onChange={handleChange}
-            value={email}
-            type="email"
-            placeholder="Enter email"
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-        {errors.email?.map((message, idx) => 
           <Alert variant="warning" key={idx}>{message}</Alert>
         )}
         <Form.Group className="mb-3" controlId="password1">
