@@ -1,39 +1,49 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom';
-import styles from './NavBar.module.css'
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import logo from '../../../assets/logo.png'
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import styles from "./NavBar.module.css";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import logo from "../../../assets/logo.png";
+import { CurrentUserContext } from "../../../App";
 
-const isActive = (navData) => ((navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink))
+const isActive = (navData) =>
+  navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;
 
 const NavBar = () => {
+  const currentUser = useContext(CurrentUserContext);
+  const loggedInIcons = <>{currentUser?.username}</>
+  const loggedOutIcons = (
+    <>
+      <NavLink className={isActive} to="/sign-in">
+        <i className="fas fa-sign-in-alt"></i> Sign In
+      </NavLink>
+      <NavLink className={isActive} to="/sign-up">
+        <i className="fas fa-user-plus"></i> Sign Up
+      </NavLink>
+    </>
+  );
+
   return (
-    <Navbar bg="dark" data-bs-theme="dark" expand="md" fixed='top'>
+    <Navbar bg="dark" data-bs-theme="dark" expand="md" fixed="top">
       <Container>
         <NavLink to="/">
           <Navbar.Brand>
-            <img src={logo} alt='logo' height='45'/>
+            <img src={logo} alt="logo" height="45" />
           </Navbar.Brand>
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav className="ml-auto">
             <NavLink className={isActive} to="/">
               <i className="fa-solid fa-location-dot"></i> Locations
             </NavLink>
-            <NavLink className={isActive} to="/sign-in">
-              <i className="fas fa-sign-in-alt"></i> Sign In
-            </NavLink>
-            <NavLink className={isActive} to="/sign-up">
-              <i className="fas fa-user-plus"></i> Sign Up
-            </NavLink>
+            {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

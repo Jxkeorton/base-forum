@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import { SetCurrentUserContext } from "../../App";
 
 const SignIn = () => {
+  const setCurrentUser = useContext(SetCurrentUserContext);
+
   const [signInData, setSignInData] = useState({
     username: "",
     password: "",
@@ -21,7 +24,8 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('dj-rest-auth/login/', signInData)
+      const {data} = await axios.post('dj-rest-auth/login/', signInData)
+      setCurrentUser(data.user);
       navigate("/");
     } catch (error) {
       setErrors(error.response?.data)
