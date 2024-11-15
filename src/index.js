@@ -8,6 +8,7 @@ import Locations from './pages/locations/Locations'
 import NotFound from './pages/notfound/NotFound';
 import SignIn from './pages/signin/SignIn';
 import SignUp from './pages/signup/SignUp';
+import { CurrentUserProvider } from './contexts/CurrentUserContext';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <CurrentUserProvider>
+      <RouterProvider router={router} />
+    </CurrentUserProvider>
   </React.StrictMode>
 );
 

@@ -1,17 +1,17 @@
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../../assets/logo.png";
-import { CurrentUserContext } from "../../../App";
+import { useCurrentUser } from "../../../contexts/CurrentUserContext";
 
 const isActive = (navData) =>
   navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;
 
 const NavBar = () => {
-  const currentUser = useContext(CurrentUserContext);
+  const currentUser = useCurrentUser();
   const loggedInIcons = <>{currentUser?.username}</>
   const loggedOutIcons = (
     <>
