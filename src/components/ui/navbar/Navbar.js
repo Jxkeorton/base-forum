@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./NavBar.module.css";
+import styles from "./Navbar.module.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -8,6 +8,7 @@ import logo from "../../../assets/logo.png";
 import Avatar from "../avatar/Avatar";
 import { useCurrentUser, useSetCurrentUser } from "../../../contexts/CurrentUserContext";
 import axios from 'axios';
+import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
 
 const isActive = (navData) =>
   navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;
@@ -15,6 +16,8 @@ const isActive = (navData) =>
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
+
+  const {expanded, setExpanded, ref} = useClickOutsideToggle();
 
   const handleSignOut = async () => {
     try {
@@ -52,7 +55,7 @@ const NavBar = () => {
   );
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark" expand="md" fixed="top">
+    <Navbar expanded={expanded} bg="dark" data-bs-theme="dark" expand="md" fixed="top">
       <Container>
         <NavLink to="/">
           <Navbar.Brand>
@@ -60,7 +63,7 @@ const NavBar = () => {
           </Navbar.Brand>
         </NavLink>
         {currentUser && addReviewIcon}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle ref={ref} onClick={() => setExpanded(!expanded)}  aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav className="ml-auto">
             <NavLink className={isActive} to="/">
