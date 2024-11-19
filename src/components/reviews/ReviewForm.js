@@ -3,7 +3,7 @@ import { Form, Button, Spinner, Alert } from "react-bootstrap";
 import Select from "react-select";
 import { axiosReq } from "../../api/axiosDefault";
 
-const ReviewForm = () => {
+const ReviewForm = ({ locationId }) => {
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [hazard, setHazard] = useState(false);
@@ -25,6 +25,12 @@ const ReviewForm = () => {
           label: loc.name,
         }));
         setLocations(locationOptions);
+
+        // If locationId is provided, find and set the relevant location
+        if (locationId) {
+          const selectedLocation = locationOptions.find((loc) => loc.value === parseInt(locationId));
+          setLocation(selectedLocation || null);
+        }
       } catch (err) {
         console.error("Error fetching locations:", err);
         setError("Unable to fetch locations.");
@@ -34,7 +40,7 @@ const ReviewForm = () => {
     };
 
     fetchLocations();
-  }, []);
+  }, [locationId]); // Dependency on locationId
 
   const handleSubmit = async (e) => {
     e.preventDefault();
