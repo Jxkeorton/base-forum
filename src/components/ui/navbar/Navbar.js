@@ -7,6 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../../assets/logo.png";
 import Avatar from "../avatar/Avatar";
 import { useCurrentUser, useSetCurrentUser } from "../../../contexts/CurrentUserContext";
+import { useModal } from "../../../contexts/ReviewModalContext";
 import axios from 'axios';
 import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
 
@@ -19,6 +20,8 @@ const NavBar = () => {
 
   const {expanded, setExpanded, ref} = useClickOutsideToggle();
 
+  const { showModal } = useModal();
+
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");
@@ -29,7 +32,7 @@ const NavBar = () => {
   };
 
   const addReviewIcon = (
-    <NavLink className={isActive} to="/reviews/create">
+    <NavLink className={styles.NavLink} to="#" onClick={showModal}>
       <i className="fas fa-plus-square"></i> Add Review
     </NavLink>
   );
