@@ -30,6 +30,7 @@ const LocationDetails = () => {
   return (
     <div>
       <DetailsCard location={location} />
+      <h2>Reviews</h2>
     </div>
   );
 };
