@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { axiosReq } from "../../api/axiosDefault";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import Review from "./Review";
-import { Col, Spinner, Alert } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { axiosReq, axiosRes } from '../../api/axiosDefault';
+import { useCurrentUser } from '../../contexts/CurrentUserContext';
+import Review from './Review';
+import ConfirmationModal from '../ui/ConfirmationModal';
 
 const ReviewsList = ({ locationId }) => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+
   const currentUser = useCurrentUser();
 
   useEffect(() => {
@@ -21,8 +24,8 @@ const ReviewsList = ({ locationId }) => {
         }));
         setReviews(reviewsWithIsOwner);
       } catch (err) {
-        console.error("Error fetching reviews:", err);
-        setError("Failed to fetch reviews");
+        console.error('Error fetching reviews:', err);
+        setError('Failed to fetch reviews');
       } finally {
         setIsLoading(false);
       }
@@ -31,45 +34,56 @@ const ReviewsList = ({ locationId }) => {
     fetchReviews();
   }, [locationId, currentUser?.username]);
 
-  const handleEditReview = async (review) => {
-    // edit the review
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      await axiosRes.delete(`/reviews/${reviewId}/`);
+      setReviews((prevReviews) =>
+        prevReviews.filter((review) => review.id !== reviewId)
+      );
+      setShowModal(false);
+    } catch (err) {
+      console.error('Error deleting review:', err);
+      setError('Failed to delete review');
+    }
   };
 
-  const handleDeleteReview = async (reviewId) => {
-    // delete the review
+  const openDeleteModal = (reviewId) => {
+    setReviewToDelete(reviewId);
+    setShowModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowModal(false);
+    setReviewToDelete(null);
   };
 
   return (
-    <>
-      <h2 className="my-4">Reviews</h2>
-
-      {/* Loading  */}
+    <div>
+      <h2>Reviews</h2>
       {isLoading ? (
-        <div className="d-flex justify-content-center my-5">
-          <Spinner animation="border" variant="primary" />
-        </div>
+        <div>Loading...</div>
       ) : error ? (
-        <Alert variant="danger" className="my-4">
-          {error}
-        </Alert>
+        <div>{error}</div>
       ) : (
-        <>
-          {reviews.length > 0 ? (
-            reviews.map((review) => (
-              <Review
-                review={review}
-                onEdit={handleEditReview}
-                onDelete={handleDeleteReview}
-              />
-            ))
-          ) : (
-            <Col className="text-center">
-              <Alert variant="info">No reviews yet for this location.</Alert>
-            </Col>
-          )}
-        </>
+        <div>
+          {reviews.map((review) => (
+            <Review
+              key={review.id}
+              review={review}
+              onEdit={() => {}}
+              onDelete={() => openDeleteModal(review.id)}
+            />
+          ))}
+        </div>
       )}
-    </>
+      {showModal && (
+        <ConfirmationModal
+          show={showModal}
+          handleClose={closeDeleteModal}
+          handleDelete={() => handleDeleteReview(reviewToDelete)}
+        />
+      )}
+    </div>
   );
 };
 

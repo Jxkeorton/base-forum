@@ -2,7 +2,7 @@ import React from "react";
 import { MDBCardImage, MDBIcon, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./css/Review.module.css";
 
-// Credit for the components of a Review https://mdbootstrap.com/docs/react/extended/comments/ 
+// Credit for the components of a Review https://mdbootstrap.com/docs/react/extended/comments/
 
 const Review = ({ review, onEdit, onDelete }) => {
   return (
@@ -28,9 +28,8 @@ const Review = ({ review, onEdit, onDelete }) => {
           >
             <p className="mb-0">
               {review.created_at}
-
               {review.hazard && (
-                <span className={`badge bg-primary ${styles.hazardBadge}`}>
+                <span className={`badge bg-danger ${styles.hazardBadge}`}>
                   Hazardous
                 </span>
               )}
@@ -56,7 +55,13 @@ const Review = ({ review, onEdit, onDelete }) => {
             )}
           </div>
 
-          <p className={`mb-0 ${styles.subject}`}>{review.subject}</p>
+          <MDBTypography
+            tag="h5"
+            className={`text-decoration-underline mb-1 ${styles.subject}`}
+          >
+            {review.subject}
+          </MDBTypography>
+
           <p className={`mb-0 ${styles.reviewContent}`}>{review.content}</p>
         </div>
       </div>
