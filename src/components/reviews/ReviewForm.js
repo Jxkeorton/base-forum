@@ -51,10 +51,10 @@ const ReviewForm = ({ locationId }) => {
     }
 
     const reviewData = {
+      location: location.value,
       subject,
       content,
       hazard,
-      location: location.value,
     };
 
     setIsLoading(true);
@@ -125,7 +125,7 @@ const ReviewForm = ({ locationId }) => {
         <Form.Group controlId="hazard">
           <Form.Check
             type="checkbox"
-            label="Hazardous Location"
+            label="Hazard Report"
             checked={hazard}
             onChange={() => setHazard(!hazard)}
           />

@@ -2,6 +2,7 @@ import React, {useState, useEffect } from "react";
 import DetailsCard from "../../components/locations/DetailsCard";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefault";
+import ReviewsList from "../../components/reviews/ReviewsList"
 
 const LocationDetails = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const LocationDetails = () => {
   return (
     <div>
       <DetailsCard location={location} />
-      <h2>Reviews</h2>
+      <ReviewsList locationId={id} />
     </div>
   );
 };
