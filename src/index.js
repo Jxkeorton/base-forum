@@ -9,6 +9,7 @@ import LocationDetails from "./pages/locations/LocationDetails";
 import NotFound from "./pages/notfound/NotFound";
 import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
+import Reviews from "./pages/reviews/Reviews";
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/locations/:id",
         element: <LocationDetails />,
+      },
+      {
+        path: "/reviews",
+        element: <Reviews />,
       },
       {
         path: "/sign-in",
