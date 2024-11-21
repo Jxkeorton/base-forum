@@ -30,7 +30,7 @@ const Review = ({ review, onEdit, onDelete }) => {
               {review.created_at}
               {review.hazard && (
                 <span className={`badge bg-danger ${styles.hazardBadge}`}>
-                  Hazardous
+                  Hazard
                 </span>
               )}
             </p>

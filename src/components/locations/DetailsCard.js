@@ -4,7 +4,7 @@ import { Card, Row, Col, Badge } from 'react-bootstrap';
 const DetailsCard = ({ location }) => {
   return (
     <Card className="mb-4 shadow-sm">
-      <Row noGutters>
+      <Row>
         <Col md={5}>
           <Card.Img
             src={location.image}

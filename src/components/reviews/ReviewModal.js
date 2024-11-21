@@ -3,19 +3,19 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import ReviewForm from "./ReviewForm";
 import { useModal } from "../../contexts/ReviewModalContext";
-import { useParams } from "react-router-dom"; // Import useParams
+import { useParams } from "react-router-dom";
 
 const ReviewModal = () => {
-  const { isModalVisible, hideModal } = useModal();
-  const { id } = useParams(); // Get the location ID from the URL
+  const { isModalVisible, hideModal, review } = useModal();
+  const { id } = useParams();
 
   return (
     <Modal show={isModalVisible} onHide={hideModal} backdrop="static" centered>
       <Modal.Header closeButton>
-        <Modal.Title>Submit a Review</Modal.Title>
+        <Modal.Title>{review ? "Edit Review" : "Submit a Review"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ReviewForm locationId={id} /> {/* Pass the location ID to ReviewForm */}
+        <ReviewForm locationId={id} review={review}/>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={hideModal}>

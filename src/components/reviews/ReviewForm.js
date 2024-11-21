@@ -3,14 +3,13 @@ import { Form, Button, Spinner, Alert } from "react-bootstrap";
 import Select from "react-select";
 import { axiosReq } from "../../api/axiosDefault";
 
-const ReviewForm = ({ locationId }) => {
-  const [subject, setSubject] = useState("");
-  const [content, setContent] = useState("");
-  const [hazard, setHazard] = useState(false);
+const ReviewForm = ({ locationId, review = null }) => {
+  const [subject, setSubject] = useState(review?.subject || "");
+  const [content, setContent] = useState(review?.content || "");
+  const [hazard, setHazard] = useState(review?.hazard || false);
 
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(review ? { value: review.locationId, label: review.location_name } : null);
   const [locations, setLocations] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -26,21 +25,18 @@ const ReviewForm = ({ locationId }) => {
         }));
         setLocations(locationOptions);
 
-        // If locationId is provided, find and set the relevant location
-        if (locationId) {
+        if (locationId && !review) {
           const selectedLocation = locationOptions.find((loc) => loc.value === parseInt(locationId));
           setLocation(selectedLocation || null);
         }
       } catch (err) {
-        console.error("Error fetching locations:", err);
         setError("Unable to fetch locations.");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchLocations();
-  }, [locationId]); // Dependency on locationId
+  }, [locationId, review]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,17 +58,18 @@ const ReviewForm = ({ locationId }) => {
     setSuccess(false);
 
     try {
-      const response = await axiosReq.post("/reviews/", reviewData);
-      if (response.status === 201) {
-        setSuccess(true);
-        setSubject("");
-        setContent("");
-        setHazard(false);
-        setLocation(null);
+      if (review) {
+        await axiosReq.put(`/reviews/${review.id}/`, reviewData);
+      } else {
+        await axiosReq.post("/reviews/", reviewData);
       }
+      setSuccess(true);
+      setSubject("");
+      setContent("");
+      setHazard(false);
+      setLocation(null);
     } catch (err) {
       setError("An error occurred while submitting your review.");
-      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -80,10 +77,9 @@ const ReviewForm = ({ locationId }) => {
 
   return (
     <div>
-      <h2>Submit a Review</h2>
-
+      <h2>{review ? "Edit Review" : "Submit a Review"}</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">Your review was submitted successfully!</Alert>}
+      {success && <Alert variant="success">{review ? "Review updated successfully!" : "Review submitted successfully!"}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="subject">
@@ -135,7 +131,7 @@ const ReviewForm = ({ locationId }) => {
           {isLoading ? (
             <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
           ) : (
-            "Submit Review"
+            review ? "Update Review" : "Submit Review"
           )}
         </Button>
       </Form>

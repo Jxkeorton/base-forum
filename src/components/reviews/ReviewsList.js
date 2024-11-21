@@ -3,14 +3,18 @@ import { axiosReq, axiosRes } from '../../api/axiosDefault';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import Review from './Review';
 import ConfirmationModal from '../ui/ConfirmationModal';
+import { useModal } from '../../contexts/ReviewModalContext';
 
-const ReviewsList = ({ locationId }) => {
+const ReviewsList = ({ location }) => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
 
+  const locationId = location.id;
+
+  const { openEditModal } = useModal();
   const currentUser = useCurrentUser();
 
   useEffect(() => {
@@ -21,6 +25,8 @@ const ReviewsList = ({ locationId }) => {
         const reviewsWithIsOwner = data.results.map((review) => ({
           ...review,
           is_owner: review.owner === currentUser?.username,
+          location_name: location.name,
+          locationId
         }));
         setReviews(reviewsWithIsOwner);
       } catch (err) {
@@ -32,7 +38,7 @@ const ReviewsList = ({ locationId }) => {
     };
 
     fetchReviews();
-  }, [locationId, currentUser?.username]);
+  }, [locationId, currentUser?.username, location.name]);
 
   const handleDeleteReview = async (reviewId) => {
     try {
@@ -70,7 +76,7 @@ const ReviewsList = ({ locationId }) => {
             <Review
               key={review.id}
               review={review}
-              onEdit={() => {}}
+              onEdit={() => openEditModal(review)}
               onDelete={() => openDeleteModal(review.id)}
             />
           ))}
