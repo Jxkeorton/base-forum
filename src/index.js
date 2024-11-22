@@ -12,6 +12,7 @@ import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
+import Profile from "./pages/profile/Profile";
 
 const router = createBrowserRouter([
   {
@@ -32,13 +33,17 @@ const router = createBrowserRouter([
         element: <Reviews />,
       },
       {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
+      {
         path: "/sign-in",
         element: <SignIn />,
       },
       {
         path: "/sign-up",
         element: <SignUp />,
-      },
+      }
     ],
   },
 ]);
