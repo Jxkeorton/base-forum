@@ -84,10 +84,14 @@ const ReviewsList = ({ location }) => {
       )}
       {showModal && (
         <ConfirmationModal
-          show={showModal}
-          handleClose={closeDeleteModal}
-          handleDelete={() => handleDeleteReview(reviewToDelete)}
-        />
+        show={showModal}
+        handleClose={closeDeleteModal}
+        handleAction={() => handleDeleteReview(reviewToDelete)}
+        title="Confirm Delete"
+        bodyText="Are you sure you want to delete this review? This action cannot be undone."
+        actionLabel="Delete"
+        cancelLabel="Cancel"
+      />
       )}
     </div>
   );

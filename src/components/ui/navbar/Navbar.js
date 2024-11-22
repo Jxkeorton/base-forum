@@ -1,6 +1,6 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import styles from "./Navbar.module.css";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import styles from "./NavBar.module.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -10,6 +10,7 @@ import { useCurrentUser, useSetCurrentUser } from "../../../contexts/CurrentUser
 import { useModal } from "../../../contexts/ReviewModalContext";
 import axios from 'axios';
 import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
+import ConfirmationModal from "../ConfirmationModal";
 
 const isActive = (navData) =>
   navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;
@@ -18,14 +19,19 @@ const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
 
-  const {expanded, setExpanded, ref} = useClickOutsideToggle();
+  const navigate = useNavigate();
 
+  const { expanded, setExpanded, ref } = useClickOutsideToggle();
   const { showModal } = useModal();
+
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
 
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");
       setCurrentUser(null);
+      setShowSignOutModal(false);
+      navigate("/"); 
     } catch (err) {
       console.log(err);
     }
@@ -38,7 +44,11 @@ const NavBar = () => {
   );
   const loggedInIcons = (
     <>
-      <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
+      <NavLink
+        className={styles.NavLink}
+        to="#"
+        onClick={() => setShowSignOutModal(true)}
+      >
         <i className="fas fa-sign-out-alt"></i> Sign Out
       </NavLink>
       <NavLink className={isActive} to={`/profile/${currentUser?.profile_id}`}>
@@ -66,7 +76,7 @@ const NavBar = () => {
           </Navbar.Brand>
         </NavLink>
         {currentUser && addReviewIcon}
-        <Navbar.Toggle ref={ref} onClick={() => setExpanded(!expanded)}  aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle ref={ref} onClick={() => setExpanded(!expanded)} aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav className="ml-auto">
             <NavLink className={isActive} to="/">
@@ -79,6 +89,16 @@ const NavBar = () => {
           </Nav>
         </Navbar.Collapse>
       </Container>
+
+      <ConfirmationModal
+        show={showSignOutModal}
+        handleClose={() => setShowSignOutModal(false)}
+        handleAction={handleSignOut}
+        title="Confirm Sign Out"
+        bodyText="Are you sure you want to sign out?"
+        actionLabel="Sign Out"
+        cancelLabel="Cancel"
+      />
     </Navbar>
   );
 };

@@ -1,21 +1,29 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ConfirmationModal = ({ show, handleClose, handleDelete }) => {
+const ConfirmationModal = ({
+  show,
+  handleClose,
+  handleAction,
+  title = "Confirm Action",
+  bodyText = "Are you sure you want to proceed with this action? This cannot be undone.",
+  actionLabel = "Proceed",
+  cancelLabel = "Cancel",
+}) => {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Confirm Delete</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to delete this review? This action cannot be undone.
+        {bodyText}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Cancel
+          {cancelLabel}
         </Button>
-        <Button variant="danger" onClick={handleDelete}>
-          Delete
+        <Button variant="danger" onClick={handleAction}>
+          {actionLabel}
         </Button>
       </Modal.Footer>
     </Modal>
