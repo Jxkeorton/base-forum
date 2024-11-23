@@ -1,0 +1,53 @@
+.iconButtons {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  
+  .linkMuted {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .linkMuted:hover {
+    color: #343a40;
+  }
+  
+  .avatar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .reviewContainer {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .ownerName {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .subject {
+    font-size: 1.1rem;
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  .hazardBadge {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .reviewMeta {
+    font-size: 0.85rem;
+    color: #888;
+  }
+  
+  .reviewContent {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  
