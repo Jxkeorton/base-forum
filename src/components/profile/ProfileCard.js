@@ -4,7 +4,7 @@ import Avatar from "../ui/avatar/Avatar";
 
 const ProfileCard = ({ username, src }) => {
   return (
-    <Container className="d-flex align-items-center" style={{ minHeight: '100vh' }}>
+    <Container className="d-flex align-items-center" style={{ minHeight: '40vh' }}>
       <Row className="justify-content-center w-100">
         <Col md="auto">
           <Card style={{ width: '18rem', border: '1px solid #ddd', borderRadius: '10px' }}>
