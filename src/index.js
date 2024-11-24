@@ -11,6 +11,7 @@ import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
+import { ProfileProvider } from "./contexts/ProfileContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
 import Profile from "./pages/profile/Profile";
 
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
-      }
+      },
     ],
   },
 ]);
@@ -52,9 +53,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <CurrentUserProvider>
-      <ModalProvider>
-        <RouterProvider router={router} />
-      </ModalProvider>
+      <ProfileProvider>
+        <ModalProvider>
+          <RouterProvider router={router} />
+        </ModalProvider>
+      </ProfileProvider>
     </CurrentUserProvider>
   </React.StrictMode>
 );
