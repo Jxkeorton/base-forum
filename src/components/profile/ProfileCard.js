@@ -5,10 +5,9 @@ import { MDBIcon } from "mdb-react-ui-kit";
 import ProfileEditForm from "./ProfileEditForm";
 import styles from "./css/ProfileCard.module.css";
 
-const ProfileCard = ({ username, src, noOfBaseJumps, isOwner, updateProfile }) => {
+const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
   const [showModal, setShowModal] = useState(false);
 
-  // Handle modal open/close
   const handleModalClose = () => setShowModal(false);
   const handleModalOpen = () => setShowModal(true);
 
@@ -20,6 +19,9 @@ const ProfileCard = ({ username, src, noOfBaseJumps, isOwner, updateProfile }) =
             <Card.Body className="text-center">
               <Avatar src={src} height={80} />
               <Card.Title className="mt-3">{username}</Card.Title>
+              <Card.Text className="mt-2 text-muted small">
+                 @{name}
+              </Card.Text>
               <Card.Text className="mt-2 text-muted small">
                 Base Jumps: {noOfBaseJumps !== null ? noOfBaseJumps : "N/A"}
               </Card.Text>
@@ -40,7 +42,6 @@ const ProfileCard = ({ username, src, noOfBaseJumps, isOwner, updateProfile }) =
         </Col>
       </Row>
 
-      {/* Edit Profile Modal */}
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
@@ -49,8 +50,8 @@ const ProfileCard = ({ username, src, noOfBaseJumps, isOwner, updateProfile }) =
           <ProfileEditForm
             username={username}
             noOfBaseJumps={noOfBaseJumps}
-            closeModal={handleModalClose} 
-            updateProfile={updateProfile} 
+            closeModal={handleModalClose}
+            src={src}
           />
         </Modal.Body>
       </Modal>

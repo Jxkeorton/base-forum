@@ -1,68 +1,95 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Form, Button, Alert, Image, Container } from "react-bootstrap";
-import { axiosReq } from "../../api/axiosDefault";
 import { useParams } from "react-router-dom";
+import { useProfileContext } from "../../contexts/ProfileContext";
 
-const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, updateProfile }) => {
+const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
   const { id } = useParams();
-  const [formData, setFormData] = useState({
-    username: username || "",
-    noOfBaseJumps: noOfBaseJumps || "",
-    image: "",
+  const { updateProfile, profile } = useProfileContext();
+  const [profileData, setProfileData] = useState({
+    name: username || "",
+    no_of_base_jumps: noOfBaseJumps || "",
+    image: src || "",
   });
+  const { name, no_of_base_jumps, image } = profileData;
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const imageFile = useRef();
 
+  useEffect(() => {
+    if (profile) {
+      setProfileData({
+        name: profile.owner || "",
+        no_of_base_jumps: profile.no_of_base_jumps || "",
+        image: profile.image || "",
+      });
+    }
+  }, [profile]);
+
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+    setProfileData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formToSend = new FormData();
-
-    // Only append fields that have values
-    if (formData.username) {
-      formToSend.append("username", formData.username);
-    }
-    
-    if (formData.noOfBaseJumps !== "") {
-      formToSend.append("no_of_base_jumps", formData.noOfBaseJumps);
-    }
-
-    if (imageFile?.current?.files[0]) {
-      formToSend.append("image", imageFile.current.files[0]);
-    }
+    setIsSubmitting(true);
+    setErrors({});
 
     try {
-      const { data } = await axiosReq.put(`/profile/${id}/`, formToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
-      updateProfile(data);
-      closeModal();
+      const formData = new FormData();
+      
+      if (profileData.name !== profile?.owner) {
+        formData.append("name", profileData.name);
+      }
+      
+      if (profileData.no_of_base_jumps !== profile?.no_of_base_jumps) {
+        formData.append("no_of_base_jumps", profileData.no_of_base_jumps);
+      }
+
+      if (imageFile?.current?.files[0]) {
+        formData.append("image", imageFile.current.files[0]);
+      }
+
+      const { success, error } = await updateProfile(formData, id);
+      
+      if (success) {
+        closeModal();
+      } else {
+        setErrors(error || { general: 'Update failed' });
+      }
     } catch (err) {
-      console.error("Error details:", err.response?.data);
-      setErrors(err.response?.data);
+      console.error("Error details:", err);
+      setErrors({ general: "An error occurred while updating the profile" });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Container className="py-3">
       <Form onSubmit={handleSubmit}>
+        {errors.general && (
+          <Alert variant="warning">
+            {errors.general}
+          </Alert>
+        )}
+
         <Form.Group className="mb-3 text-center">
-          {formData.image && (
-            <Image
-              src={formData.image}
-              roundedCircle
-              fluid
-              style={{ maxWidth: "150px" }}
-            />
+          {image && (
+            <figure className="d-flex justify-content-center">
+              <Image
+                className="mb-3"
+                src={image}
+                roundedCircle
+                fluid
+                style={{ maxWidth: "150px", height: "150px", objectFit: "cover" }}
+              />
+            </figure>
           )}
           {errors?.image?.map((message, idx) => (
             <Alert variant="warning" key={idx}>
@@ -77,27 +104,27 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, updateProfile })
             type="file"
             ref={imageFile}
             accept="image/*"
-            className="d-none"
             onChange={(e) => {
               if (e.target.files.length) {
-                setFormData({
-                  ...formData,
+                setProfileData({
+                  ...profileData,
                   image: URL.createObjectURL(e.target.files[0]),
                 });
               }
             }}
+            className="d-none"
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
-            name="username"
-            value={formData.username}
+            name="name"
+            value={name}
             onChange={handleChange}
           />
-          {errors?.username?.map((message, idx) => (
+          {errors?.name?.map((message, idx) => (
             <Alert variant="warning" key={idx}>
               {message}
             </Alert>
@@ -108,8 +135,8 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, updateProfile })
           <Form.Label>Base Jumps</Form.Label>
           <Form.Control
             type="number"
-            name="noOfBaseJumps"
-            value={formData.noOfBaseJumps}
+            name="no_of_base_jumps"
+            value={no_of_base_jumps}
             onChange={handleChange}
           />
           {errors?.no_of_base_jumps?.map((message, idx) => (
@@ -120,11 +147,19 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, updateProfile })
         </Form.Group>
 
         <div className="d-flex justify-content-between">
-          <Button variant="secondary" onClick={closeModal}>
+          <Button 
+            variant="secondary" 
+            onClick={closeModal}
+            disabled={isSubmitting}
+          >
             Cancel
           </Button>
-          <Button type="submit" variant="primary">
-            Save Changes
+          <Button 
+            type="submit" 
+            variant="primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </Form>
