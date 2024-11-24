@@ -40,28 +40,30 @@ const ReviewForm = ({ locationId, review = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!location) {
+  
+    if (!location || !location.value) {
       setError("Please select a location.");
       return;
     }
-
+  
     const reviewData = {
       location: location.value,
       subject,
       content,
       hazard,
     };
-
+  
     setIsLoading(true);
     setError(null);
     setSuccess(false);
-
+  
     try {
       if (review) {
-        await axiosReq.put(`/reviews/${review.id}/`, reviewData);
+        const { data } = await axiosReq.put(`/reviews/${review.id}/`, reviewData);
+        console.log('Review updated:', data);
       } else {
-        await axiosReq.post("/reviews/", reviewData);
+        const { data } = await axiosReq.post("/reviews/", reviewData);
+        console.log('Review created:', data);
       }
       setSuccess(true);
       setSubject("");
@@ -69,12 +71,15 @@ const ReviewForm = ({ locationId, review = null }) => {
       setHazard(false);
       setLocation(null);
     } catch (err) {
-      setError("An error occurred while submitting your review.");
+      console.error('Error details:', err.response?.data);
+      const errorMessage = err.response?.data?.location?.[0] || 
+                          err.response?.data?.detail || 
+                          "An error occurred while submitting your review.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <div>
       <h2>{review ? "Edit Review" : "Submit a Review"}</h2>

@@ -23,7 +23,7 @@ export const ModalProvider = ({ children }) => {
     showModal();
   };
 
-  const openEditModal = (selectedReview, onUpdateReview) => {
+  const openEditModal = (selectedReview) => {
     setReview(selectedReview);
     showModal();
   };
