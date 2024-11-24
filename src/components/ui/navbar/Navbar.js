@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import Container from "react-bootstrap/Container";
@@ -7,6 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 import logo from "../../../assets/logo.png";
 import Avatar from "../avatar/Avatar";
 import { useCurrentUser, useSetCurrentUser } from "../../../contexts/CurrentUserContext";
+import { useProfileContext } from "../../../contexts/ProfileContext";
 import { useModal } from "../../../contexts/ReviewModalContext";
 import axios from 'axios';
 import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
@@ -18,13 +19,18 @@ const isActive = (navData) =>
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
+  const { profile, fetchProfile } = useProfileContext();
 
   const navigate = useNavigate();
-
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
   const { showModal } = useModal();
-
   const [showSignOutModal, setShowSignOutModal] = useState(false);
+
+  useEffect(() => {
+    if (currentUser?.profile_id) {
+      fetchProfile(currentUser.profile_id);
+    }
+  }, [currentUser, fetchProfile]);
 
   const handleSignOut = async () => {
     try {
@@ -37,25 +43,33 @@ const NavBar = () => {
     }
   };
 
+  const avatarSrc = profile?.image || currentUser?.profile_image;
+
   const addReviewIcon = (
     <NavLink className={styles.NavLink} to="#" onClick={showModal}>
       <i className="fas fa-plus-square"></i> Add Review
     </NavLink>
   );
+  
   const loggedInIcons = (
     <>
       <NavLink
         className={styles.NavLink}
         to="#"
-        onClick={() => setShowSignOutModal(true)}
+        onClick={() => setShowSignOutModal(true)} 
       >
         <i className="fas fa-sign-out-alt"></i> Sign Out
       </NavLink>
       <NavLink className={isActive} to={`/profile/${currentUser?.profile_id}`}>
-        <Avatar src={currentUser?.profile_image} text="Profile" height={40} />
+        <Avatar 
+          src={avatarSrc} 
+          text="Profile" 
+          height={40} 
+        />
       </NavLink>
     </>
   );
+  
   const loggedOutIcons = (
     <>
       <NavLink className={isActive} to="/sign-in">
@@ -93,7 +107,7 @@ const NavBar = () => {
       <ConfirmationModal
         show={showSignOutModal}
         handleClose={() => setShowSignOutModal(false)}
-        handleAction={handleSignOut}
+        handleAction={handleSignOut} 
         title="Confirm Sign Out"
         bodyText="Are you sure you want to sign out?"
         actionLabel="Sign Out"
