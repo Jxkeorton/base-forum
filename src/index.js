@@ -12,6 +12,7 @@ import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
+import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
 import Profile from "./pages/profile/Profile";
 
@@ -54,9 +55,11 @@ root.render(
   <React.StrictMode>
     <CurrentUserProvider>
       <ProfileProvider>
-        <ModalProvider>
-          <RouterProvider router={router} />
-        </ModalProvider>
+        <SavedLocationsProvider>
+          <ModalProvider>
+            <RouterProvider router={router} />
+          </ModalProvider>
+        </SavedLocationsProvider>
       </ProfileProvider>
     </CurrentUserProvider>
   </React.StrictMode>
