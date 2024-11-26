@@ -1,29 +1,86 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Badge, Alert } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Badge, Alert, Button } from 'react-bootstrap';
+import { useCurrentUser } from '../../contexts/CurrentUserContext';
+import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
 
 const DetailsCard = ({ location }) => {
-  // State to manage alert visibility
+  const currentUser = useCurrentUser();
+  const { 
+    savedLocations,
+    saveLocation, 
+    removeSavedLocation, 
+    isLocationSaved,
+    getSavedLocationId,
+    fetchSavedLocations
+  } = useSavedLocationsContext();
+
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertVariant, setAlertVariant] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Function to handle the copy action
+  useEffect(() => {
+    if (currentUser) {
+      console.log('Fetching saved locations...');
+      fetchSavedLocations();
+    }
+  }, [currentUser, fetchSavedLocations]);
+
+  useEffect(() => {
+    console.log('Current saved locations:', savedLocations);
+    console.log('location:', location);
+    console.log('Is saved:', isLocationSaved(location.id));
+  }, [savedLocations, location, isLocationSaved]);
+
+  // Check if this location is saved
+  const saved = isLocationSaved(location.id);
+
+  // Function to show alert
+  const showAlert = (message, variant) => {
+    setAlertMessage(message);
+    setAlertVariant(variant);
+    setAlertVisible(true);
+    setTimeout(() => setAlertVisible(false), 3000);
+  };
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
       .then(() => {
-        setAlertMessage('Coordinates copied to clipboard!');
-        setAlertVariant('success');
-        setAlertVisible(true);
+        showAlert('Coordinates copied to clipboard!', 'success');
       })
       .catch((err) => {
-        setAlertMessage('Failed to copy coordinates');
-        setAlertVariant('danger');
-        setAlertVisible(true);
+        showAlert('Failed to copy coordinates', 'danger');
         console.error(err);
       });
+  };
 
-    // Hide the alert after 3 seconds
-    setTimeout(() => setAlertVisible(false), 3000);
+  // Function to handle save/unsave
+  const handleSaveToggle = async () => {
+    if (isSaving) return;
+    
+    setIsSaving(true);
+    try {
+      if (saved) {
+        const savedLocationId = getSavedLocationId(location.id);
+        const result = await removeSavedLocation(savedLocationId);
+        if (result.success) {
+          showAlert('Location removed from saved locations', 'success');
+        } else {
+          showAlert(result.error || 'Failed to remove location', 'danger');
+        }
+      } else {
+        const result = await saveLocation(location.id);
+        if (result.success) {
+          showAlert('Location saved successfully', 'success');
+        } else {
+          showAlert(result.error || 'Failed to save location', 'danger');
+        }
+      }
+    } catch (error) {
+      showAlert('An error occurred', 'danger');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -38,10 +95,26 @@ const DetailsCard = ({ location }) => {
         </Col>
         <Col md={7}>
           <Card.Body>
-            <Card.Title>{location.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              Opened by: {location.opened_by}
-            </Card.Subtitle>
+            <div className="d-flex justify-content-between align-items-start">
+              <div>
+                <Card.Title>{location.name}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  Opened by: {location.opened_by}
+                </Card.Subtitle>
+              </div>
+              {currentUser && (
+                <Button
+                  variant={saved ? "outline-danger" : "outline-primary"}
+                  onClick={handleSaveToggle}
+                  disabled={isSaving}
+                  className="d-flex align-items-center gap-2"
+                >
+                  <i className={`fa${saved ? 's' : 'r'} fa-heart`}></i>
+                  {isSaving ? (saved ? 'Removing...' : 'Saving...') : (saved ? 'Saved' : 'Save')}
+                </Button>
+              )}
+            </div>
+
             <Card.Text>
               <strong>Date opened:</strong> {new Date(location.date_opened).toLocaleDateString()}
             </Card.Text>
@@ -74,7 +147,6 @@ const DetailsCard = ({ location }) => {
         </Col>
       </Row>
 
-      {/* Bootstrap Alert for notification */}
       {alertVisible && (
         <Alert variant={alertVariant} className="mt-3">
           {alertMessage}

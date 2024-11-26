@@ -40,16 +40,81 @@ export const SavedLocationsProvider = ({ children }) => {
     }
   }, [currentUser]);
 
-  useEffect(() => {
-    fetchSavedLocations();
-  }, [currentUser, fetchSavedLocations]);
+   // Save a new location
+   const saveLocation = useCallback(async (locationId) => {
+    if (!currentUser) {
+      return { success: false, error: 'User not authenticated' };
+    }
+
+    try {
+      setLoading(true);
+      const { data } = await axiosReq.post('/saved-locations/', {
+        location: locationId  // Send the location ID to the backend
+      });
+      setSavedLocations(prev => [...prev, data]);
+      return { success: true, data };
+    } catch (err) {
+      console.error('Error saving location:', err);
+      return {
+        success: false,
+        error: err.response?.data || 'Failed to save location'
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
+  // Remove a saved location
+  const removeSavedLocation = useCallback(async (savedLocationId) => {
+    if (!currentUser) {
+      return { success: false, error: 'User not authenticated' };
+    }
+
+    try {
+      setLoading(true);
+      await axiosReq.delete(`/saved-locations/${savedLocationId}/`);
+      setSavedLocations(prev => 
+        prev.filter(location => location.id !== savedLocationId)
+      );
+      return { success: true };
+    } catch (err) {
+      console.error('Error removing saved location:', err);
+      return {
+        success: false,
+        error: err.response?.data || 'Failed to remove saved location'
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
+  // Check if a location is saved
+  const isLocationSaved = useCallback((locationId) => {
+    if (!Array.isArray(savedLocations)) return false;
+    // Check if the location exists in saved locations
+    return savedLocations.some(saved => parseInt(saved.location) === parseInt(locationId));
+  }, [savedLocations]);
+
+  // Get saved location ID by location ID
+  const getSavedLocationId = useCallback((locationId) => {
+    if (!Array.isArray(savedLocations)) return null;
+    // Find the SavedLocation record ID by matching the location ID
+    const savedLocation = savedLocations.find(
+      saved => parseInt(saved.location) === parseInt(locationId)
+    );
+    return savedLocation?.id;
+  }, [savedLocations]);
 
   const contextValue = {
     savedLocations,
     setSavedLocations,
     error,
     loading,
-    fetchSavedLocations
+    fetchSavedLocations,
+    saveLocation,
+    removeSavedLocation,
+    isLocationSaved,
+    getSavedLocationId
   };
 
   return (
