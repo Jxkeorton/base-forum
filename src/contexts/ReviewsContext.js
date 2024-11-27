@@ -1,25 +1,96 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { axiosReq } from "../api/axiosDefault";
+import { useCurrentUser } from "./CurrentUserContext";
 
 const ReviewsContext = createContext();
 
-export const useReviews = () => {
-    const context = useContext(ReviewsContext);
-    if (context === undefined) {
-      throw new Error('useReviews must be used within a ReviewsProvider');
-    }
-    return context;
+export const useReviewsContext = () => {
+  const context = useContext(ReviewsContext);
+  if (context === undefined) {
+    throw new Error("useReviews must be used within a ReviewsProvider");
+  }
+  return context;
 };
 
 export const ReviewsProvider = ({ children }) => {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState({
+    results: [],
+    count: 0,
+    next: null,
+    previous: null,
+  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const currentUser = useCurrentUser();
+
+  const fetchReviews = useCallback(async (filters = {}) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const queryParams = new URLSearchParams();
+      if (filters.locationName) {
+        queryParams.append("location__name", filters.locationName);
+      }
+      if (filters.username) {
+        queryParams.append("owner__username", filters.username);
+      }
+      if (filters.ordering) {
+        queryParams.append("ordering", filters.ordering);
+      }
+      if (filters.search) {
+        queryParams.append("search", filters.search);
+      }
+
+      const { data } = await axiosReq.get(
+        `/reviews/${queryParams.toString() ? `?${queryParams.toString()}` : ""}`
+      );
+      setReviews(data);
+      console.log(data);
+      return { success: true, data };
+    } catch (err) {
+      setError(err.response?.data || "Failed to fetch reviews");
+      return { success: false, error: err.response?.data };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const deleteReview = useCallback(
+    async (reviewId) => {
+      if (!currentUser) {
+        return { success: false, error: "User not authenticated" };
+      }
+
+      try {
+        setLoading(true);
+        await axiosReq.delete(`/reviews/${reviewId}/`);
+        setReviews((prevState) => ({
+          ...prevState,
+          results: prevState.results.filter((review) => review.id !== reviewId),
+          count: prevState.count - 1,
+        }));
+        return { success: true };
+      } catch (err) {
+        console.error("Error deleting review:", err);
+        return {
+          success: false,
+          error: err.response?.data || "Failed to delete review",
+        };
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentUser]
+  );
 
   const contextValue = {
-    reviews,
+    reviews: reviews.results,
     setReviews,
     error,
     loading,
+    fetchReviews,
+    deleteReview,
   };
 
   return (
