@@ -31,7 +31,7 @@ const LocationDetails = () => {
   return (
     <div>
       <DetailsCard location={location} />
-      <ReviewsList locationId={location} />
+      <ReviewsList location={location} />
     </div>
   );
 };

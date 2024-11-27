@@ -1,10 +1,10 @@
-import React, { useEffect, createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { axiosReq } from '../api/axiosDefault';
 import { useCurrentUser } from './CurrentUserContext';
 
 const SavedLocationsContext = createContext();
 
-export const useSavedLocations = () => {
+export const useSavedLocationsContext = () => {
     const context = useContext(SavedLocationsContext);
     if (context === undefined) {
       throw new Error('useSavedLocations must be used within a SavedLocationsProvider');

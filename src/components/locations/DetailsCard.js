@@ -6,7 +6,6 @@ import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
 const DetailsCard = ({ location }) => {
   const currentUser = useCurrentUser();
   const { 
-    savedLocations,
     saveLocation, 
     removeSavedLocation, 
     isLocationSaved,
@@ -25,12 +24,6 @@ const DetailsCard = ({ location }) => {
       fetchSavedLocations();
     }
   }, [currentUser, fetchSavedLocations]);
-
-  useEffect(() => {
-    console.log('Current saved locations:', savedLocations);
-    console.log('location:', location);
-    console.log('Is saved:', isLocationSaved(location.id));
-  }, [savedLocations, location, isLocationSaved]);
 
   // Check if this location is saved
   const saved = isLocationSaved(location.id);

@@ -14,6 +14,7 @@ import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
+import { ReviewsProvider } from "./contexts/ReviewsContext";
 import Profile from "./pages/profile/Profile";
 
 const router = createBrowserRouter([
@@ -55,11 +56,13 @@ root.render(
   <React.StrictMode>
     <CurrentUserProvider>
       <ProfileProvider>
-        <SavedLocationsProvider>
-          <ModalProvider>
-            <RouterProvider router={router} />
-          </ModalProvider>
-        </SavedLocationsProvider>
+        <ReviewsProvider>
+          <SavedLocationsProvider>
+            <ModalProvider>
+              <RouterProvider router={router} />
+            </ModalProvider>
+          </SavedLocationsProvider>
+        </ReviewsProvider>
       </ProfileProvider>
     </CurrentUserProvider>
   </React.StrictMode>
