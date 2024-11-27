@@ -1,53 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { axiosReq, axiosRes } from "../../api/axiosDefault";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import { useReviewsContext } from "../../contexts/ReviewsContext";
 import Review from "./Review";
 import { Link } from "react-router-dom";
 import { useModal } from "../../contexts/ReviewModalContext";
 import ConfirmationModal from "../ui/ConfirmationModal";
 
 const ReviewsPageList = () => {
-  const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { 
+    reviews, 
+    loading, 
+    error, 
+    fetchReviews, 
+    deleteReview 
+  } = useReviewsContext();
+  
   const [showModal, setShowModal] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
-
-  const currentUser = useCurrentUser();
 
   const { openEditModal } = useModal();
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axiosReq.get("/reviews/?ordering=-created_at"); // Fetch most recent reviews
-        const reviewsWithIsOwner = data.results.map((review) => ({
-          ...review,
-          is_owner: review.owner === currentUser?.username,
-        }));
-        setReviews(reviewsWithIsOwner);
-      } catch (err) {
-        console.error("Error fetching reviews:", err);
-        setError("Failed to fetch reviews");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, [currentUser?.username]);
+    fetchReviews({ ordering: '-created_at' });
+  }, [fetchReviews]);
 
   const handleDeleteReview = async (reviewId) => {
-    try {
-      await axiosRes.delete(`/reviews/${reviewId}/`);
-      setReviews((prevReviews) =>
-        prevReviews.filter((review) => review.id !== reviewId)
-      );
+    const { success } = await deleteReview(reviewId);
+    if (success) {
       setShowModal(false);
-    } catch (err) {
-      console.error("Error deleting review:", err);
-      setError("Failed to delete review");
     }
   };
 
@@ -64,7 +43,7 @@ const ReviewsPageList = () => {
   return (
     <div>
       <h2 style={{ marginBottom: "20px" }}>Most Recent Reviews</h2>
-      {isLoading ? (
+      {loading ? (
         <div>Loading...</div>
       ) : error ? (
         <div>{error}</div>

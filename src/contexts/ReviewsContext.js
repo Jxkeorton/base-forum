@@ -56,6 +56,57 @@ export const ReviewsProvider = ({ children }) => {
     }
   }, []);
 
+  const createReview = useCallback(async (reviewData) => {
+    if (!currentUser) {
+      return { success: false, error: 'User not authenticated' };
+    }
+
+    try {
+      setLoading(true);
+      const { data } = await axiosReq.post('/reviews/', reviewData);
+      setReviews(prevState => ({
+        ...prevState,
+        results: [data, ...prevState.results],
+        count: prevState.count + 1
+      }));
+      return { success: true, data };
+    } catch (err) {
+      console.error('Error creating review:', err);
+      return {
+        success: false,
+        error: err.response?.data || 'Failed to create review'
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
+  const updateReview = useCallback(async (reviewId, reviewData) => {
+    if (!currentUser) {
+      return { success: false, error: 'User not authenticated' };
+    }
+
+    try {
+      setLoading(true);
+      const { data } = await axiosReq.put(`/reviews/${reviewId}/`, reviewData);
+      setReviews(prevState => ({
+        ...prevState,
+        results: prevState.results.map(review => 
+          review.id === reviewId ? data : review
+        )
+      }));
+      return { success: true, data };
+    } catch (err) {
+      console.error('Error updating review:', err);
+      return {
+        success: false,
+        error: err.response?.data || 'Failed to update review'
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
   const deleteReview = useCallback(
     async (reviewId) => {
       if (!currentUser) {
@@ -75,7 +126,7 @@ export const ReviewsProvider = ({ children }) => {
         console.error("Error deleting review:", err);
         return {
           success: false,
-          error: err.response?.data || "Failed to delete review",
+          error: err.response?.data,
         };
       } finally {
         setLoading(false);
@@ -90,6 +141,8 @@ export const ReviewsProvider = ({ children }) => {
     error,
     loading,
     fetchReviews,
+    createReview,
+    updateReview,
     deleteReview,
   };
 
