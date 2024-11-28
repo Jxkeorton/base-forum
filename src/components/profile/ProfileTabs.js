@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Container, Row, Col, Card } from 'react-bootstrap';
+import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
 import SavedLocations from './SavedLocations';
+import UserReviews from './UserReviews';
 
 function ProfileTabs() {
   const [activeTab, setActiveTab] = useState('reviews');
@@ -16,15 +17,7 @@ function ProfileTabs() {
             className="mb-3"
           >
             <Tab eventKey="reviews" title="Your Reviews">
-              <Card className="mb-3">
-                <Card.Body>Your review content goes here.</Card.Body>
-              </Card>
-              <Card className="mb-3">
-                <Card.Body>Another review content.</Card.Body>
-              </Card>
-              <Card className="mb-3">
-                <Card.Body>More reviews...</Card.Body>
-              </Card>
+              <UserReviews />
             </Tab>
             <Tab eventKey="locations" title="Saved Locations">
               <SavedLocations />
