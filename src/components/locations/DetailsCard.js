@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Badge, Alert, Button } from 'react-bootstrap';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
+import LocationMap from '../map/LocationMap';
 
 const DetailsCard = ({ location }) => {
   const currentUser = useCurrentUser();
@@ -36,6 +37,7 @@ const DetailsCard = ({ location }) => {
     setTimeout(() => setAlertVisible(false), 3000);
   };
 
+  // Function to handle the copy action
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
       .then(() => {
@@ -124,7 +126,7 @@ const DetailsCard = ({ location }) => {
 
             <Card.Text>
               <strong>Coordinates:</strong> 
-              <span>{location.latitude}, {location.longitude}</span>
+              <span> {location.latitude}, {location.longitude}</span>
               <i
                 className="fa fa-clipboard"
                 style={{ cursor: 'pointer', marginLeft: '8px' }}
@@ -136,6 +138,13 @@ const DetailsCard = ({ location }) => {
             <Card.Text>
               <strong>Cliff Aspect:</strong> {location.cliff_aspect}
             </Card.Text>
+
+            <LocationMap
+              latitude={location.latitude}
+              longitude={location.longitude}
+              zoom={9}
+              title={location.name}
+            />
           </Card.Body>
         </Col>
       </Row>

@@ -11,11 +11,12 @@ import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
+import { ModalProvider } from "./contexts/ReviewModalContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
-import { ModalProvider } from "./contexts/ReviewModalContext";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
 import Profile from "./pages/profile/Profile";
+import LocationMap from "./components/map/LocationMap";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        path: "/map",
+        element: <LocationMap />,
       },
     ],
   },
