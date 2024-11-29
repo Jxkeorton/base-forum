@@ -2,21 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import Locations from "./pages/locations/Locations";
 import LocationDetails from "./pages/locations/LocationDetails";
 import NotFound from "./pages/notfound/NotFound";
 import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
+import Profile from "./pages/profile/Profile";
+
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
-import Profile from "./pages/profile/Profile";
-import LocationMap from "./components/map/LocationMap";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile/:id",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/sign-in",
@@ -47,11 +54,7 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
-      },
-      {
-        path: "/map",
-        element: <LocationMap />,
-      },
+      }
     ],
   },
 ]);
