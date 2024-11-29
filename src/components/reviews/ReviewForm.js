@@ -8,7 +8,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
   const [subject, setSubject] = useState(review?.subject || "");
   const [content, setContent] = useState(review?.content || "");
   const [hazard, setHazard] = useState(review?.hazard || false);
-  const [location, setLocation] = useState(review ? { value: review.locationId, label: review.location_name } : null);
+  const [location, setLocation] = useState(review ? { value: review.location, label: review.location_name } : null);
   const [locations, setLocations] = useState([]);
   
   const { loading: isLoading, error, createReview, updateReview } = useReviewsContext();
