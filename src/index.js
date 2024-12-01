@@ -20,6 +20,7 @@ import { ModalProvider } from "./contexts/ReviewModalContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
+import { ToastProvider } from "./contexts/ToastContext";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
-      }
+      },
     ],
   },
 ]);
@@ -63,15 +64,17 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <CurrentUserProvider>
-      <ProfileProvider>
-        <ReviewsProvider>
-          <SavedLocationsProvider>
-            <ModalProvider>
-              <RouterProvider router={router} />
-            </ModalProvider>
-          </SavedLocationsProvider>
-        </ReviewsProvider>
-      </ProfileProvider>
+      <ToastProvider>
+        <ProfileProvider>
+          <ReviewsProvider>
+            <SavedLocationsProvider>
+              <ModalProvider>
+                <RouterProvider router={router} />
+              </ModalProvider>
+            </SavedLocationsProvider>
+          </ReviewsProvider>
+        </ProfileProvider>
+      </ToastProvider>
     </CurrentUserProvider>
   </React.StrictMode>
 );
