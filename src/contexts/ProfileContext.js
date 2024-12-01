@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { axiosReq } from '../api/axiosDefault';
 import { useCurrentUser } from './CurrentUserContext';
+import toast from 'react-hot-toast';
 
 const ProfileContext = createContext();
 const SetProfileContext = createContext();
@@ -32,7 +33,9 @@ export const ProfileProvider = ({ children }) => {
       const { data } = await axiosReq.get(`/profile/${userId}/`);
       setProfileData(data);
     } catch (err) {
-      setProfileError(err.response?.data || 'Failed to fetch profile data');
+      const errorMessage = err.response?.data || 'Failed to fetch profile data';
+      setProfileError(errorMessage);
+      toast.error('Unable to load profile data');
     } finally {
       setLoading(false);
     }
@@ -40,19 +43,26 @@ export const ProfileProvider = ({ children }) => {
 
   const updateProfile = useCallback(async (formData, profileId) => {
     if (!profileId) {
+      toast.error('Profile ID is required');
       return { success: false, error: 'Profile ID is required' };
     }
+
+    const loadingToast = toast.loading('Updating profile...');
     
     try {
       setLoading(true);
       const { data } = await axiosReq.put(`/profile/${profileId}/`, formData);
       setProfileData(data);
+      toast.dismiss(loadingToast);
+      toast.success('Profile updated successfully');
       return { success: true, data };
     } catch (err) {
-      console.error('Profile update error:', err);
+      toast.dismiss(loadingToast);
+      const errorMessage = err.response?.data?.detail || err.response?.data || 'Failed to update profile';
+      toast.error(errorMessage);
       return { 
         success: false, 
-        error: err.response?.data || 'Failed to update profile' 
+        error: errorMessage
       };
     } finally {
       setLoading(false);

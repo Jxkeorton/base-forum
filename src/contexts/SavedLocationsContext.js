@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { axiosReq } from '../api/axiosDefault';
 import { useCurrentUser } from './CurrentUserContext';
+import toast from 'react-hot-toast';
 
 const SavedLocationsContext = createContext();
 
@@ -32,9 +33,10 @@ export const SavedLocationsProvider = ({ children }) => {
       setSavedLocations(data.results || []);
       console.log('Fetched saved locations:', data.results);
     } catch (err) {
-      console.error('Error fetching saved locations:', err);
-      setError(err.response?.data || 'Failed to fetch saved locations');
+      const errorMessage = err.response?.data || 'Failed to fetch saved locations';
+      setError(errorMessage);
       setSavedLocations([]);
+      toast.error('Unable to load saved locations');
     } finally {
       setLoading(false);
     }
@@ -43,21 +45,35 @@ export const SavedLocationsProvider = ({ children }) => {
    // Save a new location
    const saveLocation = useCallback(async (locationId) => {
     if (!currentUser) {
+      toast.error('Please sign in to save locations');
       return { success: false, error: 'User not authenticated' };
     }
+
+    const loadingToast = toast.loading('Saving location...');
 
     try {
       setLoading(true);
       const { data } = await axiosReq.post('/saved-locations/', {
-        location: locationId  // Send the location ID to the backend
+        location: locationId
       });
       setSavedLocations(prev => [...prev, data]);
+      toast.dismiss(loadingToast);
+      toast.success('Location saved successfully');
       return { success: true, data };
     } catch (err) {
-      console.error('Error saving location:', err);
+      toast.dismiss(loadingToast);
+      if (err.response?.status === 400) {
+        toast.error('Location is already saved');
+        return {
+          success: false,
+          error: 'Location is already saved'
+        };
+      }
+      const errorMessage = err.response?.data || 'Failed to save location';
+      toast.error(errorMessage);
       return {
         success: false,
-        error: err.response?.data || 'Failed to save location'
+        error: errorMessage
       };
     } finally {
       setLoading(false);
@@ -67,8 +83,11 @@ export const SavedLocationsProvider = ({ children }) => {
   // Remove a saved location
   const removeSavedLocation = useCallback(async (savedLocationId) => {
     if (!currentUser) {
+      toast.error('Please sign in to manage saved locations');
       return { success: false, error: 'User not authenticated' };
     }
+
+    const loadingToast = toast.loading('Removing saved location...');
 
     try {
       setLoading(true);
@@ -76,12 +95,16 @@ export const SavedLocationsProvider = ({ children }) => {
       setSavedLocations(prev => 
         prev.filter(location => location.id !== savedLocationId)
       );
+      toast.dismiss(loadingToast);
+      toast.success('Location removed from saved list');
       return { success: true };
     } catch (err) {
-      console.error('Error removing saved location:', err);
+      toast.dismiss(loadingToast);
+      const errorMessage = err.response?.data || 'Failed to remove saved location';
+      toast.error(errorMessage);
       return {
         success: false,
-        error: err.response?.data || 'Failed to remove saved location'
+        error: errorMessage
       };
     } finally {
       setLoading(false);
