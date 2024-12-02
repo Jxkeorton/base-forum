@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
-import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 const SignIn = () => {
-  const setCurrentUser = useSetCurrentUser();
-
+  const { signIn } = useCurrentUser();
   const [signInData, setSignInData] = useState({
     username: "",
     password: "",
   });
   const { username, password } = signInData;
 
-  const [errors, setErrors] = useState({})
-
-  const navigate = useNavigate()
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setSignInData({ ...signInData, [e.target.name]: e.target.value });
@@ -23,12 +21,16 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
-      const {data} = await axios.post('dj-rest-auth/login/', signInData)
-      setCurrentUser(data.user);
-      navigate("/");
-    } catch (error) {
-      setErrors(error.response?.data)
+      const { success, errors } = await signIn(signInData);
+      if (success) {
+        navigate("/");
+      } else {
+        setErrors(errors);
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,8 +63,12 @@ const SignIn = () => {
         {errors.password?.map((message, idx) => 
           <Alert variant="warning" key={idx}>{message}</Alert>
         )}
-        <Button variant="primary" type="submit">
-          Sign In
+        <Button 
+          variant="primary" 
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Signing in...' : 'Sign In'}
         </Button>
         {errors.non_field_errors?.map((message, idx) =>(
           <Alert key={idx} variant="warning" className="mt-3">
