@@ -1,13 +1,26 @@
 import axios from 'axios';
-import { createContext, useState, useEffect, useContext, useMemo, useCallback } from 'react';
-import { axiosReq, axiosRes } from '../api/axiosDefault';
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import { axiosRes } from '../api/axiosDefault';
 import toast from 'react-hot-toast';
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
 
-export const useCurrentUser = () => useContext(CurrentUserContext);
-export const useSetCurrentUser = () => useContext(SetCurrentUserContext);
+export const useCurrentUser = () => {
+  const context = useContext(CurrentUserContext);
+  if (context === undefined) {
+    throw new Error('useCurrentUser must be used within a CurrentUserProvider');
+  }
+  return context;
+};
+
+export const useSetCurrentUser = () => {
+  const context = useContext(SetCurrentUserContext);
+  if (context === undefined) {
+    throw new Error('useSetCurrentUser must be used within a CurrentUserProvider');
+  }
+  return context;
+};
 
 export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -37,6 +50,7 @@ export const CurrentUserProvider = ({ children }) => {
       };
     }
   }, []);
+
   const signOut = useCallback(async () => {
     try {
       const loadingToast = toast.loading('Signing out...');
@@ -50,13 +64,12 @@ export const CurrentUserProvider = ({ children }) => {
       return { success: false };
     }
   }, []);
+
   const signUp = useCallback(async (signUpData) => {
     try {
       const loadingToast = toast.loading('Creating account...');
-      // First, create the account
       await axios.post('dj-rest-auth/registration/', signUpData);
       
-      // Then immediately sign in with the new credentials
       const signInData = {
         username: signUpData.username,
         password: signUpData.password1
@@ -76,55 +89,40 @@ export const CurrentUserProvider = ({ children }) => {
         errors: err.response?.data
       };
     }
-  },[]);
+  }, []);
+
+  // Setup interceptors
+  useEffect(() => {
+    const responseInterceptor = axiosRes.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401 && 
+            !error.config.url?.includes('dj-rest-auth') && 
+            !error.config._retry) {
+          error.config._retry = true;
+          try {
+            await axios.post('/dj-rest-auth/token/refresh/');
+            return axios(error.config);
+          } catch (refreshError) {
+            if (currentUser) {
+              toast.error('Session expired. Please sign in again');
+              setCurrentUser(null);
+              window.location.replace('/sign-in');
+            }
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axiosRes.interceptors.response.eject(responseInterceptor);
+    };
+  }, [currentUser]);
 
   useEffect(() => {
     handleMount();
   }, []);
-
-  useMemo(() => {
-    axiosReq.interceptors.response.use(
-      async (config) => {
-        try {
-          await axiosRes.post('dj-rest-auth/token/refresh/')
-          return config;
-        } catch (error) {
-          setCurrentUser((prevCurrentUser) => {
-            if (prevCurrentUser) {
-              toast.error('Session expired. Please sign in again');
-              window.location.replace('/sign-in');
-            }
-            return null;
-          });
-          return config;
-        }
-      },
-      (err) => {
-        return Promise.reject(err);
-      }
-    );
-
-    axiosRes.interceptors.response.use(
-      (response) => response,
-      async (err) => {
-        if (err.response?.status === 401) {
-          try {
-            await axios.post('/dj-rest-auth/token/refresh/');
-          } catch (error) {
-            setCurrentUser(prevCurrentUser => {
-              if (prevCurrentUser) {
-                toast.error('Session expired. Please sign in again');
-                window.location.replace('/sign-in');
-              }
-              return null;
-            });
-            return axios(err.config);
-          }
-        }
-        return Promise.reject(err);
-      }
-    );
-  }, []); 
 
   const contextValue = {
     currentUser,
@@ -134,7 +132,7 @@ export const CurrentUserProvider = ({ children }) => {
   };
 
   return (
-    <CurrentUserContext.Provider  value={contextValue}>
+    <CurrentUserContext.Provider value={contextValue}>
       <SetCurrentUserContext.Provider value={setCurrentUser}>
         {children}
       </SetCurrentUserContext.Provider>
