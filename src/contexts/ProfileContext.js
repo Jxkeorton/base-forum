@@ -21,8 +21,9 @@ export const ProfileProvider = ({ children }) => {
   const currentUser = useCurrentUser();
 
   const fetchProfileData = useCallback(async (userId) => {
-    if (!userId) {
+    if (!userId  || isNaN(parseInt(userId))) {
       setProfileData(null);
+      setProfileError('Invalid user ID');
       setLoading(false);
       return;
     }
@@ -35,16 +36,23 @@ export const ProfileProvider = ({ children }) => {
     } catch (err) {
       const errorMessage = err.response?.data || 'Failed to fetch profile data';
       setProfileError(errorMessage);
-      toast.error('Unable to load profile data');
+
+      setProfileData(null);
+      
+      if (err.response?.status === 401) {
+        toast.error('Please sign in to view this profile');
+      } else {
+        toast.error('Unable to load profile data');
+      }
     } finally {
       setLoading(false);
     }
   }, []);
 
   const updateProfile = useCallback(async (formData, profileId) => {
-    if (!profileId) {
-      toast.error('Profile ID is required');
-      return { success: false, error: 'Profile ID is required' };
+    if (!profileId || !currentUser) {
+      toast.error('Authentication required');
+      return { success: false, error: 'Authentication required' };
     }
 
     const loadingToast = toast.loading('Updating profile...');
@@ -67,7 +75,7 @@ export const ProfileProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentUser?.id) {
