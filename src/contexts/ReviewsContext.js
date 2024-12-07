@@ -47,7 +47,6 @@ export const ReviewsProvider = ({ children }) => {
         `/reviews/${queryParams.toString() ? `?${queryParams.toString()}` : ""}`
       );
       setReviews(data);
-      console.log(data);
       return { success: true, data };
     } catch (err) {
       const errorMessage = err.response?.data || "Failed to fetch reviews";

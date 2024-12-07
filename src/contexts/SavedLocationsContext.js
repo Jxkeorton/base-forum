@@ -31,7 +31,6 @@ export const SavedLocationsProvider = ({ children }) => {
       setError(null);
       const { data } = await axiosReq.get('/saved-locations/');
       setSavedLocations(data.results || []);
-      console.log('Fetched saved locations:', data.results);
     } catch (err) {
       const errorMessage = err.response?.data || 'Failed to fetch saved locations';
       setError(errorMessage);

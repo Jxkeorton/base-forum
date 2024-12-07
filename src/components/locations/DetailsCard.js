@@ -20,10 +20,7 @@ const DetailsCard = ({ location }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    console.log(currentUser);
-
     if (currentUser?.pk) {
-      console.log("fetching saved locations...");
       fetchSavedLocations();
     }
   }, [currentUser, fetchSavedLocations]);

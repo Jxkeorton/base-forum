@@ -15,7 +15,6 @@ const LocationDetails = () => {
           axiosReq.get(`/locations/${id}/`),
         ]);
         setLocation(location);
-        console.log(location);
       } catch (err) {
         console.log(err);
       }
