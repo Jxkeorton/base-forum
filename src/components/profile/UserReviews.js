@@ -12,7 +12,7 @@ const UserReviews = () => {
   
   const { reviews, loading, error, fetchReviews, deleteReview } = useReviewsContext();
   const { openEditModal } = useModal();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (currentUser?.username) {

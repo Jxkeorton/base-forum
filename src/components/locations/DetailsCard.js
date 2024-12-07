@@ -5,7 +5,7 @@ import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
 import LocationMap from '../map/LocationMap';
 
 const DetailsCard = ({ location }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { 
     saveLocation, 
     removeSavedLocation, 
@@ -20,8 +20,10 @@ const DetailsCard = ({ location }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    if (currentUser) {
-      console.log('Fetching saved locations...');
+    console.log(currentUser);
+
+    if (currentUser?.pk) {
+      console.log("fetching saved locations...");
       fetchSavedLocations();
     }
   }, [currentUser, fetchSavedLocations]);
@@ -97,7 +99,7 @@ const DetailsCard = ({ location }) => {
                   Opened by: {location.opened_by}
                 </Card.Subtitle>
               </div>
-              {currentUser && (
+              {currentUser?.pk && (
                 <Button
                   variant={saved ? "outline-danger" : "outline-primary"}
                   onClick={handleSaveToggle}

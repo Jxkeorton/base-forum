@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useCurrentUser } from '../contexts/CurrentUserContext';
 
 const ProtectedRoute = ({ children }) => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const location = useLocation();
 
   if (!currentUser) {

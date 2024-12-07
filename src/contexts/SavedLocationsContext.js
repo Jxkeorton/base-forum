@@ -17,7 +17,7 @@ export const SavedLocationsProvider = ({ children }) => {
   const [savedLocations, setSavedLocations] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const fetchSavedLocations = useCallback(async () => {
     if (!currentUser) {

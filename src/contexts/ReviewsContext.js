@@ -22,7 +22,7 @@ export const ReviewsProvider = ({ children }) => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const fetchReviews = useCallback(async (filters = {}) => {
     try {

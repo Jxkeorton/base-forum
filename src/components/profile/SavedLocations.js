@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 
 const SavedLocations = () => {
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { 
     savedLocations, 
     loading, 

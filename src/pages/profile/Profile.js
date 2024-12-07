@@ -8,7 +8,7 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 const Profile = () => {
   const { id } = useParams();
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const { profile, loading, error, fetchProfile } = useProfileContext();
 
   useEffect(() => {

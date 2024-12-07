@@ -18,7 +18,7 @@ export const ProfileProvider = ({ children }) => {
   const [profileData, setProfileData] = useState(null);
   const [profileError, setProfileError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const currentUser = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const fetchProfileData = useCallback(async (userId) => {
     if (!userId  || isNaN(parseInt(userId))) {
