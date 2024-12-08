@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { axiosRes, axiosReq } from '../api/axiosDefault';
 import toast from 'react-hot-toast';
+import { removeTokenTimestamp, setTokenTimestamp, shouldRefreshToken } from '../utils/utils';
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
@@ -41,6 +42,7 @@ export const CurrentUserProvider = ({ children }) => {
       const loadingToast = toast.loading('Signing in...');
       const { data } = await axios.post('dj-rest-auth/login/', signInData);
       setCurrentUser(data.user);
+      setTokenTimestamp(data);
       toast.dismiss(loadingToast);
       toast.success('Signed in successfully');
       return { success: true, data };
@@ -58,6 +60,7 @@ export const CurrentUserProvider = ({ children }) => {
       const loadingToast = toast.loading('Signing out...');
       await axios.post('dj-rest-auth/logout/');
       setCurrentUser(null);
+      removeTokenTimestamp();
       toast.dismiss(loadingToast);
       toast.success('Signed out successfully');
       return { success: true };
@@ -100,16 +103,19 @@ export const CurrentUserProvider = ({ children }) => {
   useMemo(() => {
     axiosReq.interceptors.request.use(
       async (config) => {
-        try {
-          await axios.post("/dj-rest-auth/token/refresh/");
-        } catch (err) {
-          setCurrentUser((prevCurrentUser) => {
-            if (prevCurrentUser) {
-              navigate("/signin");
-            }
-            return null;
-          });
-          return config;
+        if(shouldRefreshToken()){
+          try {
+            await axios.post("/dj-rest-auth/token/refresh/");
+          } catch (err) {
+            setCurrentUser((prevCurrentUser) => {
+              if (prevCurrentUser) {
+                navigate("/signin");
+              }
+              return null;
+            });
+            removeTokenTimestamp();
+            return config;
+          }
         }
         return config;
       },
@@ -131,6 +137,7 @@ export const CurrentUserProvider = ({ children }) => {
               }
               return null;
             });
+            removeTokenTimestamp();
           }
           return axios(err.config);
         }

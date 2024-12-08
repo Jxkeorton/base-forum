@@ -58,6 +58,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Strict mode will not be removed as this will not have any effect in production
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
