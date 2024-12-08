@@ -6,6 +6,21 @@ import LocationMap from "../map/LocationMap";
 import { useModal } from "../../contexts/ReviewModalContext";
 
 const DetailsCard = ({ location }) => {
+  const {
+    id,
+    image,
+    name,
+    opened_by,
+    date_opened,
+    country,
+    rock_drop,
+    total_height,
+    access,
+    latitude,
+    longitude,
+    cliff_aspect
+  } = location;
+
   const { currentUser } = useCurrentUser();
   const {
     saveLocation,
@@ -28,7 +43,7 @@ const DetailsCard = ({ location }) => {
   }, [currentUser, fetchSavedLocations]);
 
   // Check if this location is saved
-  const saved = isLocationSaved(location.id);
+  const saved = isLocationSaved(id);
 
   // Function to show alert
   const showAlert = (message, variant) => {
@@ -58,7 +73,7 @@ const DetailsCard = ({ location }) => {
     setIsSaving(true);
     try {
       if (saved) {
-        const savedLocationId = getSavedLocationId(location.id);
+        const savedLocationId = getSavedLocationId(id);
         const result = await removeSavedLocation(savedLocationId);
         if (result.success) {
           showAlert("Location removed from saved locations", "success");
@@ -66,7 +81,7 @@ const DetailsCard = ({ location }) => {
           showAlert(result.error || "Failed to remove location", "danger");
         }
       } else {
-        const result = await saveLocation(location.id);
+        const result = await saveLocation(id);
         if (result.success) {
           showAlert("Location saved successfully", "success");
         } else {
@@ -85,8 +100,8 @@ const DetailsCard = ({ location }) => {
       <Row>
         <Col md={5}>
           <Card.Img
-            src={location.image}
-            alt={location.name}
+            src={image}
+            alt={name}
             style={{ width: "100%", height: "auto", objectFit: "cover" }}
           />
         </Col>
@@ -94,9 +109,9 @@ const DetailsCard = ({ location }) => {
           <Card.Body>
             <div className="d-flex justify-content-between align-items-start">
               <div>
-                <Card.Title>{location.name}</Card.Title>
+                <Card.Title>{name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
-                  Opened by: {location.opened_by}
+                  Opened by: {opened_by}
                 </Card.Subtitle>
               </div>
                 {currentUser?.pk && (
@@ -131,48 +146,48 @@ const DetailsCard = ({ location }) => {
 
             <Card.Text>
               <strong>Date opened:</strong>{" "}
-              {new Date(location.date_opened).toLocaleDateString()}
+              {new Date(date_opened).toLocaleDateString()}
             </Card.Text>
 
             <Card.Text>
               <Badge bg="primary" className="me-2">
-                {location.country}
+                {country}
               </Badge>
               <Badge bg="info" className="me-2">
-                Rock Drop: {location.rock_drop} ft
+                Rock Drop: {rock_drop} ft
               </Badge>
-              <Badge bg="info">Total Height: {location.total_height} ft</Badge>
+              <Badge bg="info">Total Height: {total_height} ft</Badge>
             </Card.Text>
 
             <Card.Text>
-              <strong>Access:</strong> {location.access}
+              <strong>Access:</strong> {access}
             </Card.Text>
 
             <Card.Text>
               <strong>Coordinates:</strong>
               <span>
                 {" "}
-                {location.latitude}, {location.longitude}
+                {latitude}, {longitude}
               </span>
               <i
                 className="fa fa-clipboard"
                 style={{ cursor: "pointer", marginLeft: "8px" }}
                 onClick={() =>
-                  copyToClipboard(`${location.latitude}, ${location.longitude}`)
+                  copyToClipboard(`${latitude}, ${longitude}`)
                 }
                 title="Copy coordinates"
               />
             </Card.Text>
 
             <Card.Text>
-              <strong>Cliff Aspect:</strong> {location.cliff_aspect}
+              <strong>Cliff Aspect:</strong> {cliff_aspect}
             </Card.Text>
 
             <LocationMap
-              latitude={location.latitude}
-              longitude={location.longitude}
+              latitude={latitude}
+              longitude={longitude}
               zoom={9}
-              title={location.name}
+              title={name}
             />
           </Card.Body>
         </Col>
