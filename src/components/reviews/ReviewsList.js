@@ -4,7 +4,7 @@ import Review from './Review';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useModal } from '../../contexts/ReviewModalContext';
 
-const ReviewsList = ({ location }) => {
+const ReviewsList = ({ filter = {} }) => {
   const { 
     reviews,
     loading, 
@@ -19,10 +19,8 @@ const ReviewsList = ({ location }) => {
   const { openEditModal } = useModal();
 
   useEffect(() => {
-    if (location?.id) {
-      fetchReviews({ locationName: location.name });
-    }
-  }, [location?.id, location?.name, fetchReviews]);
+      fetchReviews(filter);
+  }, [fetchReviews, filter]);
 
   const handleDeleteReview = async (reviewId) => {
     const { success } = await deleteReview(reviewId);

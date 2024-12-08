@@ -30,11 +30,11 @@ export const ReviewsProvider = ({ children }) => {
       setError(null);
 
       const queryParams = new URLSearchParams();
-      if (filters.locationName) {
-        queryParams.append("location__name", filters.locationName);
+      if (filters.location__name) {
+        queryParams.append("location__name", filters.location__name);
       }
-      if (filters.username) {
-        queryParams.append("owner__username", filters.username);
+      if (filters.owner__username) {
+        queryParams.append("owner__username", filters.owner__username);
       }
       if (filters.ordering) {
         queryParams.append("ordering", filters.ordering);

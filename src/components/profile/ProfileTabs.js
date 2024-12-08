@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
+import { useCurrentUser } from '../../contexts/CurrentUserContext';
 import SavedLocations from './SavedLocations';
-import UserReviews from './UserReviews';
+import ReviewsList from '../reviews/ReviewsList';
 
 function ProfileTabs() {
   const [activeTab, setActiveTab] = useState('reviews');
+
+  const { currentUser } = useCurrentUser();
 
   return (
     <Container>
@@ -17,7 +20,7 @@ function ProfileTabs() {
             className="mb-3"
           >
             <Tab eventKey="reviews" title="Your Reviews">
-              <UserReviews />
+              <ReviewsList filter={{ owner__username: currentUser.username, ordering: '-created_at' }} />
             </Tab>
             <Tab eventKey="locations" title="Saved Locations">
               <SavedLocations />

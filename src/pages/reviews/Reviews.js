@@ -1,10 +1,9 @@
 import React from 'react'
-import ReviewsPageList from '../../components/reviews/ReviewsPageList'
-
+import ReviewsList from '../../components/reviews/ReviewsList'
 const Reviews = () => {
   return (
     <div>
-      <ReviewsPageList />
+      <ReviewsList filter={{ ordering: '-created_at' }} />
     </div>
   )
 }

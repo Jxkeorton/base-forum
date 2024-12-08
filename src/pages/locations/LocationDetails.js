@@ -47,7 +47,7 @@ const LocationDetails = () => {
       ) : (
         <div>
           <DetailsCard location={location} />
-          <ReviewsList location={location} />
+          <ReviewsList filter={{ location__name: location.name }} />
         </div>
       )}
     </>
