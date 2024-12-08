@@ -16,6 +16,7 @@ export const ToastProvider = ({ children }) => {
           success: {
             duration: 3000,
             style: {
+              marginTop: 60,
               background: '#059669',
             },
           },
