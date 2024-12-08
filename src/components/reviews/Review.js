@@ -1,11 +1,11 @@
 import React from "react";
+import { Link, useMatch } from "react-router-dom";
 import { MDBCardImage, MDBIcon, MDBTypography } from "mdb-react-ui-kit";
 import styles from "./css/Review.module.css";
 
 // Credit for the components of a Review https://mdbootstrap.com/docs/react/extended/comments/
 
 const Review = ({ review, onEdit, onDelete }) => {
-
   const {
     profile_image,
     owner,
@@ -14,8 +14,12 @@ const Review = ({ review, onEdit, onDelete }) => {
     is_owner,
     id,
     subject,
-    content
+    content,
+    location_name,
+    location,
   } = review;
+
+  const match = useMatch("/locations/:id");
 
   return (
     <>
@@ -66,15 +70,25 @@ const Review = ({ review, onEdit, onDelete }) => {
               </div>
             )}
           </div>
-
-          <MDBTypography
-            tag="h5"
-            className={`text-decoration-underline mb-1 ${styles.subject}`}
-          >
-            {subject}
-          </MDBTypography>
-
-          <p className={`mb-0 ${styles.reviewContent}`}>{content}</p>
+          <div className={styles.reviewMainContent}>
+            <div className={styles.headerContainer}>
+              <MDBTypography tag="h5" className={styles.subject}>
+                {subject}
+              </MDBTypography>
+              {!match ? (
+                <Link
+                  to={`/locations/${location}`}
+                  className={styles.locationLink}
+                >
+                  <i className="fa-solid fa-location-dot"></i>
+                  <p>{location_name}</p>
+                </Link>
+              ) : (
+                <></>
+              )}
+            </div>
+            <p className={styles.contentText}>{content}</p>
+          </div>
         </div>
       </div>
       <hr className="my-0" />

@@ -94,7 +94,7 @@ const NavBar = () => {
               <i className="fa-solid fa-location-dot"></i> Locations
             </NavLink>
             <NavLink className={isActive} to="/reviews">
-              <i className="fa-solid fa-location-dot"></i> Reviews
+            <i className="fa-solid fa-comment"></i> Reviews
             </NavLink>
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
