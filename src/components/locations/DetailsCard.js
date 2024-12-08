@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Badge, Alert, Button } from "react-bootstrap";
+import React from "react";
+import { Card, Row, Col, Badge, Button } from "react-bootstrap";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { useSavedLocationsContext } from "../../contexts/SavedLocationsContext";
+import { useLocationsContext } from "../../contexts/LocationsContext";
 import LocationMap from "../map/LocationMap";
+import toast from 'react-hot-toast';
 import { useModal } from "../../contexts/ReviewModalContext";
 
 const DetailsCard = ({ location }) => {
@@ -23,76 +24,27 @@ const DetailsCard = ({ location }) => {
 
   const { currentUser } = useCurrentUser();
   const {
-    saveLocation,
-    removeSavedLocation,
     isLocationSaved,
-    getSavedLocationId,
-    fetchSavedLocations,
-  } = useSavedLocationsContext();
+    handleSaveToggle,
+    loading
+  } = useLocationsContext();
 
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertVariant, setAlertVariant] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
   const { showModal } = useModal();
-
-  useEffect(() => {
-    if (currentUser?.pk) {
-      fetchSavedLocations();
-    }
-  }, [currentUser, fetchSavedLocations]);
 
   // Check if this location is saved
   const saved = isLocationSaved(id);
-
-  // Function to show alert
-  const showAlert = (message, variant) => {
-    setAlertMessage(message);
-    setAlertVariant(variant);
-    setAlertVisible(true);
-    setTimeout(() => setAlertVisible(false), 3000);
-  };
 
   // Function to handle the copy action
   const copyToClipboard = (text) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        showAlert("Coordinates copied to clipboard!", "success");
+        toast.success('Copied to clipboard');
       })
       .catch((err) => {
-        showAlert("Failed to copy coordinates", "danger");
+        toast.error('Failed to copy coordinates')
         console.error(err);
       });
-  };
-
-  // Function to handle save/unsave
-  const handleSaveToggle = async () => {
-    if (isSaving) return;
-
-    setIsSaving(true);
-    try {
-      if (saved) {
-        const savedLocationId = getSavedLocationId(id);
-        const result = await removeSavedLocation(savedLocationId);
-        if (result.success) {
-          showAlert("Location removed from saved locations", "success");
-        } else {
-          showAlert(result.error || "Failed to remove location", "danger");
-        }
-      } else {
-        const result = await saveLocation(id);
-        if (result.success) {
-          showAlert("Location saved successfully", "success");
-        } else {
-          showAlert(result.error || "Failed to save location", "danger");
-        }
-      }
-    } catch (error) {
-      showAlert("An error occurred", "danger");
-    } finally {
-      setIsSaving(false);
-    }
   };
 
   return (
@@ -119,11 +71,11 @@ const DetailsCard = ({ location }) => {
                     <Button
                       variant={saved ? "outline-danger" : "outline-primary"}
                       onClick={handleSaveToggle}
-                      disabled={isSaving}
+                      disabled={loading}
                       className="d-flex align-items-center justify-content-center gap-2"
                     >
                       <i className={`fa${saved ? "s" : "r"} fa-heart`}></i>
-                      {isSaving
+                      {loading
                         ? saved
                           ? "Removing..."
                           : "Saving..."
@@ -134,7 +86,7 @@ const DetailsCard = ({ location }) => {
                     <Button
                       variant="outline-primary"
                       onClick={showModal}
-                      disabled={isSaving}
+                      disabled={loading}
                       className="d-flex align-items-center justify-content-center gap-2"
                     >
                       <i className="far fa-comment"></i>
@@ -192,12 +144,6 @@ const DetailsCard = ({ location }) => {
           </Card.Body>
         </Col>
       </Row>
-
-      {alertVisible && (
-        <Alert variant={alertVariant} className="mt-3">
-          {alertMessage}
-        </Alert>
-      )}
     </Card>
   );
 };

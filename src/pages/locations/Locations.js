@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { InputGroup, FormControl, Spinner } from "react-bootstrap";
-import { axiosReq } from "../../api/axiosDefault";
 import LocationList from "../../components/locations/LocationList";
-import { useLocationsContext } from "../contexts/LocationsContext";
-
+import { useLocationsContext } from "../../contexts/LocationsContext";
 const Locations = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [locations, setLocations] = useState([]);
-  const { fetchAllLocations } = useLocationsContext();
+  const { locations, loading, fetchAllLocations } = useLocationsContext();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchAllLocations();
+      fetchAllLocations(searchTerm);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
+  }, [searchTerm, fetchAllLocations]);
 
   return (
     <div>
@@ -41,7 +37,7 @@ const Locations = () => {
         />
       </InputGroup>
 
-      {isLoading && (
+      {loading && (
         <div className="text-center">
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -49,7 +45,7 @@ const Locations = () => {
         </div>
       )}
 
-      {locations.length === 0 && !isLoading ? (
+      {locations.length === 0 && !loading ? (
         <p>No locations found matching the search term.</p>
       ) : (
         <LocationList locations={locations} />

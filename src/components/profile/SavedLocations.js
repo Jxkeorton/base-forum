@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
+import { useLocationsContext } from '../../contexts/LocationsContext';
 import { Link } from 'react-router-dom';
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
 
@@ -10,28 +10,15 @@ const SavedLocations = () => {
     savedLocations, 
     loading, 
     error, 
-    removeSavedLocation,
+    removeSavedLocations,
     fetchSavedLocations 
-  } = useSavedLocationsContext();
+  } = useLocationsContext();
 
   useEffect(() => {
     if (currentUser) {
       fetchSavedLocations();
     }
   }, [currentUser, fetchSavedLocations]);
-
-  const handleUnsave = async (savedLocationId) => {
-    try {
-      const result = await removeSavedLocation(savedLocationId);
-      if (result.success) {
-        fetchSavedLocations();
-      } else {
-        console.error('Failed to remove location:', result.error);
-      }
-    } catch (err) {
-      console.error('Error removing location:', err);
-    }
-  };
 
   if (loading) {
     return (
@@ -95,7 +82,7 @@ const SavedLocations = () => {
                     </Link>
                     <Button
                       variant="outline-danger"
-                      onClick={() => handleUnsave(saved.id)}
+                      onClick={() => removeSavedLocations(saved.id)}
                     >
                       Unsave
                     </Button>

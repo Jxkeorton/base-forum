@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { axiosReq } from '../api/axiosDefault';
 import { useCurrentUser } from './CurrentUserContext';
 import toast from 'react-hot-toast';
@@ -19,6 +19,7 @@ export const LocationsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const { currentUser } = useCurrentUser();
 
+  // Fetch all locations, Search term optional
   const fetchAllLocations = useCallback(async (searchTerm = "") => {
     try {
       setLoading(true);
@@ -32,10 +33,14 @@ export const LocationsProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
-  
 
+  useEffect(() => {
+    fetchAllLocations();
+  }, [fetchAllLocations]);
+
+  // Fetch saved locations for currentUser
   const fetchSavedLocations = useCallback(async () => {
-    if (!currentUser) {
+    if (!currentUser.pk) {
       setSavedLocations([]);
       setLoading(false);
       return;
@@ -58,7 +63,7 @@ export const LocationsProvider = ({ children }) => {
 
    // Save a new location
    const saveLocation = useCallback(async (locationId) => {
-    if (!currentUser) {
+    if (!currentUser.pk) {
       toast.error('Please sign in to save locations');
       return { success: false, error: 'User not authenticated' };
     }
@@ -96,7 +101,7 @@ export const LocationsProvider = ({ children }) => {
 
   // Remove a saved location
   const removeSavedLocation = useCallback(async (savedLocationId) => {
-    if (!currentUser) {
+    if (!currentUser.pk) {
       toast.error('Please sign in to manage saved locations');
       return { success: false, error: 'User not authenticated' };
     }
@@ -128,7 +133,7 @@ export const LocationsProvider = ({ children }) => {
   // Check if a location is saved
   const isLocationSaved = useCallback((locationId) => {
     if (!Array.isArray(savedLocations)) return false;
-    // Check if the location exists in saved locations
+    
     return savedLocations.some(saved => parseInt(saved.location) === parseInt(locationId));
   }, [savedLocations]);
 
@@ -141,19 +146,35 @@ export const LocationsProvider = ({ children }) => {
     return savedLocation?.id;
   }, [savedLocations]);
 
+  // Toggles save/Un-save
+  const handleSaveToggle = useCallback(async (locationId) => {
+    const saved = isLocationSaved(locationId);
+    try {
+      if (saved) {
+        const savedLocationId = getSavedLocationId(locationId);
+        await removeSavedLocation(savedLocationId);
+      } else {
+        await saveLocation(locationId);
+      }
+      return { success: true };
+    } catch (error) {
+      toast.error("An error occurred while saving");
+      return { success: false, error };
+    }
+  }, [isLocationSaved, getSavedLocationId, removeSavedLocation, saveLocation]);
+
   const contextValue = {
     locations,
-    setLocations,
     savedLocations,
-    setSavedLocations,
     error,
     loading,
     fetchAllLocations,
+    handleSaveToggle,
     fetchSavedLocations,
     saveLocation,
     removeSavedLocation,
     isLocationSaved,
-    getSavedLocationId
+    getSavedLocationId,
   };
 
   return (
