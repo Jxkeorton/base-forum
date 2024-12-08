@@ -5,35 +5,29 @@ import LocationList from "../../components/locations/LocationList";
 
 const Locations = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredLocations, setFilteredLocations] = useState([]);
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     const fetchLocations = async () => {
       setIsLoading(true);
       try {
-        const { data } = await axiosReq.get("/locations");
+        // Use the search query parameter
+        const { data } = await axiosReq.get(`/locations/?search=${searchTerm}`);
         setLocations(data.results);
-        setFilteredLocations(data.results);
       } catch (err) {
         console.error("Error fetching locations:", err);
-        setIsLoading(false);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
-    fetchLocations();
-  }, []);
+    const timeoutId = setTimeout(() => {
+      fetchLocations();
+    }, 300);
 
-  useEffect(() => {
-    const filtered = locations.filter((location) =>
-      location.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredLocations(filtered);
-  }, [searchTerm, locations])
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
 
   return (
     <div>
@@ -52,7 +46,7 @@ const Locations = () => {
           <i className="fa fa-search"></i>
         </InputGroup.Text>
         <FormControl
-          placeholder="Search by location name..."
+          placeholder="Search locations by name or country..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -66,10 +60,10 @@ const Locations = () => {
         </div>
       )}
 
-      {filteredLocations.length === 0 && !isLoading ? (
+      {locations.length === 0 && !isLoading ? (
         <p>No locations found matching the search term.</p>
       ) : (
-        <LocationList locations={filteredLocations} />
+        <LocationList locations={locations} />
       )}
     </div>
   );
