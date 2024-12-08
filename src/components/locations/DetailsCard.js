@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Badge, Alert, Button } from 'react-bootstrap';
-import { useCurrentUser } from '../../contexts/CurrentUserContext';
-import { useSavedLocationsContext } from '../../contexts/SavedLocationsContext';
-import LocationMap from '../map/LocationMap';
+import React, { useState, useEffect } from "react";
+import { Card, Row, Col, Badge, Alert, Button } from "react-bootstrap";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import { useSavedLocationsContext } from "../../contexts/SavedLocationsContext";
+import LocationMap from "../map/LocationMap";
+import { useModal } from "../../contexts/ReviewModalContext";
 
 const DetailsCard = ({ location }) => {
   const { currentUser } = useCurrentUser();
-  const { 
-    saveLocation, 
-    removeSavedLocation, 
+  const {
+    saveLocation,
+    removeSavedLocation,
     isLocationSaved,
     getSavedLocationId,
-    fetchSavedLocations
+    fetchSavedLocations,
   } = useSavedLocationsContext();
 
   const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertVariant, setAlertVariant] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertVariant, setAlertVariant] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const { showModal } = useModal();
 
   useEffect(() => {
     if (currentUser?.pk) {
@@ -38,12 +40,13 @@ const DetailsCard = ({ location }) => {
 
   // Function to handle the copy action
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text)
+    navigator.clipboard
+      .writeText(text)
       .then(() => {
-        showAlert('Coordinates copied to clipboard!', 'success');
+        showAlert("Coordinates copied to clipboard!", "success");
       })
       .catch((err) => {
-        showAlert('Failed to copy coordinates', 'danger');
+        showAlert("Failed to copy coordinates", "danger");
         console.error(err);
       });
   };
@@ -51,27 +54,27 @@ const DetailsCard = ({ location }) => {
   // Function to handle save/unsave
   const handleSaveToggle = async () => {
     if (isSaving) return;
-    
+
     setIsSaving(true);
     try {
       if (saved) {
         const savedLocationId = getSavedLocationId(location.id);
         const result = await removeSavedLocation(savedLocationId);
         if (result.success) {
-          showAlert('Location removed from saved locations', 'success');
+          showAlert("Location removed from saved locations", "success");
         } else {
-          showAlert(result.error || 'Failed to remove location', 'danger');
+          showAlert(result.error || "Failed to remove location", "danger");
         }
       } else {
         const result = await saveLocation(location.id);
         if (result.success) {
-          showAlert('Location saved successfully', 'success');
+          showAlert("Location saved successfully", "success");
         } else {
-          showAlert(result.error || 'Failed to save location', 'danger');
+          showAlert(result.error || "Failed to save location", "danger");
         }
       }
     } catch (error) {
-      showAlert('An error occurred', 'danger');
+      showAlert("An error occurred", "danger");
     } finally {
       setIsSaving(false);
     }
@@ -84,7 +87,7 @@ const DetailsCard = ({ location }) => {
           <Card.Img
             src={location.image}
             alt={location.name}
-            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            style={{ width: "100%", height: "auto", objectFit: "cover" }}
           />
         </Col>
         <Col md={7}>
@@ -96,26 +99,48 @@ const DetailsCard = ({ location }) => {
                   Opened by: {location.opened_by}
                 </Card.Subtitle>
               </div>
-              {currentUser?.pk && (
-                <Button
-                  variant={saved ? "outline-danger" : "outline-primary"}
-                  onClick={handleSaveToggle}
-                  disabled={isSaving}
-                  className="d-flex align-items-center gap-2"
-                >
-                  <i className={`fa${saved ? 's' : 'r'} fa-heart`}></i>
-                  {isSaving ? (saved ? 'Removing...' : 'Saving...') : (saved ? 'Saved' : 'Save')}
-                </Button>
+                {currentUser?.pk && (
+                  <div className="d-flex flex-column gap-2">
+                    <Button
+                      variant={saved ? "outline-danger" : "outline-primary"}
+                      onClick={handleSaveToggle}
+                      disabled={isSaving}
+                      className="d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i className={`fa${saved ? "s" : "r"} fa-heart`}></i>
+                      {isSaving
+                        ? saved
+                          ? "Removing..."
+                          : "Saving..."
+                        : saved
+                        ? "Saved"
+                        : "Save"}
+                    </Button>
+                    <Button
+                      variant="outline-primary"
+                      onClick={showModal}
+                      disabled={isSaving}
+                      className="d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i className="far fa-comment"></i>
+                      Add Review
+                    </Button>
+                  </div>
               )}
             </div>
 
             <Card.Text>
-              <strong>Date opened:</strong> {new Date(location.date_opened).toLocaleDateString()}
+              <strong>Date opened:</strong>{" "}
+              {new Date(location.date_opened).toLocaleDateString()}
             </Card.Text>
 
             <Card.Text>
-              <Badge bg="primary" className="me-2">{location.country}</Badge>
-              <Badge bg="info" className="me-2">Rock Drop: {location.rock_drop} ft</Badge>
+              <Badge bg="primary" className="me-2">
+                {location.country}
+              </Badge>
+              <Badge bg="info" className="me-2">
+                Rock Drop: {location.rock_drop} ft
+              </Badge>
               <Badge bg="info">Total Height: {location.total_height} ft</Badge>
             </Card.Text>
 
@@ -124,12 +149,17 @@ const DetailsCard = ({ location }) => {
             </Card.Text>
 
             <Card.Text>
-              <strong>Coordinates:</strong> 
-              <span> {location.latitude}, {location.longitude}</span>
+              <strong>Coordinates:</strong>
+              <span>
+                {" "}
+                {location.latitude}, {location.longitude}
+              </span>
               <i
                 className="fa fa-clipboard"
-                style={{ cursor: 'pointer', marginLeft: '8px' }}
-                onClick={() => copyToClipboard(`${location.latitude}, ${location.longitude}`)}
+                style={{ cursor: "pointer", marginLeft: "8px" }}
+                onClick={() =>
+                  copyToClipboard(`${location.latitude}, ${location.longitude}`)
+                }
                 title="Copy coordinates"
               />
             </Card.Text>

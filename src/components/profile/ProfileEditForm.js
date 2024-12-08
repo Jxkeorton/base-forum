@@ -35,6 +35,16 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
     }));
   };
 
+  const handleImageChange = (event) => {
+    if (event.target.files.length) {
+      URL.revokeObjectURL(image);
+      setProfileData({
+        ...profileData,
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -104,14 +114,7 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
             type="file"
             ref={imageFile}
             accept="image/*"
-            onChange={(e) => {
-              if (e.target.files.length) {
-                setProfileData({
-                  ...profileData,
-                  image: URL.createObjectURL(e.target.files[0]),
-                });
-              }
-            }}
+            onChange={handleImageChange}
             className="d-none"
           />
         </Form.Group>
