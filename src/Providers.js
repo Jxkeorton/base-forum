@@ -1,7 +1,7 @@
 import { CurrentUserProvider } from "./contexts/CurrentUserContext";
 import { ModalProvider } from "./contexts/ReviewModalContext";
 import { ProfileProvider } from "./contexts/ProfileContext";
-import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
+import { LocationsProvider } from "./contexts/LocationsContext";
 import { ReviewsProvider } from "./contexts/ReviewsContext";
 import { ToastProvider } from "./contexts/ToastContext";
 
@@ -11,11 +11,11 @@ const Providers = ({ children }) => {
         <ToastProvider>
           <ProfileProvider>
             <ReviewsProvider>
-              <SavedLocationsProvider>
+              <LocationsProvider>
                 <ModalProvider>
                   {children}
                 </ModalProvider>
-              </SavedLocationsProvider>
+              </LocationsProvider>
             </ReviewsProvider>
           </ProfileProvider>
         </ToastProvider>

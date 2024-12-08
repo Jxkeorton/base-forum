@@ -2,28 +2,17 @@ import React, { useState, useEffect } from "react";
 import { InputGroup, FormControl, Spinner } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefault";
 import LocationList from "../../components/locations/LocationList";
+import { useLocationsContext } from "../contexts/LocationsContext";
 
 const Locations = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [locations, setLocations] = useState([]);
+  const { fetchAllLocations } = useLocationsContext();
 
   useEffect(() => {
-    const fetchLocations = async () => {
-      setIsLoading(true);
-      try {
-        // Use the search query parameter
-        const { data } = await axiosReq.get(`/locations/?search=${searchTerm}`);
-        setLocations(data.results);
-      } catch (err) {
-        console.error("Error fetching locations:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     const timeoutId = setTimeout(() => {
-      fetchLocations();
+      fetchAllLocations();
     }, 300);
 
     return () => clearTimeout(timeoutId);

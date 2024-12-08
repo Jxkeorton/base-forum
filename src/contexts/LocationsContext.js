@@ -3,21 +3,36 @@ import { axiosReq } from '../api/axiosDefault';
 import { useCurrentUser } from './CurrentUserContext';
 import toast from 'react-hot-toast';
 
-const SavedLocationsContext = createContext();
+const LocationsContext = createContext();
 
-export const useSavedLocationsContext = () => {
-    const context = useContext(SavedLocationsContext);
+export const useLocationsContext = () => {
+    const context = useContext(LocationsContext);
     if (context === undefined) {
-      throw new Error('useSavedLocations must be used within a SavedLocationsProvider');
+      throw new Error('useLocations must be used within a LocationsProvider');
     }
     return context;
 };
-
-export const SavedLocationsProvider = ({ children }) => {
+export const LocationsProvider = ({ children }) => {
+  const [locations, setLocations] = useState([]);
   const [savedLocations, setSavedLocations] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const { currentUser } = useCurrentUser();
+
+  const fetchAllLocations = useCallback(async (searchTerm = "") => {
+    try {
+      setLoading(true);
+      const { data } = await axiosReq.get(`/locations/?search=${searchTerm}`);
+      setLocations(data.results);
+      return data.results;
+    } catch (err) {
+      toast.error('Unable to load locations');
+      setError('Failed to fetch locations');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
 
   const fetchSavedLocations = useCallback(async () => {
     if (!currentUser) {
@@ -120,7 +135,6 @@ export const SavedLocationsProvider = ({ children }) => {
   // Get saved location ID by location ID
   const getSavedLocationId = useCallback((locationId) => {
     if (!Array.isArray(savedLocations)) return null;
-    // Find the SavedLocation record ID by matching the location ID
     const savedLocation = savedLocations.find(
       saved => parseInt(saved.location) === parseInt(locationId)
     );
@@ -128,10 +142,13 @@ export const SavedLocationsProvider = ({ children }) => {
   }, [savedLocations]);
 
   const contextValue = {
+    locations,
+    setLocations,
     savedLocations,
     setSavedLocations,
     error,
     loading,
+    fetchAllLocations,
     fetchSavedLocations,
     saveLocation,
     removeSavedLocation,
@@ -140,8 +157,8 @@ export const SavedLocationsProvider = ({ children }) => {
   };
 
   return (
-    <SavedLocationsContext.Provider value={contextValue}>
+    <LocationsContext.Provider value={contextValue}>
       {children}
-    </SavedLocationsContext.Provider>
+    </LocationsContext.Provider>
   );
 };
