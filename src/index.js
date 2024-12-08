@@ -15,17 +15,15 @@ import SignUp from "./pages/signup/SignUp";
 import Reviews from "./pages/reviews/Reviews";
 import Profile from "./pages/profile/Profile";
 
-import { CurrentUserProvider } from "./contexts/CurrentUserContext";
-import { ModalProvider } from "./contexts/ReviewModalContext";
-import { ProfileProvider } from "./contexts/ProfileContext";
-import { SavedLocationsProvider } from "./contexts/SavedLocationsContext";
-import { ReviewsProvider } from "./contexts/ReviewsContext";
-import { ToastProvider } from "./contexts/ToastContext";
+import Providers from "./Providers";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    element: (
+      <Providers>
+        <App />
+      </Providers>
+    ),
     errorElement: <NotFound />,
     children: [
       {
@@ -63,19 +61,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <CurrentUserProvider>
-      <ToastProvider>
-        <ProfileProvider>
-          <ReviewsProvider>
-            <SavedLocationsProvider>
-              <ModalProvider>
-                <RouterProvider router={router} />
-              </ModalProvider>
-            </SavedLocationsProvider>
-          </ReviewsProvider>
-        </ProfileProvider>
-      </ToastProvider>
-    </CurrentUserProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
