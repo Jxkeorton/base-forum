@@ -10,6 +10,7 @@ export const ToastProvider = ({ children }) => {
         toastOptions={{
           duration: 3000,
           style: {
+            marginTop: 60,
             background: '#363636',
             color: '#fff',
           },
@@ -23,6 +24,7 @@ export const ToastProvider = ({ children }) => {
           error: {
             duration: 4000,
             style: {
+              marginTop: 60,
               background: '#DC2626',
             },
           },
