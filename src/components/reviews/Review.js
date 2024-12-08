@@ -5,12 +5,24 @@ import styles from "./css/Review.module.css";
 // Credit for the components of a Review https://mdbootstrap.com/docs/react/extended/comments/
 
 const Review = ({ review, onEdit, onDelete }) => {
+
+  const {
+    profile_image,
+    owner,
+    created_at,
+    hazard,
+    is_owner,
+    id,
+    subject,
+    content
+  } = review;
+
   return (
     <>
       <div className={`d-flex flex-start ${styles.reviewContainer}`}>
         <MDBCardImage
           className={`rounded-circle shadow-1-strong me-3 ${styles.avatar}`}
-          src={review.profile_image}
+          src={profile_image}
           alt="avatar"
           width="60"
           height="60"
@@ -20,22 +32,22 @@ const Review = ({ review, onEdit, onDelete }) => {
             tag="h6"
             className={`fw-bold mb-1 ${styles.ownerName}`}
           >
-            {review.owner}
+            {owner}
           </MDBTypography>
 
           <div
             className={`d-flex align-items-center mb-3 ${styles.reviewMeta}`}
           >
             <p className="mb-0">
-              {review.created_at}
-              {review.hazard && (
+              {created_at}
+              {hazard && (
                 <span className={`badge bg-danger ${styles.hazardBadge}`}>
                   Hazard
                 </span>
               )}
             </p>
 
-            {review.is_owner && (
+            {is_owner && (
               <div className={`ms-2 ${styles.iconButtons}`}>
                 <a
                   href="#!"
@@ -47,7 +59,7 @@ const Review = ({ review, onEdit, onDelete }) => {
                 <a
                   href="#!"
                   className={`ms-2 ${styles.linkMuted}`}
-                  onClick={() => onDelete(review.id)}
+                  onClick={() => onDelete(id)}
                 >
                   <MDBIcon fas icon="trash" />
                 </a>
@@ -59,10 +71,10 @@ const Review = ({ review, onEdit, onDelete }) => {
             tag="h5"
             className={`text-decoration-underline mb-1 ${styles.subject}`}
           >
-            {review.subject}
+            {subject}
           </MDBTypography>
 
-          <p className={`mb-0 ${styles.reviewContent}`}>{review.content}</p>
+          <p className={`mb-0 ${styles.reviewContent}`}>{content}</p>
         </div>
       </div>
       <hr className="my-0" />
