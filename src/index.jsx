@@ -5,17 +5,17 @@ import App from "./App";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-import Locations from "./pages/locations/Locations";
-import LocationDetails from "./pages/locations/LocationDetails";
-import NotFound from "./pages/notfound/NotFound";
-import SignIn from "./pages/signin/SignIn";
-import SignUp from "./pages/signup/SignUp";
-import Reviews from "./pages/reviews/Reviews";
-import Profile from "./pages/profile/Profile";
+import Locations from "./pages/locations/Locations.jsx";
+import LocationDetails from "./pages/locations/LocationDetails.jsx";
+import NotFound from "./pages/notfound/NotFound.jsx";
+import SignIn from "./pages/signin/SignIn.jsx";
+import SignUp from "./pages/signup/SignUp.jsx";
+import Reviews from "./pages/reviews/Reviews.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 
-import Providers from "./Providers";
+import Providers from "./Providers.jsx";
 
 const router = createBrowserRouter([
   {

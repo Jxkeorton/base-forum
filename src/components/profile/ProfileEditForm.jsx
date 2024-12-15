@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Form, Button, Alert, Image, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useProfileContext } from "../../contexts/ProfileContext";
+import { useProfileContext } from "../../contexts/ProfileContext.jsx";
 
 const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
   const { id } = useParams();

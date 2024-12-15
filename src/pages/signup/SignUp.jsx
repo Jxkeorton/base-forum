@@ -1,29 +1,30 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import { Container, Form, Button, Alert } from "react-bootstrap";
+import { useCurrentUser } from "../../contexts/CurrentUserContext.jsx";
 
-const SignIn = () => {
-  const { signIn } = useCurrentUser();
-  const [signInData, setSignInData] = useState({
+const SignUp = () => {
+  const { signUp } = useCurrentUser();
+  const [signUpData, setSignUpData] = useState({
     username: "",
-    password: "",
+    password1: "",
+    password2: "",
   });
-  const { username, password } = signInData;
+  const { username, password1, password2 } = signUpData;
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setSignInData({ ...signInData, [e.target.name]: e.target.value });
+    setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const { success, errors } = await signIn(signInData);
+      const { success, errors } = await signUp(signUpData);
       if (success) {
         navigate("/");
       } else {
@@ -37,10 +38,10 @@ const SignIn = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="username">
+        <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
-            name="username"
+            name = "username"
             onChange={handleChange}
             value={username}
             type="text"
@@ -50,17 +51,30 @@ const SignIn = () => {
         {errors.username?.map((message, idx) => 
           <Alert variant="warning" key={idx}>{message}</Alert>
         )}
-        <Form.Group className="mb-3" controlId="password">
+        <Form.Group className="mb-3" controlId="password1">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            name="password"
+            name = "password1"
             onChange={handleChange}
-            value={password}
+            value={password1}
             type="password"
             placeholder="Password"
           />
         </Form.Group>
-        {errors.password?.map((message, idx) => 
+        {errors.password1?.map((message, idx) => 
+          <Alert variant="warning" key={idx}>{message}</Alert>
+        )}
+        <Form.Group className="mb-3" controlId="password2">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            name = "password2"
+            onChange={handleChange}
+            value={password2}
+            type="password"
+            placeholder="Password (again)"
+          />
+        </Form.Group>
+        {errors.password2?.map((message, idx) => 
           <Alert variant="warning" key={idx}>{message}</Alert>
         )}
         <Button 
@@ -68,7 +82,7 @@ const SignIn = () => {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Signing in...' : 'Sign In'}
+          {isSubmitting ? 'Creating Account...' : 'Sign Up'}
         </Button>
         {errors.non_field_errors?.map((message, idx) =>(
           <Alert key={idx} variant="warning" className="mt-3">
@@ -80,4 +94,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

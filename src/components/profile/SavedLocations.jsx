@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { useLocationsContext } from '../../contexts/LocationsContext';
+import { useLocationsContext } from '../../contexts/LocationsContext.jsx';
 import { Link } from 'react-router-dom';
-import { useCurrentUser } from '../../contexts/CurrentUserContext';
+import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx';
 
 const SavedLocations = () => {
   const { currentUser } = useCurrentUser();

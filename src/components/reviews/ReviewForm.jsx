@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Spinner, Alert } from "react-bootstrap";
 import Select from "react-select";
 import { axiosReq } from "../../api/axiosDefault";
-import { useReviewsContext } from "../../contexts/ReviewsContext";
+import { useReviewsContext } from "../../contexts/ReviewsContext.jsx";
 
 const ReviewForm = ({ locationId, review = null, onSuccess }) => {
   const [subject, setSubject] = useState(review?.subject || "");

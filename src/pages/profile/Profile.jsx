@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Spinner, Container, Alert } from "react-bootstrap";
-import ProfileCard from "../../components/profile/ProfileCard";
-import ProfileTabs from "../../components/profile/ProfileTabs";
-import { useProfileContext } from "../../contexts/ProfileContext";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import ProfileCard from "../../components/profile/ProfileCard.jsx";
+import ProfileTabs from "../../components/profile/ProfileTabs.jsx";
+import { useProfileContext } from "../../contexts/ProfileContext.jsx";
+import { useCurrentUser } from "../../contexts/CurrentUserContext.jsx";
 
 const Profile = () => {
   const { id } = useParams();

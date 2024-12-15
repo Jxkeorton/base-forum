@@ -1,5 +1,5 @@
 import React from 'react';
-import CountryGroup from './CountryGroup';
+import CountryGroup from './CountryGroup.jsx';
 
 const LocationList = ({ locations }) => {
     

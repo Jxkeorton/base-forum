@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { axiosReq } from '../api/axiosDefault';
-import { useCurrentUser } from './CurrentUserContext';
+import { useCurrentUser } from './CurrentUserContext.jsx';
 import toast from 'react-hot-toast';
 
 const ProfileContext = createContext();

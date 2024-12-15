@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { axiosReq } from '../api/axiosDefault';
-import { useCurrentUser } from './CurrentUserContext';
+import { useCurrentUser } from './CurrentUserContext.jsx';
 import toast from 'react-hot-toast';
 
 const LocationsContext = createContext();

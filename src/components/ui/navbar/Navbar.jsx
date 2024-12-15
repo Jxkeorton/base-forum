@@ -5,14 +5,14 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../../assets/logo.png";
-import Avatar from "../avatar/Avatar";
+import Avatar from "../avatar/Avatar.jsx";
 import {
   useCurrentUser,
-} from "../../../contexts/CurrentUserContext";
-import { useProfileContext } from "../../../contexts/ProfileContext";
-import { useModal } from "../../../contexts/ReviewModalContext";
+} from "../../../contexts/CurrentUserContext.jsx";
+import { useProfileContext } from "../../../contexts/ProfileContext.jsx";
+import { useModal } from "../../../contexts/ReviewModalContext.jsx";
 import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
-import ConfirmationModal from "../ConfirmationModal";
+import ConfirmationModal from "../ConfirmationModal.jsx";
 
 const isActive = (navData) =>
   navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;

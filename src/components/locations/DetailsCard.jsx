@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Row, Col, Badge, Button } from "react-bootstrap";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useLocationsContext } from "../../contexts/LocationsContext";
-import LocationMap from "../map/LocationMap";
+import LocationMap from "../map/LocationMap.jsx";
 import toast from 'react-hot-toast';
 import { useModal } from "../../contexts/ReviewModalContext";
 

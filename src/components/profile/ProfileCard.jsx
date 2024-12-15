@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Card, Container, Row, Col, Modal } from "react-bootstrap";
-import Avatar from "../ui/avatar/Avatar";
+import Avatar from "../ui/avatar/Avatar.jsx";
 import { MDBIcon } from "mdb-react-ui-kit";
-import ProfileEditForm from "./ProfileEditForm";
+import ProfileEditForm from "./ProfileEditForm.jsx";
 import styles from "./css/ProfileCard.module.css";
 
 const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {

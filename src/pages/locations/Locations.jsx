@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { InputGroup, FormControl, Spinner } from "react-bootstrap";
-import LocationList from "../../components/locations/LocationList";
-import { useLocationsContext } from "../../contexts/LocationsContext";
+import LocationList from "../../components/locations/LocationList.jsx";
+import { useLocationsContext } from "../../contexts/LocationsContext.jsx";
 const Locations = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { locations, loading, fetchAllLocations } = useLocationsContext();

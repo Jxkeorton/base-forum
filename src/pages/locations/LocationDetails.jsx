@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import DetailsCard from "../../components/locations/DetailsCard";
+import DetailsCard from "../../components/locations/DetailsCard.jsx";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefault";
-import ReviewsList from "../../components/reviews/ReviewsList";
+import ReviewsList from "../../components/reviews/ReviewsList.jsx";
 import { Spinner, Container } from "react-bootstrap";
 
 const LocationDetails = () => {

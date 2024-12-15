@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useReviewsContext } from '../../contexts/ReviewsContext';
-import Review from './Review';
-import ConfirmationModal from '../ui/ConfirmationModal';
+import { useReviewsContext } from '../../contexts/ReviewsContext.jsx';
+import Review from './Review.jsx';
+import ConfirmationModal from '../ui/ConfirmationModal.jsx';
 import { useModal } from '../../contexts/ReviewModalContext';
 
 const ReviewsList = ({ filter = {} }) => {

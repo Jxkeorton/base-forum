@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
-import LocationCard from './LocationCard';
+import LocationCard from './LocationCard.jsx';
 
 const CountryGroup = ({ country, locations }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);

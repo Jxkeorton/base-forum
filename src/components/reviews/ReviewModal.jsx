@@ -1,7 +1,7 @@
 // ReviewModal.js
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import ReviewForm from "./ReviewForm";
+import ReviewForm from "./ReviewForm.jsx";
 import { useModal } from "../../contexts/ReviewModalContext";
 import { useParams } from "react-router-dom";
 import { useMatch } from 'react-router-dom';
