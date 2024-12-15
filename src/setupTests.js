@@ -4,10 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { setupServer } from "msw/node"
-import { handlers } from "./mocks/handlers"
-
-const server = setupServer(...handlers);
+import { server } from './mocks/server';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
