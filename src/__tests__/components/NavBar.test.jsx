@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, test, expect } from 'vitest'
-import { loggedOutHandler } from '../../mocks/handlers.js';
-import { server } from '../../mocks/server.js';
+import { loggedOutHandler } from '../mocks/handlers.js';
+import { server } from '../mocks/server.js';
 import Providers from '../../Providers.jsx';
-import NavBar from '../ui/navbar/Navbar.jsx';
+import NavBar from '../../components/ui/navbar/Navbar.jsx';
 
 const renderWithProviders = (ui, { route = '/' } = {}) => {
   return render(
