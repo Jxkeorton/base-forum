@@ -1,20 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { describe, test, expect } from 'vitest'
 import { loggedOutHandler } from '../mocks/handlers.js';
 import { server } from '../mocks/server.js';
-import Providers from '../../Providers.jsx';
 import NavBar from '../../components/ui/navbar/Navbar.jsx';
-
-const renderWithProviders = (ui, { route = '/' } = {}) => {
-  return render(
-    <MemoryRouter initialEntries={[route]}>
-      <Providers>
-        {ui}
-      </Providers>
-    </MemoryRouter>
-  )
-}
+import { renderWithProviders } from '../utils/testUtils.jsx';
+import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx'
 
 describe('NavBar', () => {
   test('renders logged in state when user is authenticated', async () => {
@@ -36,6 +26,27 @@ describe('NavBar', () => {
     server.use(loggedOutHandler)
 
     renderWithProviders(<NavBar />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Sign In')).toBeInTheDocument()
+    })
+
+    expect(screen.getByText('Sign Up')).toBeInTheDocument()
+    expect(screen.getByText('Locations')).toBeInTheDocument()
+    expect(screen.getByText('Reviews')).toBeInTheDocument()
+    expect(screen.queryByText('Add Review')).not.toBeInTheDocument()
+    expect(screen.queryByText('Sign Out')).not.toBeInTheDocument()
+    expect(screen.queryByText('Profile')).not.toBeInTheDocument()
+  })
+
+  test('renders sign in and sign up links again on logout', async () => {
+    renderWithProviders(<NavBar />)
+
+    const signOutLink = await screen.findByRole('link', {name: 'Sign Out'});
+    fireEvent.click(signOutLink);
+
+    const confirmationButton = screen.getByTestId('confirmation-button');
+    fireEvent.click(confirmationButton);
 
     await waitFor(() => {
       expect(screen.getByText('Sign In')).toBeInTheDocument()

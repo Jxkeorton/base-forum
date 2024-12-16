@@ -22,7 +22,7 @@ const ConfirmationModal = ({
         <Button variant="secondary" onClick={handleClose}>
           {cancelLabel}
         </Button>
-        <Button variant="danger" onClick={handleAction}>
+        <Button variant="danger" onClick={handleAction} data-testid='confirmation-button'>
           {actionLabel}
         </Button>
       </Modal.Footer>

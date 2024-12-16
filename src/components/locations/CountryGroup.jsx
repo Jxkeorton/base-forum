@@ -19,7 +19,6 @@ const CountryGroup = ({ country, locations }) => {
           </i>
         </h2>
 
-        {/* Conditionally render the location cards based on the collapse state */}
         {!isCollapsed && (
           <Row className="location-cards">
             {locations.map((location, index) => (
