@@ -120,8 +120,9 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Name</Form.Label>
+          <Form.Label htmlFor="name">Name</Form.Label>
           <Form.Control
+            id="name"
             type="text"
             name="name"
             value={name}
@@ -135,8 +136,9 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Base Jumps</Form.Label>
+          <Form.Label htmlFor="no_of_base_jumps">Base Jumps</Form.Label>
           <Form.Control
+            id="no_of_base_jumps"
             type="number"
             name="no_of_base_jumps"
             value={no_of_base_jumps}
