@@ -75,9 +75,10 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
 
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="subject">
-          <Form.Label>Subject</Form.Label>
+          <Form.Label htmlFor="subject">Subject</Form.Label>
           <Form.Control
             type="text"
+            id="subject"
             placeholder="Enter subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
@@ -87,9 +88,10 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
         </Form.Group>
 
         <Form.Group controlId="content">
-          <Form.Label>Content</Form.Label>
+          <Form.Label htmlFor="content">Content</Form.Label>
           <Form.Control
             as="textarea"
+            id="content"
             rows={4}
             placeholder="Write your review"
             value={content}
@@ -99,8 +101,9 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
         </Form.Group>
 
         <Form.Group controlId="location">
-          <Form.Label>Location</Form.Label>
+          <Form.Label htmlFor="location">Location</Form.Label>
           <Select
+            aria-label="location"
             options={locations}
             value={location}
             onChange={setLocation}

@@ -1,24 +1,11 @@
-import { screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { screen, fireEvent } from "@testing-library/react";
+import { describe, test, expect, vi } from "vitest";
 import { renderWithProviders } from "../utils/testUtils";
 import ProfileEditForm from "../../components/profile/ProfileEditForm";
 
-// Mock useParams
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
-  return {
-    ...actual,
-    useParams: () => ({ id: "1" })
-  };
-});
-
-// Mock URL.createObjectURL and URL.revokeObjectURL
-global.URL.createObjectURL = vi.fn(() => "mock-url");
-global.URL.revokeObjectURL = vi.fn();
-
 describe("ProfileEditForm component", () => {
   const mockCloseModal = vi.fn();
-  
+
   test("renders form elements correctly", () => {
     renderWithProviders(
       <ProfileEditForm 
