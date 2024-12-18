@@ -172,6 +172,7 @@ export const ReviewsProvider = ({ children }) => {
     setReviews,
     error,
     loading,
+    setLoading,
     fetchReviews,
     createReview,
     updateReview,

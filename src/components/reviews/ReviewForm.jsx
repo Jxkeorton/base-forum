@@ -11,12 +11,13 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
   const [location, setLocation] = useState(review ? { value: review.location, label: review.location_name } : null);
   const [locations, setLocations] = useState([]);
   
-  const { loading: isLoading, error, createReview, updateReview } = useReviewsContext();
+  const { loading: isLoading, error, createReview, updateReview, setLoading } = useReviewsContext();
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
+        setLoading(true);
         const { data } = await axiosReq.get("/locations");
         const locationOptions = data.results.map((loc) => ({
           value: loc.id,
@@ -30,10 +31,12 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
         }
       } catch (err) {
         console.error("Unable to fetch locations.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchLocations();
-  }, [locationId, review]);
+  }, [locationId, review, setLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +77,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
       </Alert>}
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="subject">
+        <Form.Group>
           <Form.Label htmlFor="subject">Subject</Form.Label>
           <Form.Control
             type="text"
@@ -87,7 +90,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
           />
         </Form.Group>
 
-        <Form.Group controlId="content">
+        <Form.Group>
           <Form.Label htmlFor="content">Content</Form.Label>
           <Form.Control
             as="textarea"
@@ -100,7 +103,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
           />
         </Form.Group>
 
-        <Form.Group controlId="location">
+        <Form.Group>
           <Form.Label htmlFor="location">Location</Form.Label>
           <Select
             aria-label="location"
