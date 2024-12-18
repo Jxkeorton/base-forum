@@ -127,6 +127,7 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
             name="name"
             value={name}
             onChange={handleChange}
+            maxLength={50}
           />
           {errors?.name?.map((message, idx) => (
             <Alert variant="warning" key={idx}>
@@ -143,6 +144,7 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
             name="no_of_base_jumps"
             value={no_of_base_jumps}
             onChange={handleChange}
+            min={0}
           />
           {errors?.no_of_base_jumps?.map((message, idx) => (
             <Alert variant="warning" key={idx}>

@@ -81,6 +81,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
             placeholder="Enter subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
+            maxLength={100}
             required
           />
         </Form.Group>
