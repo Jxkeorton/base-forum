@@ -70,7 +70,7 @@ const DetailsCard = ({ location }) => {
                   <div className="d-flex flex-column gap-2">
                     <Button
                       variant={saved ? "outline-danger" : "outline-primary"}
-                      onClick={handleSaveToggle}
+                      onClick={() => handleSaveToggle(id)}
                       disabled={loading}
                       className="d-flex align-items-center justify-content-center gap-2"
                     >

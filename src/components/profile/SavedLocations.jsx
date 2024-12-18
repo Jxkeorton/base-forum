@@ -10,7 +10,7 @@ const SavedLocations = () => {
     savedLocations, 
     loading, 
     error, 
-    removeSavedLocations,
+    removeSavedLocation,
     fetchSavedLocations 
   } = useLocationsContext();
 
@@ -82,7 +82,7 @@ const SavedLocations = () => {
                     </Link>
                     <Button
                       variant="outline-danger"
-                      onClick={() => removeSavedLocations(saved.id)}
+                      onClick={() => removeSavedLocation(saved.id)}
                     >
                       Unsave
                     </Button>
