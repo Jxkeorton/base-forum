@@ -5,3 +5,41 @@
 .Active i {
     color: #2142b2; 
 }
+
+.brandLink {
+    text-decoration: none;
+  }
+
+.brandContainer {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .brandWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+  }
+  
+  .title {
+    font-family: 'Rubik Mono One', sans-serif;
+    color: #cfced3;
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .title {
+      font-size: 0.8rem;
+    }
+    
+    .brandWrapper {
+      gap: 4px;
+    }
+  }

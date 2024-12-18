@@ -77,7 +77,65 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 ## The-Skeleton-Plane
 ### Wireframes
 <details>
-<summary>Wireframe pages</summary>
+<summary>Locations</summary>
+
+![Locations wireframe](docs/wireframes/list-locations-wireframe.png)
+
+</details>
+
+<details>
+<summary>Location details</summary>
+
+![Location details wireframe](docs/wireframes/location-details-wireframe.png)
+
+</details>
+
+<details>
+<summary>Reviews</summary>
+
+![Reviews wireframe](docs/wireframes/list-reviews-wireframe.png)
+
+</details>
+
+<details>
+<summary>Add Review Form</summary>
+
+![Add review form](docs/wireframes//add-review-wireframe.png)
+
+</details>
+
+<details>
+<summary>Profile</summary>
+
+![Profile wireframe](docs/wireframes/profile-wireframe.png)
+
+</details>
+
+<details>
+<summary>Update Profile Form</summary>
+
+![update profile form](docs/wireframes/update-profile-wireframe.png)
+
+</details>
+
+<details>
+<summary>Sign In</summary>
+
+![Sign in wireframe](docs/wireframes/sign-on-wireframe.png)
+
+</details>
+
+<details>
+<summary>Sign Up</summary>
+
+![Sign up wireframe](docs/wireframes/sign-up-wireframe.png)
+
+</details>
+
+<details>
+<summary>Sign Out</summary>
+
+![Sign Out wireframe](docs/wireframes/sign-out-wireframe.png)
 
 </details>
 
@@ -102,8 +160,6 @@ protected api calls / superusers
 <summary>Pages/menus/forms</summary>
 
 </details>
-
-<details>
 
 ### Features Left To Implement
 In future releases the following features will be implemented...

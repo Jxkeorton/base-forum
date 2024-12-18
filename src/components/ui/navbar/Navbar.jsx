@@ -6,9 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../../../assets/logo.png";
 import Avatar from "../avatar/Avatar.jsx";
-import {
-  useCurrentUser,
-} from "../../../contexts/CurrentUserContext.jsx";
+import { useCurrentUser } from "../../../contexts/CurrentUserContext.jsx";
 import { useProfileContext } from "../../../contexts/ProfileContext.jsx";
 import { useModal } from "../../../contexts/ReviewModalContext.jsx";
 import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
@@ -77,11 +75,14 @@ const NavBar = () => {
       fixed="top"
     >
       <Container>
-        <NavLink to="/">
-          <Navbar.Brand>
-            <img src={logo} alt="logo" height="45" />
-          </Navbar.Brand>
-        </NavLink>
+        <div className={styles.brandContainer}>
+          <NavLink to="/" className={styles.brandLink}>
+            <Navbar.Brand className={styles.brandWrapper}>
+              <img src={logo} alt="logo" height="45" />
+              <p className={styles.title}>Base Forum</p>
+            </Navbar.Brand>
+          </NavLink>
+        </div>
         {currentUser && addReviewIcon}
         <Navbar.Toggle
           ref={ref}
@@ -94,7 +95,7 @@ const NavBar = () => {
               <i className="fa-solid fa-location-dot"></i> Locations
             </NavLink>
             <NavLink className={isActive} to="/reviews">
-            <i className="fa-solid fa-comment"></i> Reviews
+              <i className="fa-solid fa-comment"></i> Reviews
             </NavLink>
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>

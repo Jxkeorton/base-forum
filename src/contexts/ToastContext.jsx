@@ -10,21 +10,21 @@ export const ToastProvider = ({ children }) => {
         toastOptions={{
           duration: 3000,
           style: {
-            marginTop: 60,
+            marginTop: 90,
             background: '#363636',
             color: '#fff',
           },
           success: {
             duration: 3000,
             style: {
-              marginTop: 60,
+              marginTop: 90,
               background: '#059669',
             },
           },
           error: {
             duration: 4000,
             style: {
-              marginTop: 60,
+              marginTop: 90,
               background: '#DC2626',
             },
           },
