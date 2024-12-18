@@ -4,7 +4,6 @@ import { loggedOutHandler } from '../mocks/handlers.js';
 import { server } from '../mocks/server.js';
 import NavBar from '../../components/ui/navbar/Navbar.jsx';
 import { renderWithProviders } from '../utils/testUtils.jsx';
-import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx'
 
 describe('NavBar', () => {
   test('renders logged in state when user is authenticated', async () => {
