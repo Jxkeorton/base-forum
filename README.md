@@ -185,6 +185,14 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 
 </details>
 
+### Database diagram
+
+<details>
+<summary>Database diagram</summary>
+
+![Database Diagram](./docs/images/database-diagram.png)
+</details>
+
 ### API Table
 
 <details>
@@ -313,7 +321,7 @@ UI Security Features
 ### Features Left To Implement
 In future releases the following features will be implemented...
 - Email required on sign up
-- Make the app more social allowing users to follow and view others profiles#
+- Make the app more social allowing users to follow and view others profiles
 - Include a weather API for live weather updates at the locations
 
 ## The-Surface-Plane
@@ -400,7 +408,7 @@ The BASE jumping images for the locations are pulled from my friend [@mountainma
 - Babel Preset ENV & React 7.26
 - ESLint with React config
 
-### API
+### API Technologies
 
 **Django & Django REST Framework**
 Django==3.2.4
