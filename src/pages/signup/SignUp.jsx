@@ -46,6 +46,7 @@ const SignUp = () => {
             value={username}
             type="text"
             placeholder="Username"
+            maxLength={50}
           />
         </Form.Group>
         {errors.username?.map((message, idx) => 
