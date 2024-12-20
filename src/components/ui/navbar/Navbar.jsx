@@ -18,7 +18,6 @@ const isActive = (navData) =>
 const NavBar = () => {
   const { currentUser, signOut } = useCurrentUser();
   const { profile } = useProfileContext();
-
   const navigate = useNavigate();
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
   const { showModal } = useModal();
@@ -34,7 +33,7 @@ const NavBar = () => {
 
   const avatarSrc = profile?.image || currentUser?.profile_image;
 
-  const addReviewIcon = (
+  const addReviewLink = (
     <NavLink className={styles.NavLink} to="#" onClick={showModal}>
       <i className="fas fa-plus-square"></i> Add Review
     </NavLink>
@@ -83,14 +82,23 @@ const NavBar = () => {
             </Navbar.Brand>
           </NavLink>
         </div>
-        {currentUser && addReviewIcon}
+        
+        {/* Add Review link visible on larger screens */}
+        <div className="d-none d-md-block">
+          {currentUser && addReviewLink}
+        </div>
+
         <Navbar.Toggle
           ref={ref}
           onClick={() => setExpanded(!expanded)}
           aria-controls="basic-navbar-nav"
         />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav className="ml-auto">
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="text-center w-100 justify-content-md-end">
+            {/* Add Review link visible only on mobile */}
+            <div className="d-md-none w-100">
+              {currentUser && addReviewLink}
+            </div>
             <NavLink className={isActive} to="/">
               <i className="fa-solid fa-location-dot"></i> Locations
             </NavLink>

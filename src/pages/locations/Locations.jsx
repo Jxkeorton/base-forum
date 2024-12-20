@@ -17,6 +17,7 @@ const Locations = () => {
   return (
     <div>
       <h1 className="text-center">Locations</h1>
+      <p className="text-center">Browse Base Jumping locations from all over the world</p>
 
       <InputGroup
         className="mb-3"
