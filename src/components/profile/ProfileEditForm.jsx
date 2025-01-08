@@ -20,7 +20,7 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
   useEffect(() => {
     if (profile) {
       setProfileData({
-        name: profile.owner || "",
+        name: profile.name || "",
         no_of_base_jumps: profile.no_of_base_jumps || "",
         image: profile.image || "",
       });

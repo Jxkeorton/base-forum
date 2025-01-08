@@ -48,7 +48,7 @@ const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
         </Modal.Header>
         <Modal.Body>
           <ProfileEditForm
-            username={username}
+            username={name}
             noOfBaseJumps={noOfBaseJumps}
             closeModal={handleModalClose}
             src={src}
