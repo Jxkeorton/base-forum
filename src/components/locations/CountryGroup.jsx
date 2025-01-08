@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import LocationCard from './LocationCard.jsx';
 
-const CountryGroup = ({ country, locations }) => {
+const CountryGroup = ({ country, locations, isFirst }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
+
+    useEffect(() => {
+      setIsCollapsed(!isFirst);
+    }, [isFirst]);
 
     const toggleCollapse = () => {
       setIsCollapsed(!isCollapsed);

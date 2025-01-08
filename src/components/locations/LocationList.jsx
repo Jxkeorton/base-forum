@@ -12,13 +12,16 @@ const LocationList = ({ locations }) => {
     return acc;
   }, {});
 
+  const countries = Object.keys(groupedByCountry);
+
   return (
     <div className="location-list">
-      {Object.keys(groupedByCountry).map((country) => (
+      {countries.map((country, index) => (
         <CountryGroup
           key={country}
           country={country}
           locations={groupedByCountry[country]}
+          isFirst={index === 0}
         />
       ))}
     </div>
