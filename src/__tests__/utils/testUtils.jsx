@@ -1,14 +1,15 @@
-import { render } from '@testing-library/react'
-import { MemoryRouter, useNavigate } from 'react-router-dom'
-import { vi } from 'vitest'
-import Providers from '../../Providers'
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
-const navigate = vi.fn()
+import Providers from '../../Providers';
+
+const navigate = vi.fn();
 
 vi.mock('react-router-dom', async () => ({
   ...await vi.importActual('react-router-dom'),
-  useNavigate: () => navigate
-}))
+  useNavigate: () => navigate,
+}));
 
 export const renderWithProviders = (ui, { route = '/' } = {}) => {
   return {
@@ -17,8 +18,8 @@ export const renderWithProviders = (ui, { route = '/' } = {}) => {
         <Providers>
           {ui}
         </Providers>
-      </MemoryRouter>
+      </MemoryRouter>,
     ),
-    navigate
-  }
-}
+    navigate,
+  };
+};

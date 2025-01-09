@@ -5,10 +5,10 @@ const ConfirmationModal = ({
   show,
   handleClose,
   handleAction,
-  title = "Confirm Action",
-  bodyText = "Are you sure you want to proceed with this action? This cannot be undone.",
-  actionLabel = "Proceed",
-  cancelLabel = "Cancel",
+  title = 'Confirm Action',
+  bodyText = 'Are you sure you want to proceed with this action? This cannot be undone.',
+  actionLabel = 'Proceed',
+  cancelLabel = 'Cancel',
 }) => {
   return (
     <Modal show={show} onHide={handleClose} centered>

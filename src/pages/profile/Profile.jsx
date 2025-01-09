@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Spinner, Container, Alert } from "react-bootstrap";
-import ProfileCard from "../../components/profile/ProfileCard.jsx";
-import ProfileTabs from "../../components/profile/ProfileTabs.jsx";
-import { useProfileContext } from "../../contexts/ProfileContext.jsx";
-import { useCurrentUser } from "../../contexts/CurrentUserContext.jsx";
+import React, { useEffect } from 'react';
+import { Spinner, Container, Alert } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+
+import ProfileCard from '../../components/profile/ProfileCard.jsx';
+import ProfileTabs from '../../components/profile/ProfileTabs.jsx';
+import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx';
+import { useProfileContext } from '../../contexts/ProfileContext.jsx';
 
 const Profile = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100px" }}>
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100px' }}>
         <Spinner animation="border" role="status" variant="primary">
           <span className="visually-hidden">Loading...</span>
         </Spinner>

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { InputGroup, FormControl, Spinner } from "react-bootstrap";
-import LocationList from "../../components/locations/LocationList.jsx";
-import { useLocationsContext } from "../../contexts/LocationsContext.jsx";
+import React, { useEffect, useState } from 'react';
+import { InputGroup, FormControl, Spinner } from 'react-bootstrap';
+
+import LocationList from '../../components/locations/LocationList.jsx';
+import { useLocationsContext } from '../../contexts/LocationsContext.jsx';
 const Locations = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const { locations, loading, fetchAllLocations } = useLocationsContext();
 
   useEffect(() => {
@@ -22,10 +23,10 @@ const Locations = () => {
       <InputGroup
         className="mb-3"
         style={{
-          maxWidth: "500px",
-          marginBottom: "20px",
-          marginLeft: "auto",
-          marginRight: "auto",
+          maxWidth: '500px',
+          marginBottom: '20px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
       >
         <InputGroup.Text>

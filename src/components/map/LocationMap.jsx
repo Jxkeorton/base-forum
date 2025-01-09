@@ -1,6 +1,6 @@
+import L from 'leaflet';
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const LocationMap = ({ latitude = 51.505, longitude = -0.09, zoom = 13, title }) => {

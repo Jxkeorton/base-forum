@@ -1,21 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import reportWebVitals from "./reportWebVitals";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-
-import Locations from "./pages/locations/Locations.jsx";
-import LocationDetails from "./pages/locations/LocationDetails.jsx";
-import NotFound from "./pages/notfound/NotFound.jsx";
-import SignIn from "./pages/signin/SignIn.jsx";
-import SignUp from "./pages/signup/SignUp.jsx";
-import Reviews from "./pages/reviews/Reviews.jsx";
-import Profile from "./pages/profile/Profile.jsx";
-
-import Providers from "./Providers.jsx";
+import App from './App';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import LocationDetails from './pages/locations/LocationDetails.jsx';
+import Locations from './pages/locations/Locations.jsx';
+import NotFound from './pages/notfound/NotFound.jsx';
+import Profile from './pages/profile/Profile.jsx';
+import Reviews from './pages/reviews/Reviews.jsx';
+import SignIn from './pages/signin/SignIn.jsx';
+import SignUp from './pages/signup/SignUp.jsx';
+import Providers from './Providers.jsx';
+import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
   {
@@ -27,19 +25,19 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Locations />,
       },
       {
-        path: "/locations/:id",
+        path: '/locations/:id',
         element: <LocationDetails />,
       },
       {
-        path: "/reviews",
+        path: '/reviews',
         element: <Reviews />,
       },
       {
-        path: "/profile/:id",
+        path: '/profile/:id',
         element: (
           <ProtectedRoute>
             <Profile />
@@ -47,11 +45,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/sign-in",
+        path: '/sign-in',
         element: <SignIn />,
       },
       {
-        path: "/sign-up",
+        path: '/sign-up',
         element: <SignUp />,
       },
     ],
@@ -59,11 +57,11 @@ const router = createBrowserRouter([
 ]);
 
 // Strict mode will not be removed as this will not have any effect in production
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

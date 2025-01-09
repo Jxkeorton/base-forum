@@ -1,9 +1,9 @@
-import { CurrentUserProvider } from "./contexts/CurrentUserContext.jsx";
-import { ModalProvider } from "./contexts/ReviewModalContext.jsx";
-import { ProfileProvider } from "./contexts/ProfileContext.jsx";
-import { LocationsProvider } from "./contexts/LocationsContext.jsx";
-import { ReviewsProvider } from "./contexts/ReviewsContext.jsx";
-import { ToastProvider } from "./contexts/ToastContext.jsx";
+import { CurrentUserProvider } from './contexts/CurrentUserContext.jsx';
+import { LocationsProvider } from './contexts/LocationsContext.jsx';
+import { ProfileProvider } from './contexts/ProfileContext.jsx';
+import { ModalProvider } from './contexts/ReviewModalContext.jsx';
+import { ReviewsProvider } from './contexts/ReviewsContext.jsx';
+import { ToastProvider } from './contexts/ToastContext.jsx';
 
 const Providers = ({ children }) => {
     return (

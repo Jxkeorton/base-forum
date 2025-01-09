@@ -1,7 +1,8 @@
-import React from "react";
-import { Link, useMatch } from "react-router-dom";
-import { MDBCardImage, MDBIcon, MDBTypography } from "mdb-react-ui-kit";
-import styles from "./css/Review.module.css";
+import { MDBCardImage, MDBIcon, MDBTypography } from 'mdb-react-ui-kit';
+import React from 'react';
+import { Link, useMatch } from 'react-router-dom';
+
+import styles from './css/Review.module.css';
 
 // Credit for the components of a Review https://mdbootstrap.com/docs/react/extended/comments/
 
@@ -19,7 +20,7 @@ const Review = ({ review, onEdit, onDelete }) => {
     location,
   } = review;
 
-  const match = useMatch("/locations/:id");
+  const match = useMatch('/locations/:id');
 
   return (
     <>

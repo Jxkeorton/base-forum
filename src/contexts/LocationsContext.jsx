@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { axiosReq } from '../api/axiosDefault';
-import { useCurrentUser } from './CurrentUserContext.jsx';
 import toast from 'react-hot-toast';
+
+import { axiosReq } from '../api/axiosDefault';
+
+import { useCurrentUser } from './CurrentUserContext.jsx';
 
 const LocationsContext = createContext();
 
@@ -20,7 +22,7 @@ export const LocationsProvider = ({ children }) => {
   const { currentUser } = useCurrentUser();
 
   // Fetch all locations, Search term optional
-  const fetchAllLocations = useCallback(async (searchTerm = "") => {
+  const fetchAllLocations = useCallback(async (searchTerm = '') => {
     try {
       setLoading(true);
       const { data } = await axiosReq.get(`/locations/?search=${searchTerm}`);
@@ -73,7 +75,7 @@ export const LocationsProvider = ({ children }) => {
     try {
       setLoading(true);
       const { data } = await axiosReq.post('/saved-locations/', {
-        location: locationId
+        location: locationId,
       });
       setSavedLocations(prev => [...prev, data]);
       toast.dismiss(loadingToast);
@@ -85,14 +87,14 @@ export const LocationsProvider = ({ children }) => {
         toast.error('Location is already saved');
         return {
           success: false,
-          error: 'Location is already saved'
+          error: 'Location is already saved',
         };
       }
       const errorMessage = err.response?.data || 'Failed to save location';
       toast.error(errorMessage);
       return {
         success: false,
-        error: errorMessage
+        error: errorMessage,
       };
     } finally {
       setLoading(false);
@@ -112,7 +114,7 @@ export const LocationsProvider = ({ children }) => {
       setLoading(true);
       await axiosReq.delete(`/saved-locations/${savedLocationId}/`);
       setSavedLocations(prev => 
-        prev.filter(location => location.id !== savedLocationId)
+        prev.filter(location => location.id !== savedLocationId),
       );
       toast.dismiss(loadingToast);
       toast.success('Location removed from saved list');
@@ -123,7 +125,7 @@ export const LocationsProvider = ({ children }) => {
       toast.error(errorMessage);
       return {
         success: false,
-        error: errorMessage
+        error: errorMessage,
       };
     } finally {
       setLoading(false);
@@ -141,7 +143,7 @@ export const LocationsProvider = ({ children }) => {
   const getSavedLocationId = useCallback((locationId) => {
     if (!Array.isArray(savedLocations)) return null;
     const savedLocation = savedLocations.find(
-      saved => parseInt(saved.location) === parseInt(locationId)
+      saved => parseInt(saved.location) === parseInt(locationId),
     );
     return savedLocation?.id;
   }, [savedLocations]);
@@ -158,7 +160,7 @@ export const LocationsProvider = ({ children }) => {
       }
       return { success: true };
     } catch (error) {
-      toast.error("An error occurred while saving");
+      toast.error('An error occurred while saving');
       return { success: false, error };
     }
   }, [isLocationSaved, getSavedLocationId, removeSavedLocation, saveLocation]);

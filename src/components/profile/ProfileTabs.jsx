@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
+
 import { useCurrentUser } from '../../contexts/CurrentUserContext';
-import SavedLocations from './SavedLocations.jsx';
 import ReviewsList from '../reviews/ReviewsList.jsx';
+
+import SavedLocations from './SavedLocations.jsx';
 
 function ProfileTabs() {
   const [activeTab, setActiveTab] = useState('reviews');

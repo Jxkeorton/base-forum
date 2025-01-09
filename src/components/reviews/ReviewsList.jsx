@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useReviewsContext } from '../../contexts/ReviewsContext.jsx';
-import Review from './Review.jsx';
-import ConfirmationModal from '../ui/ConfirmationModal.jsx';
+
 import { useModal } from '../../contexts/ReviewModalContext';
+import { useReviewsContext } from '../../contexts/ReviewsContext.jsx';
+import ConfirmationModal from '../ui/ConfirmationModal.jsx';
+
+import Review from './Review.jsx';
 
 const ReviewsList = ({ filter = {} }) => {
   const { 
@@ -10,7 +12,7 @@ const ReviewsList = ({ filter = {} }) => {
     loading, 
     error, 
     fetchReviews, 
-    deleteReview 
+    deleteReview, 
   } = useReviewsContext();
   
   const [showModal, setShowModal] = useState(false);

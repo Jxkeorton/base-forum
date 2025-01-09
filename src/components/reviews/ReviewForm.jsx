@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Spinner, Alert } from "react-bootstrap";
-import Select from "react-select";
-import { axiosReq } from "../../api/axiosDefault";
-import { useReviewsContext } from "../../contexts/ReviewsContext.jsx";
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Spinner, Alert } from 'react-bootstrap';
+import Select from 'react-select';
+
+import { axiosReq } from '../../api/axiosDefault';
+import { useReviewsContext } from '../../contexts/ReviewsContext.jsx';
 
 const ReviewForm = ({ locationId, review = null, onSuccess }) => {
-  const [subject, setSubject] = useState(review?.subject || "");
-  const [content, setContent] = useState(review?.content || "");
+  const [subject, setSubject] = useState(review?.subject || '');
+  const [content, setContent] = useState(review?.content || '');
   const [hazard, setHazard] = useState(review?.hazard || false);
   const [location, setLocation] = useState(review ? { value: review.location, label: review.location_name } : null);
   const [locations, setLocations] = useState([]);
@@ -19,7 +20,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
     const fetchLocations = async () => {
       try {
         setLoading(true);
-        const { data } = await axiosReq.get("/locations");
+        const { data } = await axiosReq.get('/locations');
         const locationOptions = data.results.map((loc) => ({
           value: loc.id,
           label: loc.name,
@@ -31,7 +32,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
           setLocation(selectedLocation || null);
         }
       } catch (err) {
-        console.error("Unable to fetch locations.");
+        console.error('Unable to fetch locations.');
       } finally {
         setLoading(false);
       }
@@ -41,9 +42,9 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
 
   const validateForm = () => {
     const errors = {};
-    if (!subject.trim()) errors.subject = "Subject is required";
-    if (!content.trim()) errors.content = "Content is required";
-    if (!location?.value) errors.location = "Location is required";
+    if (!subject.trim()) errors.subject = 'Subject is required';
+    if (!content.trim()) errors.content = 'Content is required';
+    if (!location?.value) errors.location = 'Location is required';
     
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -70,8 +71,8 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
 
       if (submitSuccess) {
         setSuccess(true);
-        setSubject("");
-        setContent("");
+        setSubject('');
+        setContent('');
         setHazard(false);
         setLocation(null);
         setValidationErrors({});
@@ -80,13 +81,13 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
         }
       }
     } catch (err) {
-      console.error("Error submitting review:", err);
+      console.error('Error submitting review:', err);
     }
   };
 
   return (
     <div>
-      <h2>{review ? "Edit Review" : "Submit a Review"}</h2>
+      <h2>{review ? 'Edit Review' : 'Submit a Review'}</h2>
       {error && typeof error === 'string' && (
         <Alert variant="danger">{error}</Alert>
       )}
@@ -102,7 +103,7 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
           </Alert>
       ))}
       {success && <Alert variant="success">
-        {review ? "Review updated successfully!" : "Review submitted successfully!"}
+        {review ? 'Review updated successfully!' : 'Review submitted successfully!'}
       </Alert>}
 
       <Form onSubmit={handleSubmit}>
@@ -181,10 +182,10 @@ const ReviewForm = ({ locationId, review = null, onSuccess }) => {
                 aria-hidden="true"
                 className="me-2"
               />
-              {review ? "Updating..." : "Submitting..."}
+              {review ? 'Updating...' : 'Submitting...'}
             </>
           ) : (
-            review ? "Update Review" : "Submit Review"
+            review ? 'Update Review' : 'Submit Review'
           )}
         </Button>
       </Form>

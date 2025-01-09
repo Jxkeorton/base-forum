@@ -1,14 +1,16 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
-import { axiosReq } from "../api/axiosDefault";
-import { useCurrentUser } from "./CurrentUserContext.jsx";
-import toast from "react-hot-toast";
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import toast from 'react-hot-toast';
+
+import { axiosReq } from '../api/axiosDefault';
+
+import { useCurrentUser } from './CurrentUserContext.jsx';
 
 const ReviewsContext = createContext();
 
 export const useReviewsContext = () => {
   const context = useContext(ReviewsContext);
   if (context === undefined) {
-    throw new Error("useReviews must be used within a ReviewsProvider");
+    throw new Error('useReviews must be used within a ReviewsProvider');
   }
   return context;
 };
@@ -31,27 +33,27 @@ export const ReviewsProvider = ({ children }) => {
 
       const queryParams = new URLSearchParams();
       if (filters.location__name) {
-        queryParams.append("location__name", filters.location__name);
+        queryParams.append('location__name', filters.location__name);
       }
       if (filters.owner__username) {
-        queryParams.append("owner__username", filters.owner__username);
+        queryParams.append('owner__username', filters.owner__username);
       }
       if (filters.ordering) {
-        queryParams.append("ordering", filters.ordering);
+        queryParams.append('ordering', filters.ordering);
       }
       if (filters.search) {
-        queryParams.append("search", filters.search);
+        queryParams.append('search', filters.search);
       }
 
       const { data } = await axiosReq.get(
-        `/reviews/${queryParams.toString() ? `?${queryParams.toString()}` : ""}`
+        `/reviews/${queryParams.toString() ? `?${queryParams.toString()}` : ''}`,
       );
       setReviews(data);
       return { success: true, data };
     } catch (err) {
-      const errorMessage = err.response?.data || "Failed to fetch reviews";
+      const errorMessage = err.response?.data || 'Failed to fetch reviews';
       setError(errorMessage);
-      toast.error("Unable to load reviews");
+      toast.error('Unable to load reviews');
       return { success: false, error: errorMessage };
     } finally {
       setLoading(false);
@@ -61,26 +63,26 @@ export const ReviewsProvider = ({ children }) => {
   const createReview = useCallback(
     async (reviewData) => {
       if (!currentUser) {
-        toast.error("Please sign in to post a review");
-        return { success: false, error: "User not authenticated" };
+        toast.error('Please sign in to post a review');
+        return { success: false, error: 'User not authenticated' };
       }
 
-      const loadingToast = toast.loading("Posting review...");
+      const loadingToast = toast.loading('Posting review...');
 
       try {
         setLoading(true);
-        const { data } = await axiosReq.post("/reviews/", reviewData);
+        const { data } = await axiosReq.post('/reviews/', reviewData);
         setReviews((prevState) => ({
           ...prevState,
           results: [data, ...prevState.results],
           count: prevState.count + 1,
         }));
         toast.dismiss(loadingToast);
-        toast.success("Review posted successfully");
+        toast.success('Review posted successfully');
         return { success: true, data };
       } catch (err) {
         toast.dismiss(loadingToast);
-        const errorMessage = err.response?.data || "Failed to post review";
+        const errorMessage = err.response?.data || 'Failed to post review';
         toast.error(errorMessage);
         return {
           success: false,
@@ -90,36 +92,36 @@ export const ReviewsProvider = ({ children }) => {
         setLoading(false);
       }
     },
-    [currentUser]
+    [currentUser],
   );
 
   const updateReview = useCallback(
     async (reviewId, reviewData) => {
       if (!currentUser) {
-        toast.error("Please sign in to update this review");
-        return { success: false, error: "User not authenticated" };
+        toast.error('Please sign in to update this review');
+        return { success: false, error: 'User not authenticated' };
       }
 
-      const loadingToast = toast.loading("Updating review...");
+      const loadingToast = toast.loading('Updating review...');
 
       try {
         setLoading(true);
         const { data } = await axiosReq.put(
           `/reviews/${reviewId}/`,
-          reviewData
+          reviewData,
         );
         setReviews((prevState) => ({
           ...prevState,
           results: prevState.results.map((review) =>
-            review.id === reviewId ? data : review
+            review.id === reviewId ? data : review,
           ),
         }));
         toast.dismiss(loadingToast);
-        toast.success("Review updated successfully");
+        toast.success('Review updated successfully');
         return { success: true, data };
       } catch (err) {
         toast.dismiss(loadingToast);
-        const errorMessage = err.response?.data || "Failed to update review";
+        const errorMessage = err.response?.data || 'Failed to update review';
         toast.error(errorMessage);
         return {
           success: false,
@@ -129,17 +131,17 @@ export const ReviewsProvider = ({ children }) => {
         setLoading(false);
       }
     },
-    [currentUser]
+    [currentUser],
   );
 
   const deleteReview = useCallback(
     async (reviewId) => {
       if (!currentUser) {
-        toast.error("Please sign in to delete this review");
-        return { success: false, error: "User not authenticated" };
+        toast.error('Please sign in to delete this review');
+        return { success: false, error: 'User not authenticated' };
       }
 
-      const loadingToast = toast.loading("Deleting review...");
+      const loadingToast = toast.loading('Deleting review...');
 
       try {
         setLoading(true);
@@ -150,21 +152,21 @@ export const ReviewsProvider = ({ children }) => {
           count: prevState.count - 1,
         }));
         toast.dismiss(loadingToast);
-        toast.success("Review deleted successfully");
+        toast.success('Review deleted successfully');
         return { success: true };
       } catch (err) {
         toast.dismiss(loadingToast);
-        const errorMessage = err.response?.data || "Failed to delete review";
+        const errorMessage = err.response?.data || 'Failed to delete review';
         toast.error(errorMessage);
         return {
           success: false,
-          error: errorMessage
+          error: errorMessage,
         };
       } finally {
         setLoading(false);
       }
     },
-    [currentUser]
+    [currentUser],
   );
 
   const contextValue = {

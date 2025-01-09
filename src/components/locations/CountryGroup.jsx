@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
+
 import LocationCard from './LocationCard.jsx';
 
 const CountryGroup = ({ country, locations, isFirst }) => {
@@ -18,9 +19,15 @@ const CountryGroup = ({ country, locations, isFirst }) => {
       <Card.Body>
         <h2>
           {country} 
-          <i onClick={toggleCollapse} style={{ cursor: 'pointer', marginLeft: '10px' }}>
-            <i className={isCollapsed ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-up"}></i>
-          </i>
+          <button
+            onClick={toggleCollapse}
+            aria-expanded={!isCollapsed}
+            aria-label={`${isCollapsed ? 'Expand' : 'Collapse'} ${country} section`}
+            className="btn btn-link p-0 border-0"
+            style={{ cursor: 'pointer', marginLeft: '10px', display: 'inline-flex', alignItems: 'center' }}
+          >
+            <i className={isCollapsed ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-up'} />
+          </button>
         </h2>
 
         {!isCollapsed && (

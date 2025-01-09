@@ -12,7 +12,7 @@ export const ModalProvider = ({ children }) => {
 
   const showModal = () => {
     setIsModalVisible(true);
-  }
+  };
   const hideModal = () => {
     setIsModalVisible(false);
     setReview(null); 
@@ -35,7 +35,7 @@ export const ModalProvider = ({ children }) => {
       hideModal,
       review,
       openCreateModal,
-      openEditModal   
+      openEditModal,   
     }}>
       {children}
     </ModalContext.Provider>

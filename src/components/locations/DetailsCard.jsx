@@ -1,10 +1,11 @@
-import React from "react";
-import { Card, Row, Col, Badge, Button } from "react-bootstrap";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { useLocationsContext } from "../../contexts/LocationsContext";
-import LocationMap from "../map/LocationMap.jsx";
+import React from 'react';
+import { Card, Row, Col, Badge, Button } from 'react-bootstrap';
 import toast from 'react-hot-toast';
-import { useModal } from "../../contexts/ReviewModalContext";
+
+import { useCurrentUser } from '../../contexts/CurrentUserContext';
+import { useLocationsContext } from '../../contexts/LocationsContext';
+import { useModal } from '../../contexts/ReviewModalContext';
+import LocationMap from '../map/LocationMap.jsx';
 
 const DetailsCard = ({ location }) => {
   const {
@@ -19,14 +20,14 @@ const DetailsCard = ({ location }) => {
     access,
     latitude,
     longitude,
-    cliff_aspect
+    cliff_aspect,
   } = location;
 
   const { currentUser } = useCurrentUser();
   const {
     isLocationSaved,
     handleSaveToggle,
-    loading
+    loading,
   } = useLocationsContext();
 
   const { showModal } = useModal();
@@ -42,7 +43,7 @@ const DetailsCard = ({ location }) => {
         toast.success('Copied to clipboard');
       })
       .catch((err) => {
-        toast.error('Failed to copy coordinates')
+        toast.error('Failed to copy coordinates');
         console.error(err);
       });
   };
@@ -54,7 +55,7 @@ const DetailsCard = ({ location }) => {
           <Card.Img
             src={image}
             alt={name}
-            style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
           />
         </Col>
         <Col md={7}>
@@ -69,19 +70,19 @@ const DetailsCard = ({ location }) => {
                 {currentUser?.pk && (
                   <div className="d-flex flex-column gap-2">
                     <Button
-                      variant={saved ? "outline-danger" : "outline-primary"}
+                      variant={saved ? 'outline-danger' : 'outline-primary'}
                       onClick={() => handleSaveToggle(id)}
                       disabled={loading}
                       className="d-flex align-items-center justify-content-center gap-2"
                     >
-                      <i className={`fa${saved ? "s" : "r"} fa-heart`}></i>
+                      <i className={`fa${saved ? 's' : 'r'} fa-heart`}></i>
                       {loading
                         ? saved
-                          ? "Removing..."
-                          : "Saving..."
+                          ? 'Removing...'
+                          : 'Saving...'
                         : saved
-                        ? "Saved"
-                        : "Save"}
+                        ? 'Saved'
+                        : 'Save'}
                     </Button>
                     <Button
                       variant="outline-primary"
@@ -97,7 +98,7 @@ const DetailsCard = ({ location }) => {
             </div>
 
             <Card.Text>
-              <strong>Date opened:</strong>{" "}
+              <strong>Date opened:</strong>{' '}
               {new Date(date_opened).toLocaleDateString()}
             </Card.Text>
 
@@ -118,17 +119,23 @@ const DetailsCard = ({ location }) => {
             <Card.Text>
               <strong>Coordinates:</strong>
               <span>
-                {" "}
+                {' '}
                 {latitude}, {longitude}
               </span>
-              <i
-                className="fa fa-clipboard"
-                style={{ cursor: "pointer", marginLeft: "8px" }}
-                onClick={() =>
-                  copyToClipboard(`${latitude}, ${longitude}`)
-                }
-                title="Copy coordinates"
-              />
+              <button
+                className="btn btn-link p-0 border-0"
+                onClick={() => copyToClipboard(`${latitude}, ${longitude}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyToClipboard(`${latitude}, ${longitude}`);
+                  }
+                }}
+                aria-label="Copy coordinates to clipboard"
+                style={{ marginLeft: '8px', display: 'inline-flex', alignItems: 'center' }}
+              >
+                <i className="fa fa-clipboard" title="Copy coordinates" />
+              </button>
             </Card.Text>
 
             <Card.Text>

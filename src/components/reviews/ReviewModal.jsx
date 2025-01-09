@@ -1,10 +1,11 @@
 // ReviewModal.js
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
-import ReviewForm from "./ReviewForm.jsx";
-import { useModal } from "../../contexts/ReviewModalContext";
-import { useParams } from "react-router-dom";
-import { useMatch } from 'react-router-dom';
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { useParams , useMatch } from 'react-router-dom';
+
+import { useModal } from '../../contexts/ReviewModalContext';
+
+import ReviewForm from './ReviewForm.jsx';
 
 const ReviewModal = () => {
   const { isModalVisible, hideModal, review } = useModal();
@@ -16,7 +17,7 @@ const ReviewModal = () => {
   return (
     <Modal show={isModalVisible} onHide={hideModal} backdrop="static" centered>
       <Modal.Header closeButton>
-        <Modal.Title>{review ? "Edit Review" : "Submit a Review"}</Modal.Title>
+        <Modal.Title>{review ? 'Edit Review' : 'Submit a Review'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <ReviewForm locationId={locationId} review={review}/>

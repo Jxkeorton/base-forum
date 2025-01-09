@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { axiosReq } from '../api/axiosDefault';
-import { useCurrentUser } from './CurrentUserContext.jsx';
 import toast from 'react-hot-toast';
+
+import { axiosReq } from '../api/axiosDefault';
+
+import { useCurrentUser } from './CurrentUserContext.jsx';
 
 const ProfileContext = createContext();
 const SetProfileContext = createContext();
@@ -70,7 +72,7 @@ export const ProfileProvider = ({ children }) => {
       toast.error(errorMessage);
       return { 
         success: false, 
-        error: errorMessage
+        error: errorMessage,
       };
     } finally {
       setLoading(false);
@@ -92,7 +94,7 @@ export const ProfileProvider = ({ children }) => {
     error: profileError,
     loading,
     fetchProfile: fetchProfileData,
-    updateProfile
+    updateProfile,
   };
 
   return (

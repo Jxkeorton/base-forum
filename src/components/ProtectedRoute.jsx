@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+
 import { useCurrentUser } from '../contexts/CurrentUserContext.jsx';
 
 const ProtectedRoute = ({ children }) => {

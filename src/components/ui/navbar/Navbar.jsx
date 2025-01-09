@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import styles from "./Navbar.module.css";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import logo from "../../../assets/logo.png";
-import Avatar from "../avatar/Avatar.jsx";
-import { useCurrentUser } from "../../../contexts/CurrentUserContext.jsx";
-import { useProfileContext } from "../../../contexts/ProfileContext.jsx";
-import { useModal } from "../../../contexts/ReviewModalContext.jsx";
-import useClickOutsideToggle from "../../../hooks/useClickOutsideToggle";
-import ConfirmationModal from "../ConfirmationModal.jsx";
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+import logo from '../../../assets/logo.png';
+import { useCurrentUser } from '../../../contexts/CurrentUserContext.jsx';
+import { useProfileContext } from '../../../contexts/ProfileContext.jsx';
+import { useModal } from '../../../contexts/ReviewModalContext.jsx';
+import useClickOutsideToggle from '../../../hooks/useClickOutsideToggle';
+import Avatar from '../avatar/Avatar.jsx';
+import ConfirmationModal from '../ConfirmationModal.jsx';
+
+import styles from './Navbar.module.css';
 
 const isActive = (navData) =>
   navData.isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink;
@@ -27,7 +29,7 @@ const NavBar = () => {
     const result = await signOut();
     if (result.success) {
       setShowSignOutModal(false);
-      navigate("/");
+      navigate('/');
     }
   };
 

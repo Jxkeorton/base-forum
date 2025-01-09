@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Form, Button, Alert } from "react-bootstrap";
-import { useCurrentUser } from "../../contexts/CurrentUserContext.jsx";
+import React, { useState } from 'react';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx';
 
 const SignUp = () => {
   const { signUp } = useCurrentUser();
   const [signUpData, setSignUpData] = useState({
-    username: "",
-    password1: "",
-    password2: "",
+    username: '',
+    password1: '',
+    password2: '',
   });
   const { username, password1, password2 } = signUpData;
 
@@ -26,7 +27,7 @@ const SignUp = () => {
     try {
       const { success, errors } = await signUp(signUpData);
       if (success) {
-        navigate("/");
+        navigate('/');
       } else {
         setErrors(errors);
       }
@@ -50,7 +51,7 @@ const SignUp = () => {
           />
         </Form.Group>
         {errors.username?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
+          <Alert variant="warning" key={idx}>{message}</Alert>,
         )}
         <Form.Group className="mb-3" controlId="password1">
           <Form.Label>Password</Form.Label>
@@ -63,7 +64,7 @@ const SignUp = () => {
           />
         </Form.Group>
         {errors.password1?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
+          <Alert variant="warning" key={idx}>{message}</Alert>,
         )}
         <Form.Group className="mb-3" controlId="password2">
           <Form.Label>Confirm Password</Form.Label>
@@ -76,7 +77,7 @@ const SignUp = () => {
           />
         </Form.Group>
         {errors.password2?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
+          <Alert variant="warning" key={idx}>{message}</Alert>,
         )}
         <Button 
           variant="primary" 

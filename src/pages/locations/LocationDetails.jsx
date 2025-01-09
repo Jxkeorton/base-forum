@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import DetailsCard from "../../components/locations/DetailsCard.jsx";
-import { useParams } from "react-router";
-import { axiosReq } from "../../api/axiosDefault";
-import ReviewsList from "../../components/reviews/ReviewsList.jsx";
-import { Spinner, Container } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Spinner, Container } from 'react-bootstrap';
+import { useParams } from 'react-router';
+
+import { axiosReq } from '../../api/axiosDefault';
+import DetailsCard from '../../components/locations/DetailsCard.jsx';
+import ReviewsList from '../../components/reviews/ReviewsList.jsx';
+
 
 const LocationDetails = () => {
   const { id } = useParams();
@@ -19,7 +21,6 @@ const LocationDetails = () => {
         ]);
         setLocation(location);
       } catch (err) {
-        console.log(err);
         setIsLoading(false);
       } finally {
         setIsLoading(false);
@@ -38,7 +39,7 @@ const LocationDetails = () => {
       {isLoading ? (
         <Container
           className="d-flex justify-content-center align-items-center"
-          style={{ minHeight: "100px" }}
+          style={{ minHeight: '100px' }}
         >
           <Spinner animation="border" role="status" variant="primary">
             <span className="visually-hidden">Loading...</span>

@@ -1,15 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Form, Button, Alert, Image, Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import { useProfileContext } from "../../contexts/ProfileContext.jsx";
+import React, { useState, useRef, useEffect } from 'react';
+import { Form, Button, Alert, Image, Container } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+
+import { useProfileContext } from '../../contexts/ProfileContext.jsx';
 
 const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
   const { id } = useParams();
   const { updateProfile, profile } = useProfileContext();
   const [profileData, setProfileData] = useState({
-    name: username || "",
-    no_of_base_jumps: noOfBaseJumps || "",
-    image: src || "",
+    name: username || '',
+    no_of_base_jumps: noOfBaseJumps || '',
+    image: src || '',
   });
   const { name, no_of_base_jumps, image } = profileData;
 
@@ -20,9 +21,9 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
   useEffect(() => {
     if (profile) {
       setProfileData({
-        name: profile.name || "",
-        no_of_base_jumps: profile.no_of_base_jumps || "",
-        image: profile.image || "",
+        name: profile.name || '',
+        no_of_base_jumps: profile.no_of_base_jumps || '',
+        image: profile.image || '',
       });
     }
   }, [profile]);
@@ -54,15 +55,15 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
       const formData = new FormData();
       
       if (profileData.name !== profile?.owner) {
-        formData.append("name", profileData.name);
+        formData.append('name', profileData.name);
       }
       
       if (profileData.no_of_base_jumps !== profile?.no_of_base_jumps) {
-        formData.append("no_of_base_jumps", profileData.no_of_base_jumps);
+        formData.append('no_of_base_jumps', profileData.no_of_base_jumps);
       }
 
       if (imageFile?.current?.files[0]) {
-        formData.append("image", imageFile.current.files[0]);
+        formData.append('image', imageFile.current.files[0]);
       }
 
       const { success, error } = await updateProfile(formData, id);
@@ -73,8 +74,8 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
         setErrors(error || { general: 'Update failed' });
       }
     } catch (err) {
-      console.error("Error details:", err);
-      setErrors({ general: "An error occurred while updating the profile" });
+      console.error('Error details:', err);
+      setErrors({ general: 'An error occurred while updating the profile' });
     } finally {
       setIsSubmitting(false);
     }
@@ -97,7 +98,7 @@ const ProfileEditForm = ({ username, noOfBaseJumps, closeModal, src }) => {
                 src={image}
                 roundedCircle
                 fluid
-                style={{ maxWidth: "150px", height: "150px", objectFit: "cover" }}
+                style={{ maxWidth: '150px', height: '150px', objectFit: 'cover' }}
               />
             </figure>
           )}

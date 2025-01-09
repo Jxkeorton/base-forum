@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { useCurrentUser } from "../../contexts/CurrentUserContext.jsx";
+import React, { useState } from 'react';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx';
 
 const SignIn = () => {
   const { signIn } = useCurrentUser();
   const [signInData, setSignInData] = useState({
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   });
   const { username, password } = signInData;
 
@@ -25,7 +26,7 @@ const SignIn = () => {
     try {
       const { success, errors } = await signIn(signInData);
       if (success) {
-        navigate("/");
+        navigate('/');
       } else {
         setErrors(errors);
       }
@@ -49,7 +50,7 @@ const SignIn = () => {
           />
         </Form.Group>
         {errors.username?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
+          <Alert variant="warning" key={idx}>{message}</Alert>,
         )}
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
@@ -62,7 +63,7 @@ const SignIn = () => {
           />
         </Form.Group>
         {errors.password?.map((message, idx) => 
-          <Alert variant="warning" key={idx}>{message}</Alert>
+          <Alert variant="warning" key={idx}>{message}</Alert>,
         )}
         <Button 
           variant="primary" 

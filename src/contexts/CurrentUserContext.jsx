@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { axiosRes, axiosReq } from '../api/axiosDefault';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+import { axiosRes, axiosReq } from '../api/axiosDefault';
 import { removeTokenTimestamp, setTokenTimestamp, shouldRefreshToken } from '../utils/utils';
 
 export const CurrentUserContext = createContext();
@@ -30,10 +31,11 @@ export const CurrentUserProvider = ({ children }) => {
 
   const handleMount = async () => {
     try {
-      const { data } = await axiosRes.get("dj-rest-auth/user/");
+      const { data } = await axiosRes.get('dj-rest-auth/user/');
       setCurrentUser(data);
     } catch (error) {
-      
+      console.warn('User not authenticated or failed to load user data');
+      setCurrentUser(null);
     }
   };
 
@@ -50,7 +52,7 @@ export const CurrentUserProvider = ({ children }) => {
       toast.error(err.response?.data?.non_field_errors?.[0] || 'Failed to sign in');
       return { 
         success: false, 
-        errors: err.response?.data
+        errors: err.response?.data,
       };
     }
   }, []);
@@ -77,7 +79,7 @@ export const CurrentUserProvider = ({ children }) => {
       
       const signInData = {
         username: signUpData.username,
-        password: signUpData.password1
+        password: signUpData.password1,
       };
       
       const { data } = await axios.post('dj-rest-auth/login/', signInData);
@@ -91,7 +93,7 @@ export const CurrentUserProvider = ({ children }) => {
       toast.error(err.response?.data?.non_field_errors?.[0] || 'Failed to create account');
       return { 
         success: false, 
-        errors: err.response?.data
+        errors: err.response?.data,
       };
     }
   }, []);
@@ -105,11 +107,11 @@ export const CurrentUserProvider = ({ children }) => {
       async (config) => {
         if(shouldRefreshToken()){
           try {
-            await axios.post("/dj-rest-auth/token/refresh/");
+            await axios.post('/dj-rest-auth/token/refresh/');
           } catch (err) {
             setCurrentUser((prevCurrentUser) => {
               if (prevCurrentUser) {
-                navigate("/signin");
+                navigate('/signin');
               }
               return null;
             });
@@ -121,7 +123,7 @@ export const CurrentUserProvider = ({ children }) => {
       },
       (err) => {
         return Promise.reject(err);
-      }
+      },
     );
 
     axiosRes.interceptors.response.use(
@@ -129,11 +131,11 @@ export const CurrentUserProvider = ({ children }) => {
       async (err) => {
         if (err.response?.status === 401) {
           try {
-            await axios.post("/dj-rest-auth/token/refresh/");
+            await axios.post('/dj-rest-auth/token/refresh/');
           } catch (err) {
             setCurrentUser((prevCurrentUser) => {
               if (prevCurrentUser) {
-                navigate("/signin");
+                navigate('/signin');
               }
               return null;
             });
@@ -142,7 +144,7 @@ export const CurrentUserProvider = ({ children }) => {
           return axios(err.config);
         }
         return Promise.reject(err);
-      }
+      },
     );
   }, [navigate]);
 
@@ -150,7 +152,7 @@ export const CurrentUserProvider = ({ children }) => {
     currentUser,
     signIn,
     signOut,
-    signUp
+    signUp,
   };
 
   return (

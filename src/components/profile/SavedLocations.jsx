@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
-import { useLocationsContext } from '../../contexts/LocationsContext.jsx';
 import { Link } from 'react-router-dom';
+
 import { useCurrentUser } from '../../contexts/CurrentUserContext.jsx';
+import { useLocationsContext } from '../../contexts/LocationsContext.jsx';
 
 const SavedLocations = () => {
   const { currentUser } = useCurrentUser();
@@ -11,7 +12,7 @@ const SavedLocations = () => {
     loading, 
     error, 
     removeSavedLocation,
-    fetchSavedLocations 
+    fetchSavedLocations, 
   } = useLocationsContext();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const SavedLocations = () => {
     return (
       <Card className="mb-3">
         <Card.Body className="text-center text-muted">
-          <p>You haven't saved any locations yet.</p>
+        <p>You haven&apos;t saved any locations yet.</p>
           <Link to="/" className="btn btn-primary">
             Browse Locations
           </Link>

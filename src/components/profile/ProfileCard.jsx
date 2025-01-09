@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Card, Container, Row, Col, Modal } from "react-bootstrap";
-import Avatar from "../ui/avatar/Avatar.jsx";
-import { MDBIcon } from "mdb-react-ui-kit";
-import ProfileEditForm from "./ProfileEditForm.jsx";
-import styles from "./css/ProfileCard.module.css";
+import { MDBIcon } from 'mdb-react-ui-kit';
+import React, { useState } from 'react';
+import { Card, Container, Row, Col, Modal } from 'react-bootstrap';
+
+import Avatar from '../ui/avatar/Avatar.jsx';
+
+import styles from './css/ProfileCard.module.css';
+import ProfileEditForm from './ProfileEditForm.jsx';
 
 const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
   const [showModal, setShowModal] = useState(false);
@@ -23,7 +25,7 @@ const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
                  @{name}
               </Card.Text>
               <Card.Text className="mt-2 text-muted small">
-                Base Jumps: {noOfBaseJumps !== null ? noOfBaseJumps : "N/A"}
+                Base Jumps: {noOfBaseJumps !== null ? noOfBaseJumps : 'N/A'}
               </Card.Text>
 
               {isOwner && (
