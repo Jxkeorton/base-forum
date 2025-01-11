@@ -28,7 +28,7 @@ const Review = ({ review, onEdit, onDelete }) => {
         <MDBCardImage
           className={`rounded-circle shadow-1-strong me-3 ${styles.avatar}`}
           src={profile_image}
-          alt="avatar"
+          alt={`${owner}'s profile`}
           width="60"
           height="60"
         />
@@ -54,20 +54,22 @@ const Review = ({ review, onEdit, onDelete }) => {
 
             {is_owner && (
               <div className={`ms-2 ${styles.iconButtons}`}>
-                <a
-                  href="#!"
-                  className={styles.linkMuted}
+                <button
+                  className={`${styles.linkMuted} btn btn-link p-0`}
                   onClick={() => onEdit(review)}
+                  aria-label={`Edit review: ${subject}`}
                 >
                   <MDBIcon fas icon="pencil-alt" />
-                </a>
-                <a
-                  href="#!"
-                  className={`ms-2 ${styles.linkMuted}`}
+                  <span className="visually-hidden">Edit</span>
+                </button>
+                <button
+                  className={`ms-2 ${styles.linkMuted} btn btn-link p-0`}
                   onClick={() => onDelete(id)}
+                  aria-label={`Delete review: ${subject}`}
                 >
                   <MDBIcon fas icon="trash" />
-                </a>
+                  <span className="visually-hidden">Delete</span>
+                </button>
               </div>
             )}
           </div>
@@ -76,16 +78,15 @@ const Review = ({ review, onEdit, onDelete }) => {
               <MDBTypography tag="h5" className={styles.subject}>
                 {subject}
               </MDBTypography>
-              {!match ? (
+              {!match && (
                 <Link
                   to={`/locations/${location}`}
                   className={styles.locationLink}
+                  aria-label={`View location: ${location_name}`}
                 >
-                  <i className="fa-solid fa-location-dot"></i>
+                  <i className="fa-solid fa-location-dot" aria-hidden="true"></i>
                   <p>{location_name}</p>
                 </Link>
-              ) : (
-                <></>
               )}
             </div>
             <p className={styles.contentText}>{content}</p>

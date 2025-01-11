@@ -14,29 +14,47 @@ const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
   const handleModalOpen = () => setShowModal(true);
 
   return (
-    <Container className="d-flex align-items-center" style={{ minHeight: '40vh' }}>
+    <Container 
+      className="d-flex align-items-center" 
+      style={{ minHeight: '40vh' }}
+      aria-label="Profile Information"
+    >
       <Row className="justify-content-center w-100">
         <Col md="auto">
           <Card style={{ width: '18rem', border: '1px solid #ddd', borderRadius: '10px' }}>
             <Card.Body className="text-center">
-              <Avatar src={src} height={80} />
-              <Card.Title className="mt-3">{username}</Card.Title>
-              <Card.Text className="mt-2 text-muted small">
-                 @{name}
+              <Avatar 
+                src={src} 
+                height={80} 
+                text={`${username}'s profile picture`}
+              />
+              <Card.Title className="mt-3">
+                <h2 className="h5 mb-0">{username}</h2>
+              </Card.Title>
+              <Card.Text className="mt-2 text-muted small" aria-label="Username">
+                @{name}
               </Card.Text>
-              <Card.Text className="mt-2 text-muted small">
+              <Card.Text 
+                className="mt-2 text-muted small"
+                aria-label="Number of base jumps"
+              >
                 Base Jumps: {noOfBaseJumps !== null ? noOfBaseJumps : 'N/A'}
               </Card.Text>
 
               {isOwner && (
-                <div className={`d-flex justify-content-center ${styles.iconButtons}`}>
-                  <a
-                    href="#!"
-                    className={`me-2 ${styles.linkMuted}`}
+                <div 
+                  className={`d-flex justify-content-center ${styles.iconButtons}`}
+                  role="toolbar"
+                  aria-label="Profile actions"
+                >
+                  <button
+                    className={`me-2 ${styles.linkMuted} btn btn-link p-0`}
                     onClick={handleModalOpen}
+                    aria-label="Edit profile"
                   >
-                    <MDBIcon fas icon="pencil-alt" />
-                  </a>
+                    <MDBIcon fas icon="pencil-alt" aria-hidden="true" />
+                    <span className="visually-hidden">Edit profile</span>
+                  </button>
                 </div>
               )}
             </Card.Body>
@@ -44,9 +62,13 @@ const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
         </Col>
       </Row>
 
-      <Modal show={showModal} onHide={handleModalClose}>
+      <Modal 
+        show={showModal} 
+        onHide={handleModalClose}
+        aria-labelledby="edit-profile-modal-title"
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Edit Profile</Modal.Title>
+          <Modal.Title id="edit-profile-modal-title">Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ProfileEditForm

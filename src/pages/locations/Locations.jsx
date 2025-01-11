@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { InputGroup, FormControl, Spinner } from 'react-bootstrap';
+import { InputGroup, FormControl, Spinner, Form } from 'react-bootstrap';
 
 import LocationList from '../../components/locations/LocationList.jsx';
 import { useLocationsContext } from '../../contexts/LocationsContext.jsx';
+
 const Locations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { locations, loading, fetchAllLocations } = useLocationsContext();
@@ -20,27 +21,32 @@ const Locations = () => {
       <h1 className="text-center">Locations</h1>
       <p className="text-center">Browse Base Jumping locations from all over the world</p>
 
-      <InputGroup
-        className="mb-3"
-        style={{
-          maxWidth: '500px',
-          marginBottom: '20px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      >
-        <InputGroup.Text>
-          <i className="fa fa-search"></i>
-        </InputGroup.Text>
-        <FormControl
-          placeholder="Search locations by name or country..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </InputGroup>
+      <Form>
+        <Form.Group
+          className="mb-3 mx-auto"
+          style={{ maxWidth: '500px' }}
+          controlId="locationSearch"
+        >
+          <Form.Label className="visually-hidden">
+            Search locations by name or country
+          </Form.Label>
+          <InputGroup>
+            <InputGroup.Text>
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </InputGroup.Text>
+            <FormControl
+              type="search"
+              placeholder="Search locations by name or country..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="Search locations by name or country"
+            />
+          </InputGroup>
+        </Form.Group>
+      </Form>
 
       {loading && (
-        <div className="text-center">
+        <div className="text-center" aria-live="polite">
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
@@ -48,7 +54,7 @@ const Locations = () => {
       )}
 
       {locations.length === 0 && !loading ? (
-        <p>No locations found matching the search term.</p>
+        <p className="text-center" role="status">No locations found matching the search term.</p>
       ) : (
         <LocationList locations={locations} />
       )}
