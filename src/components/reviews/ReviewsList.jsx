@@ -6,7 +6,7 @@ import ConfirmationModal from '../ui/ConfirmationModal.jsx';
 
 import Review from './Review.jsx';
 
-const ReviewsList = ({ filter = {} }) => {
+const ReviewsList = ({ filter = {}, alreadyFetched = false }) => {
   const { 
     reviews,
     loading, 
@@ -21,8 +21,11 @@ const ReviewsList = ({ filter = {} }) => {
   const { openEditModal } = useModal();
 
   useEffect(() => {
+    // Only fetch if not already fetched by parent
+    if (!alreadyFetched) {
       fetchReviews(filter);
-  }, [fetchReviews, filter]);
+    }
+  }, [fetchReviews, filter, alreadyFetched]);
 
   const handleDeleteReview = async (reviewId) => {
     const { success } = await deleteReview(reviewId);
