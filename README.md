@@ -83,7 +83,7 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 **Authentication**
 - Create account page
 - Create Sign In page
-- create sign out page
+- Create sign out page
 
 **Locations**
 - View locations
@@ -320,11 +320,173 @@ UI Security Features
 - Loading states to prevent accidental double-submissions
 
 ## The-Structure-Plane
-### Features
+### Reused components
+<details>
+<summary>Confirmation Modal</summary>
+
+**Places used**
+- Deletion of review
+- Sign out
+
+**User Story**: As a User, I want to sign out so that I can control which devices I stay logged in on
+  ![Sign out confirmation modal](docs/features/auth/confirm-signout.png)
+</details>
 
 <details>
-<summary>Pages/menus/forms</summary>
+<summary>Review List</summary>
 
+**Places used**
+- Review page
+- User reviews tab on profile page
+- Under the location details card on the location details page
+
+![Reviews page](docs/features/reviews/reviews-page.png)
+</details>
+
+<details>
+<summary>Review Form</summary>
+
+**Places used**
+- Available anywhere in the site when logged on
+- Used to create and edit a review with small differences
+
+**User Story**: As a User, I want to create a review so that I can offer my review to certain locations I have visited
+  ![add/edit Review modal](docs/features/reviews/add-edit-review-modal.png)
+</details>
+
+### Site Features
+
+#### Navigation
+<details>
+<summary>Navigation Features</summary>
+
+- **User Story**: As a User, I want to view a navigation bar on every page so that I can easily navigate the website
+  - Logged Out State:
+    ![Logged out NavBar](docs/features/navigation.png)
+  - Logged In State:
+    ![Logged in NavBar](docs/features/loggedin-navigation.png)
+</details>
+
+#### Authentication
+
+<details>
+<summary>Sign Up</summary>
+
+- **User Story**: As a Guest User, I want to fill in the create account form so that I can have an account on the website
+  ![Sign Up](docs/features/auth/sign-up-page.png)
+</details>
+
+<details>
+<summary>Sign In</summary>
+
+- **User Story**: As a User, I want to log on to the website so that I can access my profile and make reviews
+  ![Sign in](docs/features/auth/Sign-in-page.png)
+</details>
+
+<details>
+<summary>Sign Out</summary>
+
+- **User Story**: As a User, I want to sign out so that I can control which devices I stay logged in on
+  ![Sign out confirmation modal](docs/features/auth/confirm-signout.png)
+</details>
+
+#### Locations
+
+<details>
+<summary>Locations Page</summary>
+
+- **User Stories**:
+  - As a User, I want to search locations by name so that I can quickly navigate to a specific location
+  - As a User, I want to navigate to locations page so that I can see the locations
+  ![Locations page](docs/features/locations/locations-page.png)
+</details>
+
+<details>
+<summary>Location Card</summary>
+
+![Location card](docs/features/locations/location-card.png)
+</details>
+
+<details>
+<summary>Location Groups</summary>
+
+- Expanded View:
+  ![Location group expanded](docs/features/locations/location-group-expanded.png)
+- Collapsed View:
+  ![Locations group collapsed](docs/features/locations/location-groups.png)
+</details>
+
+<details>
+<summary>Location Details Page</summary>
+
+- **User Story**: As a User, I want to see location details so that I can see more in-depth information on the location I am interested in
+  ![Locations Details card](docs/features/locations/location-details-card.png)
+</details>
+
+#### Reviews
+
+<details>
+<summary>Reviews Page</summary>
+
+![Reviews page](docs/features/reviews/reviews-page.png)
+</details>
+
+<details>
+<summary>Review Component</summary>
+
+- **User Stories**:
+  - As a User, I want to delete a review I created so that I can remove my review from a location
+  - As a User, I want to edit old reviews so that I can update details of the review
+
+- Review States:
+  - Standard Review:
+    ![Review](docs/features/reviews/review.png)
+  - Non-User Review:
+    ![Review not owned by user](docs/features/reviews/non-user-review.png)
+  - Location Details Review:
+    ![Review below location details](docs/features/reviews/location-details-review.png)
+</details>
+
+<details>
+<summary>Review Form</summary>
+
+- **User Story**: As a User, I want to create a review so that I can offer my review to certain locations I have visited
+  ![add/edit Review modal](docs/features/reviews/add-edit-review-modal.png)
+</details>
+
+#### Profile
+
+<details>
+<summary>Profile Page</summary>
+
+![Profile Page](docs/features/profile/profile-page.png)
+</details>
+
+<details>
+<summary>Profile Card</summary>
+
+![Profile card](docs/features/profile/profile-card.png)
+</details>
+
+<details>
+<summary>Saved Locations Tab</summary>
+
+- **User Story**: As a Logged in User, I want to visit my profile so that I can easily view and manage my saved locations
+  ![Saved locations tab](docs/features/profile/saved-locations.png)
+</details>
+
+<details>
+<summary>User Reviews Tab</summary>
+
+- **User Story**: As a logged on User, I want to see my reviews so that I can easily manage my reviews
+  ![User reviews tab](docs/features/profile/user-profile-reviews-tab.png)
+</details>
+
+<details>
+<summary>Update Profile Form</summary>
+
+- **User Story**: As a logged in User, I want to update/edit my account so that I can personalize my experience
+  ![Edit profile modal](docs/features/profile/edit-profile-modal.png)
 </details>
 
 ### Features Left To Implement
@@ -332,6 +494,7 @@ In future releases the following features will be implemented...
 - Email required on sign up
 - Make the app more social allowing users to follow and view others profiles
 - Include a weather API for live weather updates at the locations
+- Scroll arrows on location details page to go to the next/previous location
 
 ## The-Surface-Plane
 ### Colour-Scheme
