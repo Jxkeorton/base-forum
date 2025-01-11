@@ -4,6 +4,15 @@ The live link can be found here: [Live Site - Base Forum](https://base-forum-630
 
 ![Mock Up](docs/mockup.png)
 
+## Role of a Front-End developers
+Front end developers can utilize designs and APIs in order to create a user friendly and intuitive interface to bring a brand to life. This is a fundamental role in customer facing business' for the modern age because everything has moved online. Not having that online presence can sink a company, for this reason a front end developer is a key part to a successful company in the modern world.
+
+## React
+React framework was implemented in the build of the website. It is a framework built on top of the javascript language for a better developer experience when creating websites. React is used to create components that can be reusable, this can improve user experience by standardizing the components used to build the website making it more intuitive for the end user and improves the branding of the website.
+For example the reviews component was reused on multiple pages so they can be easily recognized by the user.
+
+Reused React components are listed here.
+
 ## Table of Contents
 
 * [User Experience Design](#user-experience-design)
@@ -460,6 +469,9 @@ six==1.16.0
 
 ## Testing 
 
+Due to the size of the README tests have been moved into a separate markdown file. Please click the link below to view the tests.
+
+[Testing File](./TESTING.md)
 
 ## Deployment
 
