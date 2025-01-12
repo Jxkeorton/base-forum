@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import App from './App';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import LocationDetails from './pages/locations/LocationDetails.jsx';
-import Locations from './pages/locations/Locations.jsx';
-import NotFound from './pages/notfound/NotFound.jsx';
-import Profile from './pages/profile/Profile.jsx';
-import Reviews from './pages/reviews/Reviews.jsx';
-import SignIn from './pages/signin/SignIn.jsx';
-import SignUp from './pages/signup/SignUp.jsx';
-import Providers from './Providers.jsx';
-import reportWebVitals from './reportWebVitals';
+import App from './core/app/App.jsx';
+import NotFound from './core/components/NotFound.jsx';
+import ProtectedRoute from './core/components/ProtectedRoute.jsx';
+import Providers from './core/config/Providers.jsx';
+import reportWebVitals from './core/config/reportWebVitals.js';
+import SignIn from './features/auth/pages/SignIn.jsx';
+import SignUp from './features/auth/pages/SignUp.jsx';
+import LocationDetails from './features/locations/pages/LocationDetails.jsx';
+import Locations from './features/locations/pages/Locations.jsx';
+import Profile from './features/profile/pages/Profile.jsx';
+import Reviews from './features/reviews/pages/Reviews.jsx';
 
 const router = createBrowserRouter([
   {
