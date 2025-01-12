@@ -10,6 +10,7 @@ import Providers from './core/config/Providers.jsx';
 import reportWebVitals from './core/config/reportWebVitals.js';
 import SignIn from './features/auth/pages/SignIn.jsx';
 import SignUp from './features/auth/pages/SignUp.jsx';
+import Home from './features/home/Home.jsx';
 import LocationDetails from './features/locations/pages/LocationDetails.jsx';
 import Locations from './features/locations/pages/Locations.jsx';
 import Profile from './features/profile/pages/Profile.jsx';
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/locations',
         element: <Locations />,
       },
       {

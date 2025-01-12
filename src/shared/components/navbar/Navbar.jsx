@@ -102,6 +102,9 @@ const NavBar = () => {
               {currentUser && addReviewLink}
             </div>
             <NavLink className={isActive} to="/">
+              <i className="fa-solid fa-house"></i> Home
+            </NavLink>
+            <NavLink className={isActive} to="/locations">
               <i className="fa-solid fa-location-dot"></i> Locations
             </NavLink>
             <NavLink className={isActive} to="/reviews">
