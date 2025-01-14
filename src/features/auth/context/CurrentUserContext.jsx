@@ -27,15 +27,35 @@ export const useSetCurrentUser = () => {
 
 export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleMount = async () => {
     try {
+      setIsLoading(true);
+      const timestamp = localStorage.getItem('refreshTokenTimestamp');
+      
+      if (!timestamp) {
+        setCurrentUser(null);
+        return;
+      }
+
+      // Check if token is expired
+      const now = Math.floor(Date.now() / 1000);
+      if (parseInt(timestamp) <= now) {
+        removeTokenTimestamp();
+        setCurrentUser(null);
+        return;
+      }
+
       const { data } = await axiosRes.get('dj-rest-auth/user/');
       setCurrentUser(data);
     } catch (error) {
-      console.warn('User not authenticated or failed to load user data');
+      console.error('Auth Error:', error);
       setCurrentUser(null);
+      removeTokenTimestamp();
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,6 +104,7 @@ export const CurrentUserProvider = ({ children }) => {
       
       const { data } = await axios.post('dj-rest-auth/login/', signInData);
       setCurrentUser(data.user);
+      setTokenTimestamp(data);
       
       toast.dismiss(loadingToast);
       toast.success('Account created and signed in successfully!');
@@ -105,18 +126,24 @@ export const CurrentUserProvider = ({ children }) => {
   useMemo(() => {
     axiosReq.interceptors.request.use(
       async (config) => {
-        if(shouldRefreshToken()){
+        const timestamp = localStorage.getItem('refreshTokenTimestamp');
+        
+        if (timestamp) {
+          const now = Math.floor(Date.now() / 1000);
+          if (parseInt(timestamp) <= now) {
+            removeTokenTimestamp();
+            setCurrentUser(null);
+            navigate('/signin');
+            return config;
+          }
+
           try {
             await axios.post('/dj-rest-auth/token/refresh/');
           } catch (err) {
-            setCurrentUser((prevCurrentUser) => {
-              if (prevCurrentUser) {
-                navigate('/signin');
-              }
-              return null;
-            });
+            console.error('Token refresh failed:', err);
+            setCurrentUser(null);
             removeTokenTimestamp();
-            return config;
+            navigate('/signin');
           }
         }
         return config;
@@ -153,6 +180,7 @@ export const CurrentUserProvider = ({ children }) => {
     signIn,
     signOut,
     signUp,
+    isLoading,
   };
 
   return (
