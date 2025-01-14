@@ -177,10 +177,11 @@ export const CurrentUserProvider = ({ children }) => {
 
   const contextValue = {
     currentUser,
+    isAdmin: currentUser?.is_superuser || false,
+    isLoading,
     signIn,
     signOut,
     signUp,
-    isLoading,
   };
 
   return (
