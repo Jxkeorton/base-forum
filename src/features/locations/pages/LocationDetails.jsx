@@ -48,7 +48,7 @@ const LocationDetails = () => {
       ) : (
         <div>
           <DetailsCard location={location} />
-          <ReviewsList filter={{ location__name: location.name }} />
+          <ReviewsList filter={{ location__name: location.name, ordering: '-created_at' }} />
         </div>
       )}
     </>
