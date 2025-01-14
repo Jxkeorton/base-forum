@@ -26,7 +26,6 @@ const ProfileCard = ({ username, name, src, noOfBaseJumps, isOwner }) => {
               <Avatar 
                 src={src} 
                 height={80} 
-                text={`${username}'s profile picture`}
               />
               <Card.Title className="mt-3">
                 <h2 className="h5 mb-0">{username}</h2>

@@ -34,7 +34,6 @@ export const ToastProvider = ({ children }) => {
   );
 };
 
-// Optional: Create a custom hook for consistent toast usage
 export const useCustomToast = () => {
   const showToast = {
     success: (message) => toast.success(message),

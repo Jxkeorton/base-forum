@@ -59,7 +59,9 @@ const Profile = () => {
         noOfBaseJumps={profile.no_of_base_jumps}
         isOwner={isOwner}
       />
-      <ProfileTabs/>
+      <Container className="mt-3">
+        <ProfileTabs/>
+      </Container>
     </Container>
   );
 };

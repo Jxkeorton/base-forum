@@ -1,5 +1,21 @@
 .footer {
     background-color: #24242c;
+    color: #cfced3;
     padding: 2rem 0;
     margin-top: auto;
+}
+  
+.footerLink {
+    color: #cfced3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+    color: #2142b2;
+}
+
+.copyright {
+    opacity: 0.8;
+    font-size: 0.9rem;
 }
