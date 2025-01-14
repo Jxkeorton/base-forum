@@ -169,7 +169,7 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 <details>
 <summary>Update Profile Form</summary>
 
-![update profile form](docs/wireframes/update-profile-wireframe.png)
+![Update profile form](docs/wireframes/update-profile-wireframe.png)
 
 </details>
 
@@ -194,12 +194,19 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 
 </details>
 
+<details>
+<summary>Home</summary>
+
+![Home Page Wireframe](docs/wireframes/home-page-wireframe.png)
+
+</details>
+
 ### Database diagram
 
 <details>
 <summary>Database diagram</summary>
 
-![Database Diagram](./docs/images/database-diagram.png)
+![Database Diagram](./docs/database-diagram.png)
 </details>
 
 ### API Table
@@ -713,3 +720,7 @@ Most commonly, forks are used to either propose changes to someone else's projec
 **Map Implementation:** 
  - [React Leaflet Documentation](https://react-leaflet.js.org/docs/start-setup/)
  - [React Leaflet Issue #453](https://github.com/PaulLeCam/react-leaflet/issues/453)
+
+**EsLint implementation**
+- [Free code camp blog](https://www.freecodecamp.org/news/how-to-add-eslint-to-your-react-project/)
+- [EsLint docs](https://eslint.org/docs/latest/extend/ways-to-extend#plugins)

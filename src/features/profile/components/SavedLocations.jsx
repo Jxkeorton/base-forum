@@ -42,7 +42,7 @@ const SavedLocations = () => {
       <Card className="mb-3">
         <Card.Body className="text-center text-muted">
         <p>You haven&apos;t saved any locations yet.</p>
-          <Link to="/" className="btn btn-primary">
+          <Link to="/locations" className="btn btn-primary">
             Browse Locations
           </Link>
         </Card.Body>
