@@ -214,7 +214,7 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 <details>
 <summary>API Table</summary>
 
-# API Endpoints
+### API Endpoints
 
 | Endpoint | HTTP Method | Action | Authentication Required | Permission |
 |----------|-------------|---------|------------------------|------------|
@@ -242,7 +242,7 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 | `/saved-locations/<int:pk>/` | GET | Retrieve a specific saved location | Yes | Save owner only |
 | `/saved-locations/<int:pk>/` | DELETE | Remove a saved location | Yes | Save owner only |
 
-## Features
+### Features
 
 - Locations support filtering by country and searching by name/country
 - Reviews can be filtered by location name and owner username
@@ -502,6 +502,96 @@ In future releases the following features will be implemented...
 - Make the app more social allowing users to follow and view others profiles
 - Include a weather API for live weather updates at the locations
 - Scroll arrows on location details page to go to the next/previous location
+
+### File Structure 
+I chose to follow the colocation principle in my file structure after reading the following text from the (React)[https://legacy.reactjs.org/docs/faq-structure.html#:~:text=Eventually%20it%20will%20grow%20large,principle%20is%20called%20%E2%80%9Ccolocation%E2%80%9D.] documentation.
+
+`Eventually it will grow large enough that you will want to separate some files from the rest. By that time you’ll have enough knowledge to tell which files you edit together most often. In general, it is a good idea to keep files that often change together close to each other. This principle is called “colocation”.`
+
+It ensures development efficiency and promotes a standardised approach. Making it easier for developers to understand the codebase even having never worked on it beforehand. Also if making changes to a component, the developer can easily see associated tests. If hidden away in a test directory this is not the case.
+
+Therefore i created a file structure that looks like this:
+``` 
+src/
+├── assets/                   
+│   └── logo.png
+├── core/                   
+│   ├── app/
+│   │   └── App.jsx         
+│   ├── components/
+│   │   ├── NotFound.jsx   
+│   │   └── ProtectedRoute.jsx 
+│   └── config/
+│       └── Providers.jsx   
+├── features/              
+│   ├── auth/              
+│   │   ├── components/
+│   │   ├── context/
+│   │   │   └── CurrentUserContext.jsx
+│   │   └── pages/
+│   │       ├── SignIn.jsx
+│   │       └── SignUp.jsx
+│   ├── home/             
+│   │   └── Home.jsx
+│   ├── locations/         
+│   │   ├── components/
+│   │   │   ├── CountryGroup.jsx
+│   │   │   ├── DetailsCard.jsx
+│   │   │   ├── DetailsCard.test.jsx
+│   │   │   ├── LocationCard.jsx
+│   │   │   ├── LocationCard.test.jsx
+│   │   │   ├── LocationList.jsx
+│   │   │   └── LocationMap.jsx
+│   │   ├── context/
+│   │   │   └── LocationsContext.jsx
+│   │   └── pages/
+│   │       ├── LocationDetails.jsx
+│   │       └── Locations.jsx
+│   ├── profile/           
+│   │   ├── components/
+│   │   │   ├── ProfileCard.jsx
+│   │   │   ├── ProfileEditForm.jsx
+│   │   │   ├── ProfileEditForm.test.jsx
+│   │   │   ├── ProfileTabs.jsx
+│   │   │   └── SavedLocations.jsx
+│   │   ├── context/
+│   │   │   └── ProfileContext.jsx
+│   │   └── pages/
+│   │       └── Profile.jsx
+│   └── reviews/         
+│       ├── components/
+│       │   ├── Review.jsx
+│       │   ├── ReviewForm.jsx
+│   │   │   ├── ReviewForm.test.jsx
+│       │   ├── ReviewModal.jsx
+│       │   └── ReviewsList.jsx
+│       ├── context/
+│       │   ├── ReviewModalContext.jsx
+│       │   └── ReviewsContext.jsx
+│       └── pages/
+│           └── Reviews.jsx
+├── shared/               
+│   ├── api/
+│   │   └── axiosDefault.js
+│   ├── components/
+│   │   ├── ConfirmationModal.jsx
+│   │   ├── Navbar.jsx
+│   │   └── avatar/
+│   │       └── Avatar.jsx
+│   ├── context/
+│   │   └── ToastContext.jsx
+│   ├── hooks/
+│   │   └── useClickOutsideToggle.js
+│   └── utils/
+│       └── utils.js
+└── test/                
+    ├── mocks/
+    │   ├── handlers.js
+    │   └── server.js
+    └── setup/
+        ├── setupTests.js
+        └── testUtils.jsx
+```
 
 ## The-Surface-Plane
 ### Colour-Scheme
