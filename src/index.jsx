@@ -13,6 +13,7 @@ import SignUp from './features/auth/pages/SignUp.jsx';
 import Home from './features/home/Home.jsx';
 import LocationDetails from './features/locations/pages/LocationDetails.jsx';
 import Locations from './features/locations/pages/Locations.jsx';
+import ManageLocations from './features/locations/pages/ManageLocations.jsx';
 import Profile from './features/profile/pages/Profile.jsx';
 import Reviews from './features/reviews/pages/Reviews.jsx';
 
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   {
     element: (
       <Providers>
-        <App />
+          <App />
       </Providers>
     ),
     errorElement: <NotFound />,
@@ -32,6 +33,22 @@ const router = createBrowserRouter([
       {
         path: '/locations',
         element: <Locations />,
+      },
+      {
+        path: '/locations/update',
+        element: (
+          <ProtectedRoute adminOnly={true}>
+            <ManageLocations />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/locations/update/:id',
+        element: (
+          <ProtectedRoute adminOnly={true}>
+            <ManageLocations />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/locations/:id',

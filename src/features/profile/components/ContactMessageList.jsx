@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 const ContactMessageList = () => {
   return (
     <div>
       
     </div>
-  )
-}
+  );
+};
 
-export default ContactMessageList
+export default ContactMessageList;

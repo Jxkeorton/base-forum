@@ -4,8 +4,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useCurrentUser } from '../../features/auth/context/CurrentUserContext';
 
-const ProtectedRoute = ({ children }) => {
-  const { currentUser, isLoading } = useCurrentUser();
+const ProtectedRoute = ({ children, adminOnly }) => {
+  const { currentUser, isLoading, isAdmin } = useCurrentUser();
   const location = useLocation();
 
   if (isLoading) {
@@ -20,6 +20,10 @@ const ProtectedRoute = ({ children }) => {
 
   if (!currentUser) {
     return <Navigate to="/sign-in" state={{ from: location.pathname }} replace />;
+  }
+
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   return children;
