@@ -9,7 +9,7 @@ import { useLocationsContext } from '../context/LocationsContext';
 const ManageLocations = () => {
     const { id } = useParams(); // This will be undefined for new locations
     const navigate = useNavigate();
-    const { locations, loading: contextLoading } = useLocationsContext();
+    const { locations } = useLocationsContext();
     const [location, setLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(id ? true : false);
 
@@ -44,7 +44,7 @@ const ManageLocations = () => {
           
           if (response.data) {
             toast.success(id ? 'Location updated successfully' : 'Location created successfully');
-            navigate('/locations/update');
+            navigate('/locations');
             return response.data;
           }
         } catch (error) {

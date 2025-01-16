@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         element: <Locations />,
       },
       {
-        path: '/locations/update',
+        path: '/locations/new',
         element: (
           <ProtectedRoute adminOnly={true}>
             <ManageLocations />

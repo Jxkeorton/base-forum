@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { InputGroup, FormControl, Spinner, Form } from 'react-bootstrap';
+import { InputGroup, FormControl, Spinner, Form, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 import LocationList from '../components/LocationList.jsx';
 import { useLocationsContext } from '../context/LocationsContext.jsx';
@@ -7,6 +8,8 @@ import { useLocationsContext } from '../context/LocationsContext.jsx';
 const Locations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { locations, loading, fetchAllLocations } = useLocationsContext();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -44,6 +47,12 @@ const Locations = () => {
           </InputGroup>
         </Form.Group>
       </Form>
+
+      <div className="d-grid gap-2 mb-3">
+        <Button onClick={() => navigate('/locations/new')} variant="secondary" size="lg">
+          + Add Location
+        </Button>
+      </div>
 
       {loading && (
         <div className="text-center" aria-live="polite">

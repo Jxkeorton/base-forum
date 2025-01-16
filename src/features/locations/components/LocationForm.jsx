@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spinner, Alert } from 'react-bootstrap';
 
-const LocationForm = ({ location = null, onSubmit, isLoading }) => {
+const LocationForm = ({ location = null, onSubmit }) => {
   const [formData, setFormData] = useState({
     name: '',
     opened_by: '',

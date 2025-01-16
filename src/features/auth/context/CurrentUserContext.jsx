@@ -177,7 +177,7 @@ export const CurrentUserProvider = ({ children }) => {
 
   const contextValue = {
     currentUser,
-    isAdmin: currentUser?.is_superuser || false,
+    isAdmin: Boolean(currentUser?.is_superuser) ?? false,
     isLoading,
     signIn,
     signOut,
