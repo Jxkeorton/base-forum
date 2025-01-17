@@ -164,6 +164,34 @@ export const LocationsProvider = ({ children }) => {
     }
   }, [isLocationSaved, getSavedLocationId, removeSavedLocation, saveLocation]);
 
+  const deleteLocation = useCallback(async (locationId) => {
+    if (!currentUser?.is_superuser) {
+      toast.error('Only administrators can delete locations');
+      return { success: false, error: 'Unauthorized' };
+    }
+
+    const loadingToast = toast.loading('Deleting location...');
+
+    try {
+      setLoading(true);
+      await axiosReq.delete(`/locations/${locationId}/`);
+      setLocations(prevLocations => prevLocations.filter(loc => loc.id !== locationId));
+      toast.dismiss(loadingToast);
+      toast.success('Location deleted successfully');
+      return { success: true };
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      const errorMessage = err.response?.data || 'Failed to delete location';
+      toast.error(errorMessage);
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
   const contextValue = {
     locations,
     savedLocations,
@@ -176,6 +204,7 @@ export const LocationsProvider = ({ children }) => {
     removeSavedLocation,
     isLocationSaved,
     getSavedLocationId,
+    deleteLocation,
   };
 
   return (

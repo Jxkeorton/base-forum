@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import { axiosReq } from '../../../shared/api/axiosDefault';
 import ConfirmationModal from '../../../shared/components/ConfirmationModal';
 import { useCurrentUser } from '../../auth/context/CurrentUserContext';
+import { useLocationsContext } from '../context/LocationsContext';
 
 const LocationCard = ({ location }) => {
     const [totalHeight, setTotalHeight] = useState(location.total_height);
     const [rockDrop, setRockDrop] = useState(location.total_height);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { isAdmin } = useCurrentUser();
+    const { deleteLocation } = useLocationsContext();
     
 
     const navigate = useNavigate();
@@ -39,15 +39,10 @@ const LocationCard = ({ location }) => {
     };
 
     const handleDeleteLocation = async () => {
-        try {
-            const response = await axiosReq.delete(`/locations/${location.id}/`);
-            if (response.status === 204) {
-                setShowDeleteModal(false);
-                toast.success('Location deleted successfully');
-                navigate('/locations');
-            }
-        } catch (err) {
-            console.error('Delete failed:', err.response?.data || err);
+        const { success } = await deleteLocation(location.id);
+        if (success) {
+            setShowDeleteModal(false);
+            navigate('/locations');
         }
     };
 
