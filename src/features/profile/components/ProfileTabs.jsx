@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
 
 import { useCurrentUser } from '../../auth/context/CurrentUserContext.jsx';
+import ContactMessageList from '../../contact/ContactMessageList.jsx';
 import ReviewsList from '../../reviews/components/ReviewsList.jsx';
 
-import ContactMessageList from './ContactMessageList.jsx';
 import SavedLocations from './SavedLocations.jsx';
 
 function ProfileTabs() {

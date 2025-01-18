@@ -24,7 +24,7 @@ const CountryGroup = ({ country, locations, isFirst }) => {
             aria-expanded={!isCollapsed}
             aria-label={`${isCollapsed ? 'Expand' : 'Collapse'} ${country} section`}
             className="btn btn-link p-0 border-0"
-            style={{ cursor: 'pointer', marginLeft: '10px', display: 'inline-flex', alignItems: 'center' }}
+            style={{ cursor: 'pointer', marginLeft: '10px', display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
           >
             <i className={isCollapsed ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-up'} />
           </button>
