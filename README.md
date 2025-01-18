@@ -4,44 +4,41 @@ The live link can be found here: [Live Site - Base Forum](https://base-forum-630
 
 ![Mock Up](docs/mockup.png)
 
-## Role of a Front-End developers
-Front end developers can utilize designs and APIs in order to create a user friendly and intuitive interface to bring a brand to life. This is a fundamental role in customer facing business' for the modern age because everything has moved online. Not having that online presence can sink a company, for this reason a front end developer is a key part to a successful company in the modern world.
-
-## React
-React framework was implemented in the build of the website. It is a framework built on top of the javascript language for a better developer experience when creating websites. React is used to create components that can be reusable, this can improve user experience by standardizing the components used to build the website making it more intuitive for the end user and improves the branding of the website.
-For example the reviews component was reused on multiple pages so they can be easily recognized by the user.
-
-Reused React components are listed here.
-
 ## Table of Contents
 
 * [User Experience Design](#user-experience-design)
-  * [Strategy Plane](#strategy-plane)
+  * [The Strategy Plane](#the-strategy-plane)
     * [Site Goals](#site-goals)
     * [Agile Planning](#agile-planning)
       * [Epics](#epics)
       * [User Stories](#user-stories)
-  * [Scope Plane](#scope-plane)
-  * [Skeleton Plane](#skeleton-plane)
+  * [The Scope Plane](#the-scope-plane)
+  * [The Skeleton Plane](#the-skeleton-plane)
     * [Wireframes](#wireframes)
-    * [Database Design](#database-design)
+    * [Database Design](#database-diagram)
+    * [API Table](#api-table)
     * [Security](#security)
-  * [Structure Plane](#structure-plane)
-    * [Features](#features)
+  * [The Structure Plane](#the-structure-plane)
+    * [Reused Components](#reused-components)
+    * [Site Features](#site-features)
     * [Features Left To Implement](#features-left-to-implement)
-  * [Surface Plane](#surface-plane)
-    * [Design](#design)
+    * [File Structure](#file-structure)
+  * [The Surface Plane](#the-surface-plane)
     * [Colour Scheme](#colour-scheme)
     * [Typography](#typography)
     * [Imagery](#imagery)
-  * [Technologies](#technologies)
-  * [Testing](#testing)
-  * [Deployment](#deployment)
-    * [Version Control](#version-control)
-    * [Heroku Deployment](#heroku-deployment)
-    * [Run Locally](#run-locally)
-    * [Fork Project](#fork-project)
-  * [Credits](#credits)
+* [Technologies](#technologies)
+  * [UI Technologies](#ui-technologies)
+  * [API Technologies](#api-technologies)
+* [Testing](#testing)
+* [Deployment](#deployment)
+  * [Version Control](#version-control)
+  * [Heroku Deployment](#heroku-deployment)
+  * [Run Locally](#run-locally)
+  * [Fork Project](#fork-project)
+* [Credits](#credits)
+* [Role of Front-End Developers](#role-of-a-front-end-developers)
+* [Use of React](#use-of-react)
 
 # User-Experience-Design
 
@@ -73,33 +70,12 @@ Epics are large bodies of work that can be broken down into smaller tasks or use
 - Locations
 - Reviews
 - Profile
+- Contact us
+- Admin Features
 
 #### User Stories
-
-User stories are smaller, manageable tasks derived from the epics. They define specific requirements from the perspective of the end user. Below are examples of user stories for each epic:
-
-- Create navigation bar ( not part of an epic )
-
-**Authentication**
-- Create account page
-- Create Sign In page
-- Create sign out page
-
-**Locations**
-- View locations
-- Filter locations
-- Search locations
-- View location details
-
-**Review**
-- Create Review
-- Update review
-- Delete review
-
-**Profile**
-- Update Profile form
-- View user reviews
-- View user saved locations
+The specific user stories were created under the epics in the github issues tab for the repository. 
+All of the user stories have been added next to the relevant features at the [Site Features](#site-features) section of the README.md file.
 
 ## The-Scope-Plane
 
@@ -107,11 +83,13 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 - Update user profiles
 - Profile image upload
 - View history of saved locations and reviews
+- Admins can view contact form responses
 
 #### 2. Location Management
 - Browse locations with filtering options
 - Detailed location pages with essential information
 - Interactive map
+- Admins can Update/Add/Delete locations
 
 #### 3. User Interactions
 - Save/bookmark favorite locations
@@ -200,11 +178,32 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 ![Home Page Wireframe](docs/wireframes/home-page-wireframe.png)
 
 </details>
+<details>
+<summary>Footer</summary>
+
+![Footer wireframe](docs/wireframes/footer-wireframe.png)
+
+</details>
+<details>
+<summary>Add location Form</summary>
+
+![Add location Form Wireframe](docs/wireframes/add-location-form-wireframe.png)
+
+</details>
 
 ### Database diagram
 
 <details>
 <summary>Database diagram</summary>
+
+**Additional**
+The contact table was created to save contact form responses and has the fields
+- id (integer)
+- name (text)
+- email (email)
+- message (text)
+- created_at (date)
+- read (Boolean)
 
 ![Database Diagram](./docs/database-diagram.png)
 </details>
@@ -241,6 +240,10 @@ User stories are smaller, manageable tasks derived from the epics. They define s
 | `/saved-locations/` | POST | Save a location | Yes | Authenticated users |
 | `/saved-locations/<int:pk>/` | GET | Retrieve a specific saved location | Yes | Save owner only |
 | `/saved-locations/<int:pk>/` | DELETE | Remove a saved location | Yes | Save owner only |
+| `/contact/<int:pk>/` | DELETE | Remove a contact form response | Yes | Admin |
+| `/contact/<int:pk>/` | GET | Marks message as read | Yes | Admin |
+| `/contact/` | GET | Get list of form responses | Yes | Admin |
+| `/contact/` | POST | Create a message for admins | No | Anyone |
 
 ### Features
 
@@ -332,6 +335,8 @@ UI Security Features
 <summary>Confirmation Modal</summary>
 
 **Places used**
+- Deletion of contact responses
+- Deletion of location
 - Deletion of review
 - Sign out
 
@@ -374,6 +379,14 @@ UI Security Features
     ![Logged in NavBar](docs/features/loggedin-navigation.png)
 </details>
 
+<details>
+<summary>Footer</summary>
+
+- **User Story**: As a **site user** I can **Contact the site admins** so that **I can offer feedback or ask general enquiries**
+  ![Footer](docs/features/footer.png)
+
+</details>
+
 #### Authentication
 
 <details>
@@ -412,6 +425,11 @@ UI Security Features
 <summary>Location Card</summary>
 
 ![Location card](docs/features/locations/location-card.png)
+
+**User Stories**:
+- As a Admin User I can Delete locations so that I can quickly edit the locations available on my site
+- As a Admin User I can Edit Locations so that easily fix issues with locations
+![Admin Location Card](docs/features/locations/admin-location-card.png)
 </details>
 
 <details>
@@ -428,6 +446,13 @@ UI Security Features
 
 - **User Story**: As a User, I want to see location details so that I can see more in-depth information on the location I am interested in
   ![Locations Details card](docs/features/locations/location-details-card.png)
+</details>
+
+<details>
+<summary>Add location form</summary>
+
+- **User Story**: As a Admin User I can Add locations so that I can quickly add a location to the website
+![Add location form](docs/features/locations/Add-location-form.png)
 </details>
 
 #### Reviews
@@ -490,6 +515,16 @@ UI Security Features
 </details>
 
 <details>
+<summary>Contact form responses Tab</summary>
+
+**User Stories**
+- As a Admin User I can Delete contact form responses so that I can discard of resolved contact form responses
+- As a Admin User I can mark response as read so that I can easily identify which i have not read
+
+![contact form responses tab](docs/features/profile/admin-contact-responses-tab.png)
+</details>
+
+<details>
 <summary>Update Profile Form</summary>
 
 - **User Story**: As a logged in User, I want to update/edit my account so that I can personalize my experience
@@ -498,10 +533,11 @@ UI Security Features
 
 ### Features Left To Implement
 In future releases the following features will be implemented...
-- Email required on sign up
-- Make the app more social allowing users to follow and view others profiles
+- Email required on sign up with email verification
+- Make the app more social allowing users to follow and view other profiles
 - Include a weather API for live weather updates at the locations
 - Scroll arrows on location details page to go to the next/previous location
+- An option on the locations page to view a map with markers instead of a list of locations
 
 ### File Structure 
 I chose to follow the colocation principle in my file structure after reading the following text from the (React)[https://legacy.reactjs.org/docs/faq-structure.html#:~:text=Eventually%20it%20will%20grow%20large,principle%20is%20called%20%E2%80%9Ccolocation%E2%80%9D.] documentation.
@@ -509,89 +545,6 @@ I chose to follow the colocation principle in my file structure after reading th
 `Eventually it will grow large enough that you will want to separate some files from the rest. By that time you’ll have enough knowledge to tell which files you edit together most often. In general, it is a good idea to keep files that often change together close to each other. This principle is called “colocation”.`
 
 It ensures development efficiency and promotes a standardised approach. Making it easier for developers to understand the codebase even having never worked on it beforehand. Also if making changes to a component, the developer can easily see associated tests. If hidden away in a test directory this is not the case.
-
-Therefore i created a file structure that looks like this:
-``` 
-src/
-├── assets/                   
-│   └── logo.png
-├── core/                   
-│   ├── app/
-│   │   └── App.jsx         
-│   ├── components/
-│   │   ├── NotFound.jsx   
-│   │   └── ProtectedRoute.jsx 
-│   └── config/
-│       └── Providers.jsx   
-├── features/              
-│   ├── auth/              
-│   │   ├── components/
-│   │   ├── context/
-│   │   │   └── CurrentUserContext.jsx
-│   │   └── pages/
-│   │       ├── SignIn.jsx
-│   │       └── SignUp.jsx
-│   ├── home/             
-│   │   └── Home.jsx
-│   ├── locations/         
-│   │   ├── components/
-│   │   │   ├── CountryGroup.jsx
-│   │   │   ├── DetailsCard.jsx
-│   │   │   ├── DetailsCard.test.jsx
-│   │   │   ├── LocationCard.jsx
-│   │   │   ├── LocationCard.test.jsx
-│   │   │   ├── LocationList.jsx
-│   │   │   └── LocationMap.jsx
-│   │   ├── context/
-│   │   │   └── LocationsContext.jsx
-│   │   └── pages/
-│   │       ├── LocationDetails.jsx
-│   │       └── Locations.jsx
-│   ├── profile/           
-│   │   ├── components/
-│   │   │   ├── ProfileCard.jsx
-│   │   │   ├── ProfileEditForm.jsx
-│   │   │   ├── ProfileEditForm.test.jsx
-│   │   │   ├── ProfileTabs.jsx
-│   │   │   └── SavedLocations.jsx
-│   │   ├── context/
-│   │   │   └── ProfileContext.jsx
-│   │   └── pages/
-│   │       └── Profile.jsx
-│   └── reviews/         
-│       ├── components/
-│       │   ├── Review.jsx
-│       │   ├── ReviewForm.jsx
-│   │   │   ├── ReviewForm.test.jsx
-│       │   ├── ReviewModal.jsx
-│       │   └── ReviewsList.jsx
-│       ├── context/
-│       │   ├── ReviewModalContext.jsx
-│       │   └── ReviewsContext.jsx
-│       └── pages/
-│           └── Reviews.jsx
-├── shared/               
-│   ├── api/
-│   │   └── axiosDefault.js
-│   ├── components/
-│   │   ├── ConfirmationModal.jsx
-│   │   ├── Navbar.jsx
-│   │   └── avatar/
-│   │       └── Avatar.jsx
-│   ├── context/
-│   │   └── ToastContext.jsx
-│   ├── hooks/
-│   │   └── useClickOutsideToggle.js
-│   └── utils/
-│       └── utils.js
-└── test/                
-    ├── mocks/
-    │   ├── handlers.js
-    │   └── server.js
-    └── setup/
-        ├── setupTests.js
-        └── testUtils.jsx
-```
 
 ## The-Surface-Plane
 ### Colour-Scheme
@@ -731,7 +684,7 @@ six==1.16.0
 
 Due to the size of the README tests have been moved into a separate markdown file. Please click the link below to view the tests.
 
-[Testing File](./TESTING.md)
+[Tests File here](./TESTING.md)
 
 ## Deployment
 
@@ -803,8 +756,6 @@ Most commonly, forks are used to either propose changes to someone else's projec
 
 ## Credits
 
-**File Structure:** [Profy.dev - React Folder Structure](https://profy.dev/article/react-folder-structure)
-
 **Review component Design:** [MDB React - Comments Component](https://mdbootstrap.com/docs/react/extended/comments/)
 
 **Map Implementation:** 
@@ -814,3 +765,12 @@ Most commonly, forks are used to either propose changes to someone else's projec
 **EsLint implementation**
 - [Free code camp blog](https://www.freecodecamp.org/news/how-to-add-eslint-to-your-react-project/)
 - [EsLint docs](https://eslint.org/docs/latest/extend/ways-to-extend#plugins)
+
+## Role of a Front-End developers
+Front end developers can utilize designs and APIs in order to create a user friendly and intuitive interface to bring a brand to life. This is a fundamental role in customer facing business' for the modern age because everything has moved online. Not having that online presence can sink a company, for this reason a front end developer is a key part to a successful company in the modern world.
+
+## Use of React
+React framework was implemented in the build of the website. It is a framework built on top of the javascript language for a better developer experience when creating websites. React is used to create components that can be reusable, this can improve user experience by standardizing the components used to build the website making it more intuitive for the end user and improves the branding of the website.
+For example the reviews component was reused on multiple pages so they can be easily recognized by the user.
+
+Reused React components are listed here. [Site Features - reused components](#reused-components)
