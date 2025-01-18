@@ -22,6 +22,8 @@ const LocationForm = ({ location = null, onSubmit }) => {
 
   const isEditMode = !!location;
 
+  const VALID_ASPECTS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
   useEffect(() => {
     if (location) {
       setFormData({
@@ -58,36 +60,101 @@ const LocationForm = ({ location = null, onSubmit }) => {
   const validateForm = () => {
     const errors = {};
 
-    if (!formData.name) errors.name = 'Location name is required';
-    if (!formData.country) errors.country = 'Country is required';
-    if (!formData.opened_by) errors.opened_by = 'First ascent by is required';
-    
+    if (!formData.name.trim()) {
+      errors.name = 'Location name is required';
+    } else if (formData.name.length > 255) {
+      errors.name = 'Location name cannot exceed 255 characters';
+    }
+
+    if (!formData.country.trim()) {
+      errors.country = 'Country is required';
+    } else if (formData.country.length > 100) {
+      errors.country = 'Country name cannot exceed 100 characters';
+    }
+
+    // Latitude validation
+    const latitude = Number(formData.latitude);
+    if (formData.latitude === '') {
+      errors.latitude = 'Latitude is required';
+    } else if (isNaN(latitude)) {
+      errors.latitude = 'Latitude must be a number';
+    } else if (latitude < -90 || latitude > 90) {
+      errors.latitude = 'Latitude must be between -90 and 90 degrees';
+    }
+
+    // Longitude validation
+    const longitude = Number(formData.longitude);
+    if (formData.longitude === '') {
+      errors.longitude = 'Longitude is required';
+    } else if (isNaN(longitude)) {
+      errors.longitude = 'Longitude must be a number';
+    } else if (longitude < -180 || longitude > 180) {
+      errors.longitude = 'Longitude must be between -180 and 180 degrees';
+    }
+
+    if (formData.opened_by.length > 100) {
+      errors.opened_by = 'Opened by cannot exceed 100 characters';
+    }
+
+    if (formData.access && formData.access.length > 250) {
+      errors.access = 'Access details cannot exceed 250 characters';
+    }
+
     if (formData.rock_drop) {
       const rockDrop = Number(formData.rock_drop);
       if (isNaN(rockDrop)) {
         errors.rock_drop = 'Rock drop must be a number';
       } else if (rockDrop < 0) {
         errors.rock_drop = 'Rock drop cannot be negative';
+      } else if (rockDrop > 5000) {
+        errors.rock_drop = 'Rock drop seems unreasonably high. Please verify.';
       }
     }
+
     if (formData.total_height) {
       const totalHeight = Number(formData.total_height);
       if (isNaN(totalHeight)) {
         errors.total_height = 'Total height must be a number';
       } else if (totalHeight < 0) {
         errors.total_height = 'Total height cannot be negative';
+      } else if (totalHeight > 8000) {
+        errors.total_height = 'Total height seems unreasonably high. Please verify.';
       }
     }
-    if (formData.latitude && isNaN(Number(formData.latitude))) {
-      errors.latitude = 'Latitude must be a number';
+
+    // Cross-field validation
+    if (formData.rock_drop && formData.total_height) {
+      const rockDrop = Number(formData.rock_drop);
+      const totalHeight = Number(formData.total_height);
+      if (!isNaN(rockDrop) && !isNaN(totalHeight) && rockDrop > totalHeight) {
+        errors.rock_drop = 'Rock drop cannot be greater than total height';
+      }
     }
-    if (formData.longitude && isNaN(Number(formData.longitude))) {
-      errors.longitude = 'Longitude must be a number';
+
+    if (formData.cliff_aspect && !VALID_ASPECTS.includes(formData.cliff_aspect.toUpperCase())) {
+      errors.cliff_aspect = `Cliff aspect must be one of: ${VALID_ASPECTS.join(', ')}`;
     }
 
     // Date validation
-    if (formData.date_opened && isNaN(Date.parse(formData.date_opened))) {
-      errors.date_opened = 'Invalid date format';
+    if (formData.date_opened) {
+      const openedDate = new Date(formData.date_opened);
+      if (isNaN(openedDate.getTime())) {
+        errors.date_opened = 'Invalid date format';
+      } else if (openedDate > new Date()) {
+        errors.date_opened = 'Date opened cannot be in the future';
+      }
+    }
+
+    // Image URL validation
+    if (formData.image) {
+      try {
+        const url = new URL(formData.image);
+        if (!['http:', 'https:'].includes(url.protocol)) {
+          errors.image = 'Image URL must use http or https protocol';
+        }
+      } catch {
+        errors.image = 'Invalid URL format';
+      }
     }
 
     setValidationErrors(errors);
@@ -132,7 +199,7 @@ const LocationForm = ({ location = null, onSubmit }) => {
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="name">Location Name</Form.Label>
+          <Form.Label htmlFor="name">Location Name *</Form.Label>
           <Form.Control
             type="text"
             id="name"
@@ -164,7 +231,7 @@ const LocationForm = ({ location = null, onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="country">Country</Form.Label>
+          <Form.Label htmlFor="country">Country *</Form.Label>
           <Form.Control
             type="text"
             id="country"
@@ -252,7 +319,7 @@ const LocationForm = ({ location = null, onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="latitude">Latitude</Form.Label>
+          <Form.Label htmlFor="latitude">Latitude *</Form.Label>
           <Form.Control
             type="number"
             id="latitude"
@@ -268,7 +335,7 @@ const LocationForm = ({ location = null, onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label htmlFor="longitude">Longitude</Form.Label>
+          <Form.Label htmlFor="longitude">Longitude *</Form.Label>
           <Form.Control
             type="number"
             id="longitude"
