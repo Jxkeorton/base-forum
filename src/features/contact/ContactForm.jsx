@@ -82,25 +82,29 @@ const ContactForm = () => {
             <Row>
             <Col md={6}>
                 <Form.Group className="mb-3">
-                <Form.Control
-                    type="text"
-                    placeholder="Your Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    isInvalid={!!errors.name}
-                />
-                <Form.Control.Feedback type="invalid">
-                    {errors.name}
-                </Form.Control.Feedback>
+                    <Form.Label className="visually-hidden" htmlFor="name">Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="name"
+                        placeholder="Your Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        isInvalid={!!errors.name}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        {errors.name}
+                    </Form.Control.Feedback>
                 </Form.Group>
             </Col>
             <Col md={6}>
                 <Form.Group className="mb-3">
+                <Form.Label className="visually-hidden" htmlFor="email">Email</Form.Label>
                 <Form.Control
                     type="email"
                     placeholder="Your Email"
                     name="email"
+                    id="email"
                     value={formData.email}
                     onChange={handleChange}
                     isInvalid={!!errors.email}
@@ -112,8 +116,10 @@ const ContactForm = () => {
             </Col>
             </Row>
             <Form.Group className="mb-3">
+            <Form.Label className="visually-hidden" htmlFor="message">Message</Form.Label>
             <Form.Control
                 as="textarea"
+                id='message'
                 rows={3}
                 placeholder="Your Message"
                 name="message"
