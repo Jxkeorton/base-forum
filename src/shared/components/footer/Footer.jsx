@@ -26,13 +26,32 @@ const Footer = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    // Name validation
+    if (!formData.name.trim()) {
+        newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length > 100) {  // Matches Django model max_length
+        newErrors.name = 'Name cannot exceed 100 characters';
+    } else if (!/^[a-zA-Z\s'-]+$/.test(formData.name.trim())) {
+        newErrors.name = 'Name can only contain letters, spaces, hyphens and apostrophes';
     }
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
+
+    // Email validation
+    if (!formData.email.trim()) {
+        newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+    } else if (formData.email.length > 254) {  // Standard email length limit
+        newErrors.email = 'Email is too long';
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+        newErrors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+        newErrors.message = 'Message must be at least 10 characters long';
+    } else if (formData.message.length > 1000) {  // Matches Django model max_length
+        newErrors.message = 'Message cannot exceed 1000 characters';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -44,7 +63,7 @@ const Footer = () => {
 
     setIsSubmitting(true);
     try {
-      await axiosReq.post('/contact/', formData);
+      await axiosReq.post('/contact/', formData );
       
       showToast.success('Message sent successfully!');
       setFormData({
