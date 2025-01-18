@@ -32,7 +32,6 @@ const ManageLocations = () => {
 
     const handleSubmit = async (formData) => {
         try {
-          // Implement your API call here
           const url = id ? `/locations/${id}/` : '/locations/';
           const method = id ? 'PUT' : 'POST';
     
