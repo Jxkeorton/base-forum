@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { axiosRes, axiosReq } from '../../../shared/api/axiosDefault';
-import { removeTokenTimestamp, setTokenTimestamp, shouldRefreshToken } from '../../../shared/utils/utils';
+import { removeTokenTimestamp, setTokenTimestamp } from '../../../shared/utils/utils';
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
