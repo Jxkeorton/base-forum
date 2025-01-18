@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { InputGroup, FormControl, Spinner, Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { useCurrentUser } from '../../auth/context/CurrentUserContext.jsx';
 import LocationList from '../components/LocationList.jsx';
 import { useLocationsContext } from '../context/LocationsContext.jsx';
 
 const Locations = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { locations, loading, fetchAllLocations } = useLocationsContext();
+  const { isAdmin } = useCurrentUser();
 
   const navigate = useNavigate();
 
@@ -47,12 +49,13 @@ const Locations = () => {
           </InputGroup>
         </Form.Group>
       </Form>
-
-      <div className="d-grid gap-2 mb-3">
-        <Button onClick={() => navigate('/locations/new')} variant="secondary" size="lg">
-          + Add Location
-        </Button>
-      </div>
+      {isAdmin && 
+        <div className="d-grid gap-2 mb-3">
+          <Button onClick={() => navigate('/locations/new')} variant="secondary" size="lg">
+            + Add Location
+          </Button>
+        </div>
+      }
 
       {loading && (
         <div className="text-center" aria-live="polite">
