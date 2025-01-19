@@ -12,7 +12,6 @@ const LocationCard = ({ location }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const { isAdmin } = useCurrentUser();
     const { deleteLocation } = useLocationsContext();
-    
 
     const navigate = useNavigate();
 
