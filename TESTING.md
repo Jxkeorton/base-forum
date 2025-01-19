@@ -8,8 +8,8 @@
 * [Validator Testing](#validator-testing)
   * [HTML](#html)
   * [PEP8](#pep8)
-  * [JSHint](#jshint)
-  * [ESLint](#eslint)
+  * [JSHint](#JSHint)
+  * [ESLint](#Eslint)
 * [Lighthouse Report](#lighthouse-report)
 * [Responsiveness](#responsiveness)
 
@@ -192,10 +192,10 @@ All pages were run through the [w3 HTML Validator](https://validator.w3.org/nu/)
 All pages were run through the official [Pep 8](https://pep8ci.herokuapp.com/#)
  validator to ensure all code was pep8 compliant. Some errors were shown due to blank spacing and lines too long, 1 line instead of 2 expected. All of these errors were resolved and code passed through the validator.
 
-### JSHINT
-JavaScript code was run through JSHINT javascript validator. There were a few semi colons i had missed, these were added and collectstatic was run again to ensure that the next deployment of code would include the new javascript.
+### JSHint
+JSHint was used to check/correct .js (javascript) files. This helped fix minor issues to ensure best practices in how the code is written.
 
-### eslint
+### Eslint
 ESLint played a crucial role in maintaining code quality and consistency throughout the project. The configuration was set up to enforce best practices for React development, accessibility, and general JavaScript coding standards.
 
 #### Key ESLint Features
