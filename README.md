@@ -245,7 +245,9 @@ The contact table was created to save contact form responses and has the fields
 | `/contact/` | GET | Get list of form responses | Yes | Admin |
 | `/contact/` | POST | Create a message for admins | No | Anyone |
 
-### Features
+</details>
+
+### API Features
 
 - Locations support filtering by country and searching by name/country
 - Reviews can be filtered by location name and owner username
@@ -253,7 +255,6 @@ The contact table was created to save contact form responses and has the fields
 - Appropriate CORS headers are set up for frontend communication
 - JWT authentication is used in production, while session authentication is used in development
 - All list endpoints are paginated with 10 items per page
-</details>
 
 ### Security
 
@@ -520,6 +521,8 @@ UI Security Features
 **User Stories**
 - As a Admin User I can Delete contact form responses so that I can discard of resolved contact form responses
 - As a Admin User I can mark response as read so that I can easily identify which i have not read
+
+User cannot mark responses as unread once marked as read.
 
 ![contact form responses tab](docs/features/profile/admin-contact-responses-tab.png)
 </details>

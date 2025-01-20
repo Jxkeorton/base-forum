@@ -255,6 +255,11 @@ These scripts allow developers to:
 - Watch for changes and lint in real-time during development
 
 ## Lighthouse report
+
+The lighthouse report came back pretty positive. The only concern I had was with the orange result for best practices caused by the third party cookies used with the DRF API. The warning was to inform the site creator that google are moving away from third party cookies. So it is something i can consider fixing in the future.
+
+![Lighthouse Report](docs/Home%20-%20lighthouse.png)
+
 ## Responsiveness
 All pages were tested to ensure responsiveness on screen sizes from 320px and upwards as defined in WCAG 2.1 Reflow criteria for responsive design on Chrome, Edge, Firefox and Opera browsers.
 
@@ -264,7 +269,7 @@ Steps to test:
 - Open the developer tools (right click and inspect)
 - Set to responsive and decrease width to 320px
 - Set the zoom to 50%
--  Click and drag the responsive window to maximum width
+- Click and drag the responsive window to maximum width
 
 Expected:
 
